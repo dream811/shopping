@@ -39,7 +39,7 @@ function orderPrint(orderid){
 <?
 
 // 주문정보
-$sql = "SELECT * FROM wiz_order WHERE orderid = '$presult['orderid']'";
+$sql = "SELECT * FROM wiz_order WHERE orderid = '".$presult['orderid']."'";
 $result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 $order_info = mysqli_fetch_object($result);
 
