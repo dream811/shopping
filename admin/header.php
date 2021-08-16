@@ -169,7 +169,7 @@ $('.AW-manage-wrap').toggleClass('left_close');
 <div class="Topmenu-wrap clearfix">
     <ul class="gnb clearfix">
     	<li><a href="http://<?=$HTTP_HOST?>" target="_blank">내 쇼핑몰</a></li>
-    	<li><a href="http://scrap.<?=$HTTP_HOST?>/home" target="_blank">스크랩</a></li>
+    	<li><a href="http://scrap.<?=$HTTP_HOST?>/api/loginCheckFromShop?strId=michael@pwd=qwe123qwe" target="_blank">스크랩</a></li>
     	<li><a href="/admin/main/main.php">관리자홈</a></li>
     	<li><a href="../admin_logout.php">로그아웃</a></li>
     </ul><!-- .gnb -->
