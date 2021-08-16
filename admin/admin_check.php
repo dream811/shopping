@@ -31,25 +31,6 @@ if($admin_info->passwd == $admin_pw){
 	$wiz_admin['email'] = $_SESSION['wiz_admin']['email']	= $admin_info->email;
 	$wiz_admin['permi']	= $_SESSION['wiz_admin']['permi'] = $admin_info->permi;
 
-	//스크레핑서버접속
-	$data = array(
-		'test' => 'test'
-	);
-	
-	$url = "http://sellerfrend.com/api/registAccount" . "?" . http_build_query($data);
-	
-	$ch = curl_init();                                 //curl 초기화
-	curl_setopt($ch, CURLOPT_URL, $url);               //URL 지정하기
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);    //요청 결과를 문자열로 반환 
-	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);      //connection timeout 10초 
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);   //원격 서버의 인증서가 유효한지 검사 안함
-	 
-	$response = curl_exec($ch);
-	curl_close($ch);
-	 
-	return $response;
-
-	
 	Header("Location: $start_page");
 
 }else{
