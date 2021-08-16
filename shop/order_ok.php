@@ -46,14 +46,14 @@ $order_info = mysqli_fetch_object($result);
 //echo $orderid;
 
 // 주문성공
-if($presult[rescode] == "0000" && strlen($presult[rescode]) == 4){
+if($presult['rescode'] == "0000" && strlen($presult['rescode']) == 4){
 
 	// 주문완료 메일/sms발송
 	include "./order_mail.inc";		// 메일발송내용
 
-	$re_info[name] = $order_info->send_name;
-	$re_info[email] = $order_info->send_email;
-	$re_info[hphone] = $order_info->send_hphone;
+	$re_info['name'] = $order_info->send_name;
+	$re_info['email'] = $order_info->send_email;
+	$re_info['hphone'] = $order_info->send_hphone;
 
 	// email, sms 발송 체크
 	$sql = "update wiz_order set send_mailsms = 'Y' where orderid = '$order_info->orderid'";
