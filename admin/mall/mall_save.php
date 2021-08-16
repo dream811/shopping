@@ -47,6 +47,14 @@ if($mode == "insert"){
 					'$address2','$photo_name','$intro','$comment','$cms_type','$cms_rate','$del_info[0]','$del_info[1]','$status',now(),$adate,'$last')";
 
 	mysqli_query($connect, $sql) or die(mysqli_error($connect));
+	//스크레핑 회원등록
+	// $sql = "insert into tb_users (name,strID,email,phone_number,image,password,bIsAdmin,role,money,business_name,
+	// business_number,business_phone,business_type,business_kind,business_zip,business_address1,business_address2,bIsUsed,api_token,bIsDel)
+	// 				values('$id','$passwd','$com_name','$com_owner','$com_num','$com_kind','$com_class','$com_tel','$com_hp',
+	// 				'$com_fax','$acc_name','$acc_bank','$acc_num','$manager','$email','$homepage','$post','$address',
+	// 				'$address2','$photo_name','$intro','$comment','$cms_type','$cms_rate','$del_info[0]','$del_info[1]','$status',now(),$adate,'$last')";
+
+	// mysqli_query($connect, $sql) or die(mysqli_error($connect));
 
 	complete("업체를 등록하였습니다.","mall_list.php?$param");
 

@@ -27,10 +27,10 @@ if($admin_info->passwd == md5($admin_pw)){
 	   if($_POST[saveid] == "Y") setcookie("admin_id", $admin_id, time()+3600*24*365, "/");
 
 		setcookie("wiz_mall['id']", $admin_info->id, false, "/");
-		setcookie("wiz_mall[passwd]", $admin_info->passwd, false, "/");
-		setcookie("wiz_mall[name]", $admin_info->com_name, false, "/");
-		setcookie("wiz_mall[email]", $admin_info->email, false, "/");
-		setcookie("wiz_mall[com_tel]", $admin_info->com_tel, false, "/");
+		setcookie("wiz_mall['passwd']", $admin_info->passwd, false, "/");
+		setcookie("wiz_mall['name']", $admin_info->com_name, false, "/");
+		setcookie("wiz_mall['email']", $admin_info->email, false, "/");
+		setcookie("wiz_mall['com_tel']", $admin_info->com_tel, false, "/");
 
 		Header("Location: $start_page");
 
