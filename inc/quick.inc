@@ -23,7 +23,7 @@ if(!isset($site_align)) $site_align="";
 	    		while(0 <= $v_idx){
 				// 상품 이미지
 				if(!@file($_SERVER['DOCUMENT_ROOT']."/data/prdimg/".$_SESSION["view_list"][$v_idx]['prdimg'])) $view_prdimg = "/images/noimg_R.gif";
-				else $view_prdimg = "/data/prdimg/".$_SESSION["view_list"][$v_idx][''prdimg''];
+				else $view_prdimg = "/data/prdimg/".$_SESSION["view_list"][$v_idx]['prdimg'];
 			?>
 				<li>
 					<a href="/shop/prd_view.php?prdcode=<?=$_SESSION["view_list"][$v_idx]['prdcode']?>" onFocus="this.blur();">
