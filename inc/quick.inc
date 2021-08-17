@@ -8,7 +8,7 @@ $scroll_amount = 67;				// 한번에 스크롤되는 값
 if($total > 0) $div_height = 193;		// 오늘본상품 역역 높이
 if(!isset($site_align)) $site_align="";
 ?>
-<div class="quick_wrap<?=($_COOKIE['show_quick']=='hidden' ? ' close' : '')?>">
+<div class="quick_wrap<?=(isset($_COOKIE['show_quick']) && $_COOKIE['show_quick']=='hidden' ? ' close' : '')?>">
 	<button type="button" class="quick_btn">퀵바접기 버튼</button>
 	<div class="inner">
 		<ul class="quick_lnk">
@@ -22,8 +22,8 @@ if(!isset($site_align)) $site_align="";
 	    	<?
 	    		while(0 <= $v_idx){
 				// 상품 이미지
-				if(!@file($_SERVER[DOCUMENT_ROOT]."/data/prdimg/".$_SESSION["view_list"][$v_idx][prdimg])) $view_prdimg = "/images/noimg_R.gif";
-				else $view_prdimg = "/data/prdimg/".$_SESSION["view_list"][$v_idx]['prdimg'];
+				if(!@file($_SERVER['DOCUMENT_ROOT']."/data/prdimg/".$_SESSION["view_list"][$v_idx]['prdimg'])) $view_prdimg = "/images/noimg_R.gif";
+				else $view_prdimg = "/data/prdimg/".$_SESSION["view_list"][$v_idx][''prdimg''];
 			?>
 				<li>
 					<a href="/shop/prd_view.php?prdcode=<?=$_SESSION["view_list"][$v_idx]['prdcode']?>" onFocus="this.blur();">
