@@ -2,5 +2,5 @@
 $db_host = "localhost";
 $db_user = "root";
 $db_pass = "";
-$db_name = "demomall";
+$db_name = "sellerfriend";
 ?>
