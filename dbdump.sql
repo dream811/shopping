@@ -36,7 +36,7 @@ CREATE TABLE `wiz_account` (
   `com_date` datetime DEFAULT NULL COMMENT '정산완료일',
   `status` varchar(2) DEFAULT NULL COMMENT '진행상태',
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_account` */
 
@@ -63,7 +63,7 @@ CREATE TABLE `wiz_admin` (
   `wdate` datetime DEFAULT NULL,
   `descript` text DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_admin` */
 
@@ -80,7 +80,7 @@ CREATE TABLE `wiz_adminlog` (
   `ip` varchar(20) DEFAULT NULL,
   `date` datetime DEFAULT NULL,
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=47 DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_adminlog` */
 
@@ -102,7 +102,7 @@ CREATE TABLE `wiz_banner` (
   `de_img` varchar(100) DEFAULT NULL,
   `de_html` mediumtext DEFAULT NULL,
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=91 DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM AUTO_INCREMENT=91 DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_banner` */
 
@@ -121,7 +121,7 @@ CREATE TABLE `wiz_bannerinfo` (
   `padding` int(3) NOT NULL DEFAULT 0,
   `isuse` enum('Y','N') NOT NULL DEFAULT 'Y',
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_bannerinfo` */
 
@@ -178,7 +178,7 @@ CREATE TABLE `wiz_basket` (
   `deliver_num` varchar(32) DEFAULT NULL COMMENT '운송장번호',
   `deliver_date` varchar(12) DEFAULT NULL COMMENT '발송일자',
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=1146 DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM AUTO_INCREMENT=1146 DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_basket` */
 
@@ -299,7 +299,7 @@ CREATE TABLE `wiz_bbs` (
   `upfile_url` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`idx`),
   KEY `code` (`code`)
-) ENGINE=MyISAM AUTO_INCREMENT=644 DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM AUTO_INCREMENT=644 DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_bbs` */
 
@@ -319,7 +319,7 @@ CREATE TABLE `wiz_bbscat` (
   `caticon` varchar(30) DEFAULT NULL,
   `prior` int(11) DEFAULT NULL,
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=31 DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_bbscat` */
 
@@ -373,7 +373,7 @@ CREATE TABLE `wiz_bbsinfo` (
   `spam_check` enum('Y','N') DEFAULT NULL,
   `view_list` enum('Y','N') DEFAULT NULL,
   UNIQUE KEY `code` (`code`)
-) ENGINE=MyISAM DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_bbsinfo` */
 
@@ -397,7 +397,7 @@ CREATE TABLE `wiz_brand` (
   `prd_height` varchar(3) DEFAULT NULL,
   `recom_use` enum('Y','N') DEFAULT NULL,
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_brand` */
 
@@ -428,7 +428,7 @@ CREATE TABLE `wiz_category` (
   `recom_num` int(3) DEFAULT NULL,
   `cms_rate` int(3) DEFAULT NULL,
   PRIMARY KEY (`catcode`)
-) ENGINE=MyISAM DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_category` */
 
@@ -460,7 +460,7 @@ CREATE TABLE `wiz_category_201507010` (
   `recom_num` int(3) DEFAULT NULL,
   `cms_rate` int(3) DEFAULT NULL,
   KEY `sid` (`sid`)
-) ENGINE=MyISAM DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_category_201507010` */
 
@@ -491,7 +491,7 @@ CREATE TABLE `wiz_category_sid` (
   `recom_tema` varchar(10) DEFAULT NULL,
   `recom_num` int(3) DEFAULT NULL,
   KEY `sid` (`sid`)
-) ENGINE=MyISAM DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_category_sid` */
 
@@ -522,7 +522,7 @@ CREATE TABLE `wiz_category_sid_20150710` (
   `recom_tema` varchar(10) DEFAULT NULL,
   `recom_num` int(3) DEFAULT NULL,
   KEY `sid` (`sid`)
-) ENGINE=MyISAM DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_category_sid_20150710` */
 
@@ -546,7 +546,7 @@ CREATE TABLE `wiz_comment` (
   `wip` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`idx`),
   KEY `cidx` (`cidx`)
-) ENGINE=MyISAM AUTO_INCREMENT=140885 DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM AUTO_INCREMENT=140885 DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_comment` */
 
@@ -560,7 +560,7 @@ CREATE TABLE `wiz_conother` (
   `os` varchar(20) DEFAULT NULL,
   `browser` varchar(20) DEFAULT NULL,
   `cnt` int(10) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_conother` */
 
@@ -574,7 +574,7 @@ CREATE TABLE `wiz_conrefer` (
   `referer` text DEFAULT NULL,
   `host` varchar(30) DEFAULT NULL,
   `cnt` int(10) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_conrefer` */
 
@@ -595,7 +595,7 @@ CREATE TABLE `wiz_consult` (
   `status` enum('Y','N') DEFAULT NULL,
   PRIMARY KEY (`idx`),
   KEY `memid` (`memid`)
-) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_consult` */
 
@@ -622,7 +622,7 @@ CREATE TABLE `wiz_content` (
   `content` mediumtext DEFAULT NULL,
   `wdate` date DEFAULT NULL,
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_content` */
 
@@ -635,7 +635,7 @@ DROP TABLE IF EXISTS `wiz_contime`;
 CREATE TABLE `wiz_contime` (
   `time` int(10) DEFAULT NULL,
   `cnt` int(10) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_contime` */
 
@@ -657,7 +657,7 @@ CREATE TABLE `wiz_coupon` (
   `coupon_type` enum('원','%') DEFAULT NULL,
   `wdate` date DEFAULT NULL,
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_coupon` */
 
@@ -673,7 +673,7 @@ CREATE TABLE `wiz_cprelation` (
   `catcode` char(6) DEFAULT NULL,
   PRIMARY KEY (`idx`),
   KEY `catcode` (`catcode`)
-) ENGINE=MyISAM AUTO_INCREMENT=465 DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM AUTO_INCREMENT=465 DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_cprelation` */
 
@@ -693,7 +693,7 @@ CREATE TABLE `wiz_dellist` (
   `hphone` varchar(15) NOT NULL DEFAULT '',
   `post` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_dellist` */
 
@@ -755,7 +755,7 @@ CREATE TABLE `wiz_design` (
   `topmenu08_url` varchar(255) DEFAULT NULL,
   `topmenu09_url` varchar(255) DEFAULT NULL,
   `topmenu10_url` varchar(255) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_design` */
 
@@ -770,7 +770,7 @@ CREATE TABLE `wiz_filedesc` (
   `fdir` text DEFAULT NULL,
   `fdesc` text DEFAULT NULL,
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=215 DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM AUTO_INCREMENT=215 DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_filedesc` */
 
@@ -789,7 +789,7 @@ CREATE TABLE `wiz_level` (
   `discount` int(8) DEFAULT NULL,
   `exp` mediumtext DEFAULT NULL,
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=29 DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_level` */
 
@@ -810,7 +810,7 @@ CREATE TABLE `wiz_mailsms` (
   `email_oper` enum('Y','N') DEFAULT NULL,
   `email_msg` text DEFAULT NULL,
   PRIMARY KEY (`code`)
-) ENGINE=MyISAM DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_mailsms` */
 
@@ -869,7 +869,7 @@ CREATE TABLE `wiz_mall` (
   `adate` datetime DEFAULT NULL,
   `last` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_mall` */
 
@@ -886,7 +886,7 @@ CREATE TABLE `wiz_mall_wish` (
   `mallname` varchar(50) DEFAULT NULL,
   `wdate` datetime DEFAULT NULL,
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_mall_wish` */
 
@@ -934,7 +934,7 @@ CREATE TABLE `wiz_member` (
   `com_class` varchar(50) DEFAULT NULL,
   `wdate` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_member` */
 
@@ -957,7 +957,7 @@ CREATE TABLE `wiz_mycoupon` (
   `coupon_use` enum('N','Y') DEFAULT NULL,
   `wdate` datetime DEFAULT NULL,
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=66 DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM AUTO_INCREMENT=66 DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_mycoupon` */
 
@@ -1020,7 +1020,7 @@ CREATE TABLE `wiz_operinfo` (
   `mall_showset` enum('Y','N') DEFAULT NULL,
   `mall_dis` enum('S','M') DEFAULT NULL,
   `mall_reserve` enum('S','M') DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_operinfo` */
 
@@ -1035,7 +1035,7 @@ CREATE TABLE `wiz_option` (
   `opttitle` varchar(255) DEFAULT NULL,
   `optcode` mediumtext DEFAULT NULL,
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_option` */
 
@@ -1092,7 +1092,7 @@ CREATE TABLE `wiz_order` (
   `send_mailsms` char(1) NOT NULL DEFAULT '',
   PRIMARY KEY (`orderid`),
   KEY `pay_method` (`pay_method`,`send_id`,`status`)
-) ENGINE=MyISAM DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_order` */
 
@@ -1111,7 +1111,7 @@ CREATE TABLE `wiz_page` (
   `addinfo` mediumtext DEFAULT NULL,
   `addinfo2` mediumtext DEFAULT NULL,
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=35 DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_page` */
 
@@ -1135,7 +1135,7 @@ CREATE TABLE `wiz_poll` (
   `wdate` date DEFAULT NULL,
   `cnt` int(10) DEFAULT 0,
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_poll` */
 
@@ -1171,7 +1171,7 @@ CREATE TABLE `wiz_polldata` (
   `count10` int(10) DEFAULT NULL,
   PRIMARY KEY (`idx`),
   KEY `code` (`pidx`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_polldata` */
 
@@ -1209,7 +1209,7 @@ CREATE TABLE `wiz_pollinfo` (
   `abtxt` mediumtext DEFAULT NULL,
   `wdate` date DEFAULT NULL,
   PRIMARY KEY (`code`)
-) ENGINE=MyISAM DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_pollinfo` */
 
@@ -1233,7 +1233,7 @@ CREATE TABLE `wiz_prdmain` (
   `barimg` varchar(255) DEFAULT NULL,
   `html` mediumtext DEFAULT NULL,
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_prdmain` */
 
@@ -1249,7 +1249,7 @@ CREATE TABLE `wiz_prdrelation` (
   `relcode` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`idx`),
   KEY `prdcode` (`prdcode`)
-) ENGINE=MyISAM AUTO_INCREMENT=146 DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM AUTO_INCREMENT=146 DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_prdrelation` */
 
@@ -1353,7 +1353,7 @@ CREATE TABLE `wiz_product` (
   PRIMARY KEY (`prdcode`),
   FULLTEXT KEY `prdcode` (`prdcode`),
   FULLTEXT KEY `prdcode_2` (`prdcode`)
-) ENGINE=MyISAM DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_product` */
 
@@ -1466,7 +1466,7 @@ CREATE TABLE `wiz_product_sid` (
   KEY `sid` (`sid`),
   FULLTEXT KEY `prdcode` (`prdcode`),
   FULLTEXT KEY `prdcode_2` (`prdcode`)
-) ENGINE=MyISAM DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_product_sid` */
 
@@ -1478,7 +1478,7 @@ DROP TABLE IF EXISTS `wiz_quicklink`;
 
 CREATE TABLE `wiz_quicklink` (
   `info` text DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_quicklink` */
 
@@ -1495,7 +1495,7 @@ CREATE TABLE `wiz_quickmenu` (
   `url` varchar(255) DEFAULT NULL,
   `menu_use` enum('Y','N') DEFAULT NULL,
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=61 DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM AUTO_INCREMENT=61 DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_quickmenu` */
 
@@ -1514,7 +1514,7 @@ CREATE TABLE `wiz_reserve` (
   `wdate` datetime DEFAULT NULL,
   PRIMARY KEY (`idx`),
   KEY `memid` (`memid`)
-) ENGINE=MyISAM AUTO_INCREMENT=204 DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM AUTO_INCREMENT=204 DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_reserve` */
 
@@ -1529,7 +1529,7 @@ CREATE TABLE `wiz_searchgrp` (
   `type` varchar(10) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=39 DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_searchgrp` */
 
@@ -1578,7 +1578,7 @@ CREATE TABLE `wiz_shopinfo` (
   `ssl_port` varchar(10) DEFAULT NULL,
   `up_date` date DEFAULT NULL COMMENT '최종업데이트날짜',
   `naver_key` varchar(100) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_shopinfo` */
 
@@ -1595,7 +1595,7 @@ CREATE TABLE `wiz_tabledesc` (
   `field` varchar(100) DEFAULT NULL,
   `fdesc` text DEFAULT NULL,
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=943 DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM AUTO_INCREMENT=943 DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_tabledesc` */
 
@@ -1635,7 +1635,7 @@ CREATE TABLE `wiz_tax` (
   `cash_name` varchar(100) NOT NULL DEFAULT '',
   `wdate` datetime DEFAULT NULL,
   PRIMARY KEY (`orderid`)
-) ENGINE=MyISAM DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_tax` */
 
@@ -1666,7 +1666,7 @@ CREATE TABLE `wiz_tradecom` (
   `charge_tel` varchar(14) DEFAULT NULL,
   `descript` mediumtext DEFAULT NULL,
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_tradecom` */
 
@@ -1698,7 +1698,7 @@ CREATE TABLE `wiz_wishlist` (
   `wdate` date DEFAULT NULL,
   PRIMARY KEY (`idx`),
   KEY `memid` (`memid`)
-) ENGINE=MyISAM AUTO_INCREMENT=154 DEFAULT CHARSET=euckr;
+) ENGINE=MyISAM AUTO_INCREMENT=154 DEFAULT CHARSET=utf8;
 
 /*Data for the table `wiz_wishlist` */
 
