@@ -278,11 +278,11 @@ function setPeriod(sdate,edate){
 		?>
     <table width="100%" border="0" cellpadding="0" cellspacing="0">
       <tr>
-        <td>총 MD회원수 : <b><?=$all_total?></b> , 검색 MD회원수 : <b><?=$total?></b></td>
+        <td>하부 MD회원수 : <b><?=$all_total?></b> , 검색 MD회원수 : <b><?=$total?></b></td>
         <td align="right">
 	      	<font color="6DCFF6">■</font> 승인
 	      	<font color="ED1C24">■</font> 미승인 &nbsp;
-            <a onClick="document.location='md_info.php?mode=insert';" class="AW-btn">MD회원등록</a>
+            <!-- <a onClick="document.location='md_info.php?mode=insert';" class="AW-btn">MD회원등록</a> -->
         </td>
       </tr>
       <tr><td colspan="2" height="5"></td></tr>

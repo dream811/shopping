@@ -1,6 +1,6 @@
 <? include "../../inc/common.inc"; ?>
 <? include "../../inc/util.inc"; ?>
-<? include "../../inc/admin_check.inc"; ?>
+<? include "../../inc/md_check.inc"; ?>
 <?
 if($mode == 'delmycoupon'){
 

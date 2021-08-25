@@ -1,13 +1,13 @@
 <? include "../../inc/common.inc"; ?>
-<? include "../../inc/md_check.inc"; ?>
+<? include "../../inc/admin_check.inc"; ?>
 
 <?
 if($mode == "insert"){
 
-  $sql = "insert into wiz_scraplevel(idx,level,icon,name,distype,discount,exp) values('','$level','$icon','$name','$distype','$discount','$exp')";
+  $sql = "insert into wiz_mdlevel(idx,level,icon,name,distype,discount,exp) values('','$level','$icon','$name','$distype','$discount','$exp')";
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 
-	complete("등록되었습니다.","md_scrap_level.php");
+	complete("등록되었습니다.","md_level.php");
 	
 }else if($mode == "update"){
 	
@@ -15,7 +15,7 @@ if($mode == "insert"){
       $tmp_permi .= $permi[$ii]."/";
    }
    
-	$sql = "update wiz_scraplevel set level='$level', icon='$icon', name='$name', distype='$distype', discount='$discount', exp='$exp' where idx = '$idx'";
+	$sql = "update wiz_mdlevel set level='$level', icon='$icon', name='$name', distype='$distype', discount='$discount', exp='$exp' where idx = '$idx'";
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 	
 	complete("수정되었습니다","level_input.php?mode=update&idx=$idx");
@@ -45,7 +45,7 @@ if($mode == "insert"){
 	// $sql = "update wiz_bbsinfo set cpermi = '$chg_level' where cpermi = '$idx'";
 	// $result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 	
-	$sql = "delete from wiz_scraplevel where idx = '$idx'";
+	$sql = "delete from wiz_mdlevel where idx = '$idx'";
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 	
 	complete("삭제되었습니다.","md_level.php");

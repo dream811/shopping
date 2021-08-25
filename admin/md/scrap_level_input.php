@@ -1,6 +1,6 @@
 <? include "../../inc/common.inc"; ?>
 <? include "../../inc/shop_info.inc"; ?>
-<? include "../../inc/md_check.inc"; ?>
+<? include "../../inc/admin_check.inc"; ?>
 <? include "../header.php"; ?>
 
 <?

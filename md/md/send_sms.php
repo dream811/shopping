@@ -1,7 +1,7 @@
 <? include "../../inc/common.inc"; ?>
 <? include "../../inc/util.inc"; ?>
 <? include "../../inc/shop_info.inc"; ?>
-<? include "../../inc/admin_check.inc"; ?>
+<? include "../../inc/md_check.inc"; ?>
 <html>
 <head>
 <title>:: SMS발송 ::</title>

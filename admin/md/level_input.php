@@ -1,6 +1,6 @@
 <? include "../../inc/common.inc"; ?>
 <? include "../../inc/shop_info.inc"; ?>
-<? include "../../inc/md_check.inc"; ?>
+<? include "../../inc/admin_check.inc"; ?>
 <? include "../header.php"; ?>
 
 <?
@@ -8,13 +8,12 @@
 if(isset($wiz_admin['level_value']) && $wiz_admin['level_value'] != 0) error("권한이 없습니다.");
 
 if($mode == "update"){
-	$sql = "select * from wiz_scraplevel where idx = '$idx'";
+	$sql = "select * from wiz_mdlevel where idx = '$idx'";
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 	$row = mysqli_fetch_object($result);
 }
 if($mode == "") $mode = "insert";
-if($row->buyFeeAmt == "") $row->buyFeeAmt = "0";
-if($row->delFeeType == "") $row->delFeeType = "0";
+if($row->discount == "") $row->discount = "0";
 ?>
 <script language="JavaScript" src="/js/util_lib.js"></script>
 <script language="javascript">
@@ -36,12 +35,12 @@ function inputCheck(frm){
 		      <td><img src="../image/ic_tit.gif"></td>
 		      <td valign="bottom" class="tit">등급관리</td>
 		      <td width="2"></td>
-		      <td valign="bottom" class="tit_alt">스크레핑회원등급을 설정합니다.</td>
+		      <td valign="bottom" class="tit_alt">회원등급을 설정합니다.</td>
 		    </tr>
 		  </table>
 		  
 	  	<br>	
-      <form name="frm" action="scrap_level_save.php" onSubmit="return inputCheck(this);">
+      <form name="frm" action="level_save.php" onSubmit="return inputCheck(this);">
       <input type="hidden" name="tmp">
       <input type="hidden" name="mode" value="<?=$mode?>">
       <input type="hidden" name="idx" value="<?=$idx?>"> 
@@ -82,26 +81,15 @@ function inputCheck(frm){
                 </td>
               </tr>
               <tr> 
-                <td class="t_name">구매할인타입</td>
+                <td class="t_name">할인타입</td>
                 <td class="t_value">
-                  <input type="radio" name="buyFeeType" value="W" <? if($row->buyFeeType == 0 || $row->buyFeeType == "" || $row->buyFeeType == "W") echo "checked"; ?>>원 (구매시 x원 할인 혜택을 드립니다.)<br>
-                  <input type="radio" name="buyFeeType" value="P" <? if($row->buyFeeType == "P") echo "checked"; ?>> 퍼센트 (구매액의 x%할인혜택을드립니다.)
+                  <input type="radio" name="distype" value="W" <? if($row->distype == "" || $row->distype == "W") echo "checked"; ?>>원 (구매시 x원 할인 혜택을 드립니다.)<br>
+                  <input type="radio" name="distype" value="P" <? if($row->distype == "P") echo "checked"; ?>> 퍼센트 (구매액의 x%할인혜택을드립니다.)
                 </td>
               </tr>
               <tr> 
-                <td class="t_name">구매할인액</td>
-                <td class="t_value"><input type="text" name="buyFeeAmt" value="<?=$row->buyFeeAmt?>" class="input"> 원 또는 %</td>
-              </tr>
-              <tr> 
-                <td class="t_name">배송할인타입</td>
-                <td class="t_value">
-                  <input type="radio" name="delFeeType" value="W" <? if($row->delFeeType == 0 || $row->delFeeType == "" || $row->delFeeType == "W") echo "checked"; ?>>원 (구매시 x원 할인 혜택을 드립니다.)<br>
-                  <input type="radio" name="delFeeType" value="P" <? if($row->delFeeType == "P") echo "checked"; ?>> 퍼센트 (구매액의 x%할인혜택을드립니다.)
-                </td>
-              </tr>
-              <tr> 
-                <td class="t_name">배송할인액</td>
-                <td class="t_value"><input type="text" name="delFeeAmt" value="<?=$row->delFeeAmt?>" class="input"> 원 또는 %</td>
+                <td class="t_name">할인액</td>
+                <td class="t_value"><input type="text" name="discount" value="<?=$row->discount?>" class="input"> 원 또는 %</td>
               </tr>
               <!--tr> 
                 <td class="t_name">접근권한</td>
@@ -133,7 +121,7 @@ function inputCheck(frm){
       
       <div class="AW-btn-wrap">
         <button type="submit" class="on">확인</button>
-        <a onClick="document.location='md_scrap_level.php';">목록</a>
+        <a onClick="document.location='md_level.php';">목록</a>
     </div><!-- .AW-btn-wrap -->
       </form>
 

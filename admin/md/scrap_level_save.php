@@ -1,5 +1,5 @@
 <? include "../../inc/common.inc"; ?>
-<? include "../../inc/md_check.inc"; ?>
+<? include "../../inc/admin_check.inc"; ?>
 
 <?
 if($mode == "insert"){
