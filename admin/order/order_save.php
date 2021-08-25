@@ -1,5 +1,5 @@
 <?
-echo "gas";
+
 include "../../inc/common.inc";
 include "../../inc/util.inc";
 include "../../inc/oper_info.inc";
@@ -7,6 +7,11 @@ include "../../inc/admin_check.inc";
 
 // 페이지 파라메터 (검색조건이 변하지 않도록)
 //--------------------------------------------------------------------------------------------------
+if(!isset($reason)) $reason = "";
+if(!isset($tax_type)) $tax_type = "";
+if(!isset($deliver_num)) $deliver_num = "";
+if(!isset($deliver_date)) $deliver_date = "";
+if(!isset($oper_time)) $oper_time = "";
 $param = "s_status=$s_status&prev_year=$prev_year&prev_month=$prev_month&prev_day=$prev_day&next_year=$next_year&next_month=$next_month&next_day=$next_day";
 $param .= "&searchopt=$searchopt&searchkey=$searchkey";
 if($reason != "") $param .= "&reason=$reason";
@@ -27,7 +32,7 @@ function changeStatus($orderid, $status, $delsno="", $deldate=""){
 	}
 
 	$sql = "select * from wiz_order where orderid = '$orderid'";
-	$result = mysqli_query($connect, $sql,$connect) or error(mysql_error());
+	$result = mysqli_query($connect, $sql) or error(mysqli_error($connect));
 	$order_info = mysqli_fetch_object($result);
 
 	$re_info['name'] = $order_info->send_name;
@@ -44,7 +49,7 @@ function changeStatus($orderid, $status, $delsno="", $deldate=""){
 			$sql = "select wb.prdcode, wp.comcnt
 							from wiz_basket as wb INNER JOIN wiz_product as wp on wb.prdcode = wp.prdcode
 							where wb.orderid = '$order_info->orderid'";
-			$result = mysqli_query($connect, $sql,$connect) or error(mysql_error());
+			$result = mysqli_query($connect, $sql) or error(mysqli_error($connect));
 
 			while($row = mysqli_fetch_object($result)){
 
@@ -63,7 +68,7 @@ function changeStatus($orderid, $status, $delsno="", $deldate=""){
 			$sql = "select wb.prdcode, wp.cancelcnt
 							from wiz_basket as wb INNER JOIN wiz_product as wp on wb.prdcode = wp.prdcode
 							where wb.orderid = '$order_info->orderid'";
-			$result = mysqli_query($connect, $sql,$connect) or error(mysql_error());
+			$result = mysqli_query($connect, $sql) or error(mysqli_error($connect));
 
 			while($row = mysqli_fetch_object($result)){
 
@@ -89,14 +94,14 @@ function changeStatus($orderid, $status, $delsno="", $deldate=""){
 				if($order_info->reserve_use > 0){
 
 				$sql = "select idx from wiz_reserve where memid = '$order_info->send_id' and orderid = '$orderid' and reserve < 0";
-				$result = mysqli_query($connect, $sql,$connect) or error(mysql_error());
+				$result = mysqli_query($connect, $sql) or error(mysqli_error($connect));
 				$total = mysqli_num_rows($result);
 
 					// 이미 적립금이 적용榮쩝?체크
 					if($total <= 0){
 					    $reserve_msg = "상품구입시 사용";
 					    $sql = "insert into wiz_reserve(idx,memid,reservemsg,reserve,orderid,wdate) values('', '$order_info->send_id', '$reserve_msg', -$order_info->reserve_use, '$orderid', now())";
-					    mysqli_query($connect, $sql,$connect) or error(mysql_error());
+					    mysqli_query($connect, $sql) or error(mysqli_error($connect));
 					}
 
 				}
@@ -113,16 +118,15 @@ function changeStatus($orderid, $status, $delsno="", $deldate=""){
 
 			//적립금적용
 			if($order_info->reserve_price > 0){
-
 				$sql = "select idx from wiz_reserve where memid = '$order_info->send_id' and orderid = '$orderid' and reserve > 0";
-				$result = mysqli_query($connect, $sql,$connect) or error(mysql_error());
+				$result = mysqli_query($connect, $sql) or error(mysqli_error($connect));
 				$total = mysqli_num_rows($result);
 
 				// 이미 적립금이 적용榮쩝?체크
 				if($total <= 0){
 				    $reserve_msg = "상품구입시 적립됨";
 				    $sql = "insert into wiz_reserve(idx,memid,reservemsg,reserve,orderid,wdate) values('', '$order_info->send_id', '$reserve_msg', $order_info->reserve_price, '$orderid', now())";
-				    mysqli_query($connect, $sql,$connect) or error(mysql_error());
+				    mysqli_query($connect, $sql) or error(mysqli_error($connect));
 				}
 
 			}
@@ -131,7 +135,7 @@ function changeStatus($orderid, $status, $delsno="", $deldate=""){
 			$sql = "select wb.prdcode, wp.comcnt
 							from wiz_basket as wb INNER JOIN wiz_product as wp on wb.prdcode = wp.prdcode
 							where wb.orderid = '$order_info->orderid'";
-			$result = mysqli_query($connect, $sql,$connect) or error(mysql_error());
+			$result = mysqli_query($connect, $sql) or error(mysqli_error($connect));
 
 			while($row = mysqli_fetch_object($result)){
 
@@ -148,7 +152,7 @@ function changeStatus($orderid, $status, $delsno="", $deldate=""){
 
 			//적립금적용(해당주문에 대한 적립내역 삭제)
 			$sql = "delete from wiz_reserve where memid='$order_info->send_id' and orderid='$order_info->orderid'";
-			mysqli_query($connect, $sql,$connect) or error(mysql_error());
+			mysqli_query($connect, $sql) or error(mysqli_error($connect));
 
 			// 주문취소 시 주문접수일 경우를 제외하고 재고 증가 -> 주문접수인 경우에도 재고 증가
 			//if(strcmp($order_info->status, "OR")) {
@@ -156,13 +160,13 @@ function changeStatus($orderid, $status, $delsno="", $deldate=""){
 				$sql = "select wb.prdcode, wb.amount, wb.optcode, wb.status, wp.optcode as p_optcode, wp.optcode2 as p_optcode2, wp.optvalue as p_optvalue, wp.opt_use, wp.shortage
 								from wiz_basket as wb INNER JOIN wiz_product as wp on wb.prdcode = wp.prdcode
 								where orderid = '$order_info->orderid'";
-				$result = mysqli_query($connect, $sql,$connect) or error(mysql_error());
+				$result = mysqli_query($connect, $sql) or error(mysqli_error($connect));
 				while($row = mysqli_fetch_object($result)){
 					// 옵션별 재고관리 없는 제품이라면 전체재고 증가
 					if(strcmp($row->opt_use, "Y")){
 
 						$sql = "update wiz_product set cancelcnt = cancelcnt + 1, stock = stock + $row->amount where prdcode = '$row->prdcode'";
-						mysqli_query($connect, $sql,$connect) or error(mysql_error());
+						mysqli_query($connect, $sql) or error(mysqli_error($connect));
 
 					// 옵션별 재고관리 상품
 					}else{
@@ -219,7 +223,7 @@ function changeStatus($orderid, $status, $delsno="", $deldate=""){
 
 						$sql = "update wiz_product set cancelcnt = cancelcnt + 1  $optvalue_sql where prdcode = '$row->prdcode'";
 
-						mysqli_query($connect, $sql,$connect) or error(mysql_error());
+						mysqli_query($connect, $sql) or error(mysqli_error($connect));
 
 					}
 
@@ -246,9 +250,9 @@ function changeStatus($orderid, $status, $delsno="", $deldate=""){
 			send_mailsms("order_deliver", $re_info, $ordmail);
 
 		}
-
+		if(!isset($oper_time)) $oper_time = "";
 		$sql = "update wiz_order set status = '$status' $oper_time where orderid = '$orderid'";
-		mysqli_query($connect, $sql,$connect);
+		mysqli_query($connect, $sql);
 
 		$sql = "update wiz_basket set ord_status = '$status' where orderid = '$orderid'";
 		mysqli_query($connect, $sql) or die(mysqli_error($connect));
@@ -282,13 +286,23 @@ if($mode == "chgstatus"){
 		changeStatus($orderid, $chg_status, $deliver_num, $deliver_date);
 		$chg_status_sql = " status = '$chg_status', ";
 	}
+	$chg_status_sql = isset($chg_status_sql) ? $chg_status_sql : "";
+	$message  		= isset($message) ? $message : "";
+	$id_info  		= isset($id_info) ? $id_info : "";
+	$bill_yn  		= isset($bill_yn) ? $bill_yn : "";
+	$authno  		= isset($authno) ? $authno : "";
+	$tax_pub  		= isset($tax_pub) ? $tax_pub : "";
+	$tax_pub  		= isset($tax_pub) ? $tax_pub : "";
+	$cash_type  	= isset($cash_type) ? $cash_type : "";
+	$cash_type2  	= isset($cash_type2) ? $cash_type2 : "";
+	$tax_pub_sql  	= isset($tax_pub_sql) ? $tax_pub_sql : "";
 
 	$sql = "update wiz_order set $chg_status_sql send_name = '$send_name', send_tphone = '$send_tphone', send_hphone = '$send_hphone', send_email = '$send_email',
                         send_post = '$send_post', send_address = '$send_address', rece_name =' $rece_name', rece_tphone = '$rece_tphone',
                         rece_hphone = '$rece_hphone', rece_post = '$rece_post', rece_address = '$rece_address', demand = '$demand', message = '$message', cancelmsg='$cancelmsg', descript = '$descript',
                         deliver_num = '$deliver_num', deliver_date = '$deliver_date', tax_type = '$tax_type', id_info='$id_info', bill_yn='$bill_yn', authno='$authno' where orderid = '$orderid'";
 
-  $result = mysqli_query($connect, $sql,$connect) or error(mysql_error());
+  $result = mysqli_query($connect, $sql) or error(mysqli_error($connect));
 
   $sql = "select orderid from wiz_tax where orderid = '$orderid'";
   $result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
@@ -314,19 +328,19 @@ if($mode == "chgstatus"){
 
 		include_once "../../inc/shop_info.inc";
 
-		$shop_name 		= $shop_info->com_name;
-		$shop_owner 	= $shop_info->com_owner;
-		$shop_num			= $shop_info->com_num;
-		$shop_address	= $shop_info->com_address;
-		$shop_kind 		= $shop_info->com_kind;
-		$shop_class		= $shop_info->com_class;
-		$shop_tel			= $shop_info->com_tel;
-		$shop_email		= $shop_info->shop_email;
+		$shop_name 		= isset($shop_info->com_name) ? $shop_info->com_name : "";
+		$shop_owner 	= isset($shop_info->com_owner) ? $shop_info->com_owner: "";
+		$shop_num		= isset($shop_info->com_num) ? $shop_info->com_num: "";
+		$shop_address	= isset($shop_info->com_address) ? $shop_info->com_address: "";
+		$shop_kind 		= isset($shop_info->com_kind) ? $shop_info->com_kind: "";
+		$shop_class		= isset($shop_info->com_class) ? $shop_info->com_class: "";
+		$shop_tel		= isset($shop_info->com_tel) ? $shop_info->com_tel: "";
+		$shop_email		= isset($shop_info->shop_email) ? $shop_info->shop_email: "";
 
 		$supp_price = intval($total_price/1.1);
 		$tax_price = $total_price - $supp_price;
 
-		$sql = "INSERT INTO wiz_tax(orderid,com_num,com_name,com_owner,com_address,com_kind,com_class,com_tel,com_email,shop_num,shop_name,shop_owner,shop_address,shop_kind,shop_class,shop_tel,shop_email,prd_info,supp_price,tax_price,tax_pub,tax_date,tax_type,cash_type,cash_type2,cash_info,cash_name)
+		echo $sql = "INSERT INTO wiz_tax(orderid,com_num,com_name,com_owner,com_address,com_kind,com_class,com_tel,com_email,shop_num,shop_name,shop_owner,shop_address,shop_kind,shop_class,shop_tel,shop_email,prd_info,supp_price,tax_price,tax_pub,tax_date,tax_type,cash_type,cash_type2,cash_info,cash_name)
 						VALUES ('".$orderid."','".$com_num."','".$com_name."','".$com_owner."','".$com_address."','".$com_kind."','".$com_class."','".$com_tel."','".$com_email."','".$shop_num."','".$shop_name."','".$shop_owner."','".$shop_address."','".$shop_kind."','".$shop_class."','".$shop_tel."','".$shop_email."','".$prd_info."','".$supp_price."','".$tax_price."','".$tax_pub."',now(),'".$tax_type."','".$cash_type."','".$cash_type2."','".$cash_info."','".$cash_name."')";
 
 	}
@@ -344,10 +358,10 @@ if($mode == "chgstatus"){
 	while($array_selorder[$i]){
 		$orderid = $array_selorder[$i];
 		$sql = "delete from wiz_order where orderid = '$orderid'";
-		$result = mysqli_query($connect, $sql,$connect) or error(mysql_error());
+		$result = mysqli_query($connect, $sql) or error(mysqli_error($connect));
 
 		$sql = "delete from wiz_basket where orderid = '$orderid'";
-		$result = mysqli_query($connect, $sql,$connect) or error(mysql_error());
+		$result = mysqli_query($connect, $sql) or error(mysqli_error($connect));
 
 		$sql = "delete from wiz_tax where orderid = '$orderid'";
 		mysqli_query($connect, $sql) or die(mysqli_error($connect));
@@ -385,7 +399,7 @@ if($mode == "chgstatus"){
 						INNER JOIN wiz_member AS wm ON wo.send_id = wm.id
 						INNER JOIN wiz_product AS wp ON wb.prdcode = wp.prdcode
 						where wb.idx = '$idx'";
-		$result = mysqli_query($connect, $sql,$connect) or error(mysql_error());
+		$result = mysqli_query($connect, $sql) or error(mysqli_error($connect));
 		$row = mysqli_fetch_array($result);
 
 		$reserve_price = $row['reserve_price'] - ($row['prdreserve'] * $row['amount']);
@@ -399,13 +413,13 @@ if($mode == "chgstatus"){
 		$sql = "update wiz_order set reserve_price = '$reserve_price', deliver_price = '$deliver_price',
 						discount_price = '$discount_price', prd_price = '$prd_price', total_price = '$total_price'
 						where orderid = '".$row['orderid']."'";
-		mysqli_query($connect, $sql,$connect) or error(mysql_error());
+		mysqli_query($connect, $sql) or error(mysqli_error($connect));
 
 		// basket 업데이트
 		$sql = "update wiz_basket set status = 'CC', admin = '".$wiz_admin['id']."', bank = '$bank', account = '$account',
 						acc_name = '$acc_name', reason = '$reason', memo = '$memo', repay = '$repay', ca_date = now(), cc_date = now()
 						where idx = '$idx'";
-		mysqli_query($connect, $sql,$connect) or error(mysql_error());
+		mysqli_query($connect, $sql) or error(mysqli_error($connect));
 
    	complete("상품이 취소되었습니다.","order_info.php?orderid=".$row['orderid']."&page=$page&$param");
 
@@ -415,7 +429,7 @@ if($mode == "chgstatus"){
 		$sql = "update wiz_basket set status = 'CA', admin = '".$wiz_admin['id']."', bank = '$bank', account = '$account',
 						acc_name = '$acc_name', reason = '$reason', memo = '$memo', repay = '$repay', ca_date = now()
 						where idx = '$idx'";
-		mysqli_query($connect, $sql,$connect) or error(mysql_error());
+		mysqli_query($connect, $sql) or error(mysqli_error($connect));
 
    	complete("상품이 취소요청이 되었습니다. 상품취소목록에서 확인하실 수 있습니다.","order_info.php?orderid=$orderid&page=$page&$param");
 
@@ -431,7 +445,7 @@ if($mode == "chgstatus"){
 							INNER JOIN wiz_member AS wm ON wo.send_id = wm.id
 							INNER JOIN wiz_product AS wp ON wb.prdcode = wp.prdcode
 							where wb.idx = '$idx'";
-			$result = mysqli_query($connect, $sql,$connect) or error(mysql_error());
+			$result = mysqli_query($connect, $sql) or error(mysqli_error($connect));
 			$row = mysqli_fetch_array($result);
 
 		if(!strcmp($row['status'], "CC")) {
@@ -449,7 +463,7 @@ if($mode == "chgstatus"){
 			$sql = "update wiz_order set reserve_price = '$reserve_price', deliver_price = '$deliver_price',
 							discount_price = '$discount_price', prd_price = '$prd_price', total_price = '$total_price'
 							where orderid = '".$row['orderid']."'";
-			mysqli_query($connect, $sql,$connect) or error(mysql_error());
+			mysqli_query($connect, $sql) or error(mysqli_error($connect));
 
 			// 상품 재고
 			// 주문접수일 경우를 제외하고 재고증가
@@ -459,10 +473,10 @@ if($mode == "chgstatus"){
 
 					if(!strcmp($row['shortage'], "S")) {
 						$sql = "update wiz_product set cancelcnt = cancelcnt + 1, stock = stock + ".$row['amount']." where prdcode = '".$row['prdcode']."'";
-						$result = mysqli_query($connect, $sql) or die(mysql_error());
+						$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 					} else {
 						$sql = "update wiz_product set cancelcnt = cancelcnt + 1 where prdcode = '".$row['prdcode']."'";
-						$result = mysqli_query($connect, $sql) or die(mysql_error());
+						$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 					}
 
 				// 옵션별 재고관리 상품
@@ -474,7 +488,7 @@ if($mode == "chgstatus"){
 					$opt2_arr = explode("^", $row['p_optcode2']);
 					$opt_tmp = explode("^^", $row['p_optvalue']);
 
-					list($optcode1, $optcode2) = explode("/", $row[optcode]);
+					list($optcode1, $optcode2) = explode("/", $row['optcode']);
 
 					$opt1_cnt = count($opt1_arr) - 1;
 					$opt2_cnt = count($opt2_arr) - 1;
@@ -501,17 +515,17 @@ if($mode == "chgstatus"){
 					}
 
 					$sql = "update wiz_product set cancelcnt = cancelcnt + 1, optvalue = '$opt_list_app' where prdcode = '".$row['prdcode']."'";
-					mysqli_query($connect, $sql,$connect) or error(mysql_error());
+					mysqli_query($connect, $sql) or error(mysqli_error($connect));
 
 				}
 			}
 		}
 
 		// 적립금으로 환불 시 적립금 적립
-		if(!strcmp($row[repay], "R")) {
+		if(!strcmp($row['repay'], "R")) {
 			$sql = "insert into wiz_reserve(idx,memid,reservemsg,reserve,orderid,wdate)
 							values('', '".$row['send_id']."', '상품환불 적립금','".($row['prdprice'] * $row['amount'])."','".$row['orderid']."',now())";
-			mysqli_query($connect, $sql,$connect) or error(mysql_error());
+			mysqli_query($connect, $sql) or error(mysqli_error($connect));
 		}
 
 		$cc_date_sql = ", cc_date = now() ";
@@ -519,7 +533,7 @@ if($mode == "chgstatus"){
 	}
 
 	$sql = "update wiz_basket set status = '$chg_status' $cc_date_sql where idx = '$idx'";
-	mysqli_query($connect, $sql,$connect) or error(mysql_error());
+	mysqli_query($connect, $sql) or error(mysqli_error($connect));
 
 	// 세금계산서 금액 수정
 	$supp_price = intval($total_price/1.1);
@@ -528,13 +542,13 @@ if($mode == "chgstatus"){
 	$prd_info = "";
 
 	$b_sql = "select prdname, prdprice, amount from wiz_basket where orderid = '".$row['orderid']."' and status != 'CC' order by idx asc";
-	$b_result = mysqli_query($connect, $b_sql,$connect) or error(mysql_error());
+	$b_result = mysqli_query($connect, $b_sql,$connect) or error(mysqli_error($connect));
 	while($b_row = mysqli_fetch_array($b_result)) {
 		$prd_info .= $b_row['prdname']."^".$b_row['prdprice']."^".$b_row['amount']."^^";
 	}
 
 	$sql = "update wiz_tax set supp_price='$supp_price', tax_price='$tax_price', prd_info='$prd_info' where orderid = '".$row['orderid']."'";
-	mysqli_query($connect, $sql,$connect) or error(mysql_error());
+	mysqli_query($connect, $sql) or error(mysqli_error($connect));
 
 
  	complete("적용되었습니다.","cancel_list.php?page=$page&$param");
@@ -547,7 +561,7 @@ if($mode == "chgstatus"){
 		$idx = $idx_list[$ii];
 
 		$sql = "delete from wiz_basket where idx = '$idx'";
-		mysqli_query($connect, $sql,$connect) or error(mysql_error());
+		mysqli_query($connect, $sql) or error(mysqli_error($connect));
 	}
 
   complete("삭제되었습니다.","cancel_list.php?page=$page&$param");
@@ -565,16 +579,16 @@ if($mode == "chgstatus"){
 						INNER JOIN wiz_member AS wm ON wo.send_id = wm.id
 						INNER JOIN wiz_product AS wp ON wb.prdcode = wp.prdcode
 						where wb.idx = '$idx'";
-		$result = mysqli_query($connect, $sql,$connect) or error(mysql_error());
+		$result = mysqli_query($connect, $sql) or error(mysqli_error($connect));
 		$row = mysqli_fetch_array($result);
 
 		if(!strcmp($row['status'], "CC")) {
 		} else {
 			if(!strcmp($chg_status, "CC")) {
-				$reserve_price = $row[reserve_price] - ($row[prdreserve] * $row[amount]);
-				$prd_price 		 = $row[prd_price] - ($row[prdprice] * $row[amount]);
+				$reserve_price = $row['reserve_price'] - ($row['prdreserve'] * $row['amount']);
+				$prd_price 		 = $row['prd_price'] - ($row['prdprice'] * $row['amount']);
 
-				$discount_price = level_discount($row[level],$prd_price);			// 회원할인 [$discount_msg 메세지 생성]
+				$discount_price = level_discount($row['level'],$prd_price);			// 회원할인 [$discount_msg 메세지 생성]
 				$deliver_price = deliver_price($prd_price, $oper_info);				// 배송비
 				$total_price = $prd_price + $deliver_price - $discount_price; // 전체결제금액
 
@@ -582,25 +596,25 @@ if($mode == "chgstatus"){
 				$sql = "update wiz_order set reserve_price = '$reserve_price', deliver_price = '$deliver_price',
 								discount_price = '$discount_price', prd_price = '$prd_price', total_price = '$total_price'
 								where orderid = '".$row['orderid']."'";
-				mysqli_query($connect, $sql,$connect) or error(mysql_error());
+				mysqli_query($connect, $sql) or error(mysqli_error($connect));
 
 				// 상품 재고
 				// 옵션별 재고관리 없는 제품이라면 전체재고 증가
-				if($row[optcode] == ""){
+				if($row['optcode'] == ""){
 
 					$sql = "update wiz_product set cancelcnt = cancelcnt + 1 , comcnt = comcnt - 1, stock = stock + ".$row['amount']." where prdcode = '".$row['prdcode']."'";
-					mysqli_query($connect, $sql,$connect) or error(mysql_error());
+					mysqli_query($connect, $sql) or error(mysqli_error($connect));
 
 				// 옵션별 재고관리 상품
 				}else{
 
 					$opt_list_app = "";
 
-					$opt1_arr = explode("^", $row[p_optcode]);
-					$opt2_arr = explode("^", $row[p_optcode2]);
-					$opt_tmp = explode("^^", $row[p_optvalue]);
+					$opt1_arr = explode("^", $row['p_optcode']);
+					$opt2_arr = explode("^", $row['p_optcode2']);
+					$opt_tmp = explode("^^", $row['p_optvalue']);
 
-					list($optcode1, $optcode2) = explode("/", $row[optcode]);
+					list($optcode1, $optcode2) = explode("/", $row['optcode']);
 
 					$opt1_cnt = count($opt1_arr) - 1;
 					$opt2_cnt = count($opt2_arr) - 1;
@@ -613,20 +627,20 @@ if($mode == "chgstatus"){
 						for($jj = 0; $jj < $opt2_cnt; $jj++) {
 							list($price, $reserve, $stock) = explode("^", $opt_tmp[$no]);
 
-							if(!empty($tmp_optvalue[$row[prdcode]][$no])) $stock = $tmp_optvalue[$row[prdcode]][$no];
+							if(!empty($tmp_optvalue[$row['prdcode']][$no])) $stock = $tmp_optvalue[$row['prdcode']][$no];
 
 							if(!strcmp($optcode1, $opt1_arr[$ii]) && !strcmp($optcode2, $opt2_arr[$jj])) {
-								$stock = $stock + $row[amount];
+								$stock = $stock + $row['amount'];
 							}
 
 							$opt_list_app .= $price."^".$reserve."^".$stock."^^";
 
-							$tmp_optvalue[$row[prdcode]][$no] = $stock;
+							$tmp_optvalue[$row['prdcode']][$no] = $stock;
 							$no++;
 						}
 					}
 					$sql = "update wiz_product set cancelcnt = cancelcnt + 1 , comcnt = comcnt - 1, optvalue = '$opt_list_app' where prdcode = '$row[prdcode]'";
-					mysqli_query($connect, $sql,$connect) or error(mysql_error());
+					mysqli_query($connect, $sql) or error(mysqli_error($connect));
 
 				}
 
@@ -634,13 +648,13 @@ if($mode == "chgstatus"){
 			}
 
 			// 적립금으로 환불 시 적립금 적립
-			if(!strcmp($row[repay], "R")) {
+			if(!strcmp($row['repay'], "R")) {
 				$sql = "insert into wiz_reserve(idx,memid,reservemsg,reserve,orderid,wdate)
 								values('', '$row[send_id]', '상품환불 적립금','".($row['prdprice'] * $row['amount'])."','".$row['orderid']."',now())";
-				mysqli_query($connect, $sql,$connect) or error(mysql_error());
+				mysqli_query($connect, $sql) or error(mysqli_error($connect));
 			}
 			$sql = "update wiz_basket set status = '$chg_status' $cc_date_sql where idx = '$idx'";
-			mysqli_query($connect, $sql,$connect) or error(mysql_error());
+			mysqli_query($connect, $sql) or error(mysqli_error($connect));
 
 			// 세금계산서 금액 수정
 			$supp_price = intval($total_price/1.1);
@@ -649,16 +663,16 @@ if($mode == "chgstatus"){
 			$prd_info = "";
 
 			$b_sql = "select prdname, prdprice, amount from wiz_basket where orderid = '".$row['orderid']."' and status != 'CC' order by idx asc";
-			$b_result = mysqli_query($connect, $b_sql) or error(mysql_error());
+			$b_result = mysqli_query($connect, $b_sql) or error(mysqli_error($connect));
 			while($b_row = mysqli_fetch_array($b_result)) {
-				$prd_info .= $b_row[prdname]."^".$b_row[prdprice]."^".$b_row['amount']."^^";
+				$prd_info .= $b_row['prdname']."^".$b_row['prdprice']."^".$b_row['amount']."^^";
 			}
 
 			$sql = "update wiz_tax set supp_price='$supp_price', tax_price='$tax_price', prd_info='$prd_info' where orderid = '".$row['orderid']."'";
-			mysqli_query($connect, $sql,$connect) or error(mysql_error());
+			mysqli_query($connect, $sql) or error(mysqli_error($connect));
 
 			$sql = "update wiz_basket set status = '$chg_status' $cc_date_sql where idx = '$idx'";
-			mysqli_query($connect, $sql,$connect) or error(mysql_error());
+			mysqli_query($connect, $sql) or error(mysqli_error($connect));
 
 		}
 
@@ -684,7 +698,7 @@ if($mode == "chgstatus"){
   if(!strcmp($tax_pub, "Y") && strcmp($tmp_tax_pub, "Y")) $tax_pub_sql = ", wdate = now(), shop_name='$shop_name', shop_owner='$shop_owner', shop_num='$shop_num', shop_address='$shop_address', shop_kind='$shop_kind', shop_class='$shop_class', shop_tel='$shop_tel', shop_email='$shop_email' ";
 
 	$sql = "update wiz_tax set tax_pub = '$tax_pub' $tax_pub_sql where orderid = '$orderid'";
-	mysqli_query($connect, $sql,$connect) or error(mysql_error());
+	mysqli_query($connect, $sql) or error(mysqli_error($connect));
 
  	complete("적용되었습니다.","tax_list.php?page=$page&$param");
 */
@@ -693,15 +707,15 @@ if($mode == "chgstatus"){
 	if($tax_type == 'C'){
 	
 		$tax_sql = "select cash_info,cash_type,prd_info from wiz_tax where orderid = '$orderid' and tax_date != ''";
-		$tax_result = mysqli_query($connect, $tax_sql) or error(mysql_error());
+		$tax_result = mysqli_query($connect, $tax_sql) or error(mysqli_error($connect));
 		$tax_info = mysqli_fetch_object($tax_result);
 
 		$order_sql = "select orderid,total_price,status from wiz_order where orderid = '$orderid'";
-		$order_result = mysqli_query($connect, $order_sql) or error(mysql_error());
+		$order_result = mysqli_query($connect, $order_sql) or error(mysqli_error($connect));
 		$order_info = mysqli_fetch_object($order_result);		
 		
 		$oper_sql = "SELECT pay_test,pay_id,pay_key FROM wiz_operinfo";
-		$oper_result = mysqli_query($connect, $oper_sql) or error(mysql_error());
+		$oper_result = mysqli_query($connect, $oper_sql) or error(mysqli_error($connect));
 		$oper_info = mysqli_fetch_object($oper_result);
 
 		if($order_info->status == 'OC' || $order_info->status == 'RD' || $order_info->status == 'RC' || $order_info->status == 'CD' || $order_info->status == 'CC' || $order_info->status == 'OR'){
@@ -782,7 +796,7 @@ if($mode == "chgstatus"){
 		*/
 		$configPath 				= $_SERVER['DOCUMENT_ROOT']."/admin/order/lgdacom"; 						 		//LG유플러스에서 제공한 환경파일("/conf/lgdacom.conf") 위치 지정.   
 			
-		$xpay = &new XPayClient($configPath, $CST_PLATFORM);
+		$xpay = new XPayClient($configPath, $CST_PLATFORM);
 		$xpay->SetConf($mid, $pay_key);
 		$xpay->SetConf("t".$mid, $pay_key);
 		$xpay->Init_TX($LGD_MID);
@@ -866,7 +880,7 @@ if($mode == "chgstatus"){
 		if(!strcmp($tax_pub, "Y") && strcmp($tmp_tax_pub, "Y")) $tax_pub_sql = ", wdate = now(), shop_name='$shop_name', shop_owner='$shop_owner', shop_num='$shop_num', shop_address='$shop_address', shop_kind='$shop_kind', shop_class='$shop_class', shop_tel='$shop_tel', shop_email='$shop_email' ";
 
 		$sql = "update wiz_tax set tax_pub = '$tax_pub' $tax_pub_sql $wdate_sql where orderid = '$orderid'";
-		mysqli_query($connect, $sql,$connect) or error(mysql_error());
+		mysqli_query($connect, $sql) or error(mysqli_error($connect));
 
 		error($xpay->Response_Msg(),"tax_list.php?page=$page&$param");
 	}
@@ -876,7 +890,7 @@ if($mode == "chgstatus"){
 			$wdate_sql = ",wdate=''";
 		}
 		$sql = "update wiz_tax set tax_pub = '$tax_pub' $tax_pub_sql $wdate_sql where orderid = '$orderid'";
-		mysqli_query($connect, $sql,$connect) or error(mysql_error());		
+		mysqli_query($connect, $sql) or error(mysqli_error($connect));		
 	
 		error("처리되었습니다.","tax_list.php?page=$page&$param");
 	}
@@ -887,10 +901,10 @@ if($mode == "chgstatus"){
 	for($ii = 0; $ii < count($orderid_list); $ii++) {
 		$orderid = $orderid_list[$ii];
 		$sql = "delete from wiz_tax where orderid = '$orderid'";
-		mysqli_query($connect, $sql,$connect) or error(mysql_error());
+		mysqli_query($connect, $sql) or error(mysqli_error($connect));
 
 		$sql = "update wiz_order set tax_type = 'N' where orderid = '$orderid'";
-		mysqli_query($connect, $sql,$connect) or error(mysql_error());
+		mysqli_query($connect, $sql) or error(mysqli_error($connect));
 	}
 
   complete("삭제되었습니다.","tax_list.php?page=$page&$param");
@@ -917,7 +931,7 @@ if($mode == "chgstatus"){
 		$orderid = $orderid_list[$ii];
 
 		$sql = "update wiz_tax set tax_pub = '$tax_pub' $tax_pub_sql where orderid = '$orderid'";
-		mysqli_query($connect, $sql,$connect) or error(mysql_error());
+		mysqli_query($connect, $sql) or error(mysqli_error($connect));
 
 	}
 
@@ -949,7 +963,7 @@ if($mode == "chgstatus"){
 			$ord_prd_price 		 = $row['prd_price'];
 			$ord_level				 = $row['level'];
 
-			if(!empty($row[del_method])) {
+			if(!empty($row['del_method'])) {
 
 				$tmp_oper_info->mallid 				= $row['mallid'];
 
@@ -968,16 +982,16 @@ if($mode == "chgstatus"){
 
 			// 상품 재고
 			// 주문접수일 경우를 제외하고 재고증가
-			if(strcmp($row[ord_status], "OR")) {
+			if(strcmp($row['ord_status'], "OR")) {
 				// 옵션별 재고관리 없는 제품이라면 전체 재고 증가
-				if(strcmp($row[opt_use], "Y")){
+				if(strcmp($row['opt_use'], "Y")){
 
-					if(!strcmp($row[shortage], "S")) {
+					if(!strcmp($row['shortage'], "S")) {
 						$sql = "update wiz_product set cancelcnt = cancelcnt + 1, stock = stock + $row[amount] where prdcode = '$row[prdcode]'";
-						mysqli_query($connect, $sql) or die(mysql_error());
+						mysqli_query($connect, $sql) or die(mysqli_error($connect));
 					} else {
 						$sql = "update wiz_product set cancelcnt = cancelcnt + 1 where prdcode = '$row[prdcode]'";
-						mysqli_query($connect, $sql) or die(mysql_error());
+						mysqli_query($connect, $sql) or die(mysqli_error($connect));
 					}
 
 				// 옵션별 재고관리 상품
@@ -1016,7 +1030,7 @@ if($mode == "chgstatus"){
 					}
 
 					$sql = "update wiz_product set cancelcnt = cancelcnt + 1, optvalue = '$opt_list_app' where prdcode = '$row->prdcode'";
-					mysqli_query($connect, $sql,$connect) or error(mysql_error());
+					mysqli_query($connect, $sql) or error(mysqli_error($connect));
 
 				}
 			}
@@ -1045,7 +1059,7 @@ if($mode == "chgstatus"){
 						discount_price = '$discount_price', prd_price = '$prd_price', total_price = '$total_price'
 						where orderid = '$orderid'";
 
-		mysqli_query($connect, $sql,$connect) or error(mysql_error());
+		mysqli_query($connect, $sql) or error(mysqli_error($connect));
 
 		$status_sql = " , status = 'CC', ca_date = now(), cc_date = now()";
 
@@ -1054,7 +1068,7 @@ if($mode == "chgstatus"){
 	// basket 업데이트
 	$sql = "update wiz_basket set
 					ord_status = '$ord_status', deliver_num='$deliver_num', deliver_date='$deliver_date',
-					admin = '$wiz_admin['id']', bank = '$bank', account = '$account',acc_name = '$acc_name',
+					admin = '".$wiz_admin['id']."', bank = '$bank', account = '$account',acc_name = '$acc_name',
 					reason = '$reason', memo = '$memo', repay = '$repay' $status_sql
 					where orderid = '$orderid' and mallid = '$mallid'";
 	mysqli_query($connect, $sql) or die(mysqli_error($connect));
@@ -1064,7 +1078,7 @@ if($mode == "chgstatus"){
 
 	$no = 0;
 	while($row = mysqli_fetch_array($result)) {
-		$status = $row[ord_status];
+		$status = $row['ord_status'];
 		$no++;
 	}
 
@@ -1075,7 +1089,7 @@ if($mode == "chgstatus"){
 
 		$no = 0;
 		while($row = mysqli_fetch_array($result)) {
-			$status = $row[ord_status];
+			$status = $row['ord_status'];
 			$no++;
 		}
 

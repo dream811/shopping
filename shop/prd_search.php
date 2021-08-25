@@ -118,7 +118,7 @@ $param .= "&prdcom=$prdcom&reserve=$reserve&reserve2=$reserve2&group=$group&orde
 			$rows = 20;							// 상품수
 			$lists = 5;							// 페이징 갯수
 			$page_count = ceil($total/$rows);
-			if(!$page || $page > $page_count) $page = 1;
+			if(!isset($page) || !$page ||  $page > $page_count) $page = 1;
 			$start = ($page-1)*$rows;
 			?>
 			<div class="prd_search clearfix">

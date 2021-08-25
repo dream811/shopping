@@ -158,7 +158,7 @@ function openParameter(){
          $rows = 20;
          $total = mysqli_num_rows($result);
          $page_count = ceil($total/$rows);
-         if(!$page || $page > $page_count) $page = 1;
+         if(!isset($page) || !$page ||  $page > $page_count) $page = 1;
          $start = ($page-1)*$rows;
          $no = $total-$start;
 

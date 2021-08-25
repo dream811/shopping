@@ -5,7 +5,7 @@
 <? include "../../inc/admin_check.inc"; ?>
 <? include "../header.php"; ?>
 <?
-
+if(!isset($dep_code)) $dep_code = "";
 // 페이지 파라메터 (검색조건이 변하지 않도록)
 //--------------------------------------------------------------------------------------------------
 $param = "dep_code=$dep_code&dep2_code=$dep2_code&dep3_code=$dep3_code";
@@ -714,7 +714,7 @@ function setCms(obj) {
                 		$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
                 		while($row = mysqli_fetch_array($result)) {
                 		?>
-                		<option value="<?=$row['id']?>" cms_type="<?=$row[cms_type]?>" cms_rate="<?=$row[cms_rate]?>"  <? if(!strcmp($row['id'], $prd_row->mallid)) echo "selected" ?>><?=$row[com_name]?> (<?=$row['id']?>)</option>
+                		<option value="<?=$row['id']?>" cms_type="<?=$row['cms_type']?>" cms_rate="<?=$row['cms_rate']?>"  <? if(!strcmp($row['id'], $prd_row->mallid)) echo "selected" ?>><?=$row[com_name]?> (<?=$row['id']?>)</option>
                 		<?php
                 		}
                 		?>
@@ -767,7 +767,7 @@ function setCms(obj) {
 											if($file_name != "." && $file_name != ".."){
 												if($no%7 == 0) echo "<tr>";
 									?>
-                  <td><input type="checkbox" name="prdicon[]" value="<?=$file_name?>" <? if($prdicon_list["$file_name"]==true) echo "checked";?>></td>
+                  <td><input type="checkbox" name="prdicon[]" value="<?=$file_name?>" <? if(isset($prdicon_list["$file_name"]) && $prdicon_list["$file_name"]==true) echo "checked";?>></td>
                   <td><img src="/data/prdicon/<?=$file_name?>" border="0"></td>
                   <?
 												$no++;
@@ -778,7 +778,7 @@ function setCms(obj) {
 									?>
                   </table></td>
                   <td style="padding-left:15px;"><a href="javascript:prdIcon()" class="AW-btn-s-black">아이콘관리</a>
-</td>
+                  </td>
                   </tr>
                   </table>
                 </td>

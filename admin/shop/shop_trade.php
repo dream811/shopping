@@ -52,7 +52,7 @@ function delTradecom(idx){
 	      $rows = 12;
 	      $lists = 5;
 	    	$page_count = ceil($total/$rows);
-	    	if($page < 1 || $page > $page_count) $page = 1;
+	    	if(!isset($page) ||$page < 1 || $page > $page_count) $page = 1;
 	    	$start = ($page-1)*$rows;
 	    	$no = $total-$start;
 	    	
@@ -62,12 +62,12 @@ function delTradecom(idx){
 	      while(($row = mysqli_fetch_array($result)) && $rows){
 	      ?>
         <tr align="center" class="t_tr"> 
-          <td height="30" align="center"><?=custom_type($row[com_type])?></td>
-          <td><?=$row[com_name]?></td>
-          <td><?=$row[charge_name]?></td>
-          <td><?=$row[charge_hand]?></td>
-          <td><?=$row[charge_tel]?></td>
-          <td><?=$row[com_fax]?></td>
+          <td height="30" align="center"><?=custom_type($row['com_type'])?></td>
+          <td><?=$row['com_name']?></td>
+          <td><?=$row['charge_name']?></td>
+          <td><?=$row['charge_hand']?></td>
+          <td><?=$row['charge_tel']?></td>
+          <td><?=$row['com_fax']?></td>
           <td>
           	<a onclick="document.location='shop_trade_input.php?sub_mode=update&idx=<?=$row['idx']?>';" class="AW-btn-s modify">수정</a>
             <a onclick="delTradecom('<?=$row['idx']?>');" class="AW-btn-s del">삭제</a>

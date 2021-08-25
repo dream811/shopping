@@ -47,7 +47,7 @@ function orderView(orderid){
 	$rows = 12;
 	$lists = 5;
 	$page_count = ceil($total/$rows);
-	if(!$page || $page > $page_count) $page = 1;
+	if(!isset($page) || !$page ||  $page > $page_count) $page = 1;
 	$start = ($page-1)*$rows;
 
 	$sql = "select * from wiz_order where send_id = '".$wiz_session['id']."' and status != '' order by order_date desc limit $start, $rows";

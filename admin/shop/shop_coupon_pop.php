@@ -146,7 +146,7 @@ function allcouponUser(){
 
 	$ttime = mktime(0,0,0,date('m'),date('d'),date('Y'));
 	$page_count = ceil($total/$rows);
-	if(!$page || $page > $page_count) $page = 1;
+	if(!isset($page) || !$page ||  $page > $page_count) $page = 1;
 	$start = ($page-1)*$rows;
 	$no = $total-$start;
 	?>
@@ -210,7 +210,7 @@ function allcouponUser(){
 		if($seluser=="all") {
 
 			$sqlm="select * from wiz_member where 1 $level_sql $searchkey_sql ";
-			$resultm = mysqli_query($connect, $sqlm) or error(mysql_error());
+			$resultm = mysqli_query($connect, $sqlm) or error(mysqli_error($connect));
 			while($rowm = mysqli_fetch_array($resultm)){
 
 				// 쿠폰정보

@@ -38,7 +38,7 @@ $PHP_SELF = $_SERVER['PHP_SELF'];
 $HTTP_HOST = $_SERVER['HTTP_HOST'];
 $DOCUMENT_ROOT = $_SERVER['DOCUMENT_ROOT'];
 $HTTP_PORT = $_SERVER['SERVER_PORT'] ? ':'.$_SERVER['SERVER_PORT'] : '';
-$HTTP_REFERER = $_SERVER['HTTP_REFERER'] ? $_SERVER['HTTP_REFERER'] : '';
+$HTTP_REFERER = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
 
 session_save_path("$DOCUMENT_ROOT/data/session");
 
@@ -67,6 +67,13 @@ if (@session_status() === PHP_SESSION_NONE) {
 
 if(!array_key_exists('wiz_session', $_COOKIE)) $_COOKIE['wiz_session'] = array("id" => "");
 $wiz_session = isset($_SESSION['wiz_session']) ? $_SESSION['wiz_session'] : array("id" => "");
+
+if(!array_key_exists('wiz_mall', $_SESSION)) { $_SESSION['wiz_mall'] = array("id" => "");}
+$wiz_mall = isset($_SESSION['wiz_mall']) ? $_SESSION['wiz_mall'] : array("id" => "");
+
+
+if(!array_key_exists('wiz_md', $_SESSION)) { $_SESSION['wiz_md'] = array("id" => "");}
+$wiz_md = isset($_SESSION['wiz_md']) ? $_SESSION['wiz_md'] : array("id" => "");
 
 define("WIZSHOP_PATH", $_SERVER['DOCUMENT_ROOT']);
 $DOCUMENT_ROOT = $_SERVER['DOCUMENT_ROOT'];

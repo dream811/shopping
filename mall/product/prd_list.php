@@ -345,7 +345,7 @@ function copyPrd(){
 			$rows = 16;
 			$lists = 5;
 			$page_count = ceil($total/$rows);
-			if(!$page || $page > $page_count) $page = 1;
+			if(!isset($page) || !$page ||  $page > $page_count) $page = 1;
 			$start = ($page-1)*$rows;
 			$no = $total-$start;
       ?>
@@ -394,7 +394,7 @@ function copyPrd(){
 					else $status = "<font color='red'>미승인</font>";
 
 					$m_sql = "select com_name from wiz_mall where id = '$row->mallid'";
-					$m_result = mysqli_query($connect, $m_sql) or error(mysql_error());
+					$m_result = mysqli_query($connect, $m_sql) or error(mysqli_error($connect));
 					$m_row = mysqli_fetch_object($m_result);
 
 					if(!empty($m_row->com_name)) $com_name = "<b>[".$m_row->com_name."]</b><br>";

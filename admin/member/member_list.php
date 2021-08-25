@@ -8,6 +8,23 @@
 $level_info = level_info();
 
 // 페이지 파라메터 (검색조건이 변하지 않도록)
+if(!isset($detailsearch)) $detailsearch = "";
+if(!isset($level)) $level = "";
+if(!isset($searchopt)) $searchopt = "";
+if(!isset($searchkey)) $searchkey = "";
+if(!isset($s_birthday)) $s_birthday = "";
+if(!isset($s_memorial)) $s_memorial = "";
+if(!isset($s_age)) $s_age = "";
+if(!isset($s_address)) $s_address = "";
+if(!isset($s_job)) $s_job = "";
+if(!isset($s_marriage)) $s_marriage = "";
+if(!isset($prev_year)) $prev_year = "";
+if(!isset($prev_month)) $prev_month = "";
+if(!isset($prev_day)) $prev_day = "";
+if(!isset($next_year)) $next_year = "";
+if(!isset($next_month)) $next_month = "";
+if(!isset($next_day)) $next_day = "";
+if(!isset($page)) $page = "";
 //------------------------------------------------------------------------------------------------------------------------------------
 $param = "detailsearch=$detailsearch&level=$level&searchopt=$searchopt&searchkey=$searchkey&s_birthday=$s_birthday&s_memorial=$s_memorial&s_age=$s_age";
 $param .= "&s_address=$s_address&s_job=$s_job&s_marriage=$s_marriage&prev_year=$prev_year&prev_month=$prev_month&prev_day=$prev_day";
@@ -204,9 +221,13 @@ function reserveList(id,name){
         <td class="t_value">
 					<select name="prev_year">
 					<?
-					if(empty($next_year)) $next_year = date("Y");
-					if(empty($next_month)) $next_month = date("n");
-					if(empty($next_day)) $next_day = date("d");
+					if(!isset($next_year) || empty($next_year)) $next_year = date("Y");
+					if(!isset($next_month) || empty($next_month)) $next_month = date("n");
+					if(!isset($next_day) || empty($next_day)) $next_day = date("d");
+					
+					if(!isset($prev_year) || empty($prev_year)) $prev_year = date("Y");
+					if(!isset($prev_month) || empty($prev_month)) $prev_month = date("n");
+					if(!isset($prev_day) || empty($prev_day)) $prev_day = date("d");
 					
 					for($ii=2005; $ii <= date('Y'); $ii++){
 					  if($ii == $prev_year) echo "<option value=$ii selected>$ii";
@@ -297,7 +318,7 @@ function reserveList(id,name){
         </tr>
         </table>
         <table><tr><td></td></tr></table>
-        <div id='detailsearch' style="display: <? if(empty($detailsearch)) echo none; else echo $detailsearch; ?>">
+        <div id='detailsearch' style="display: <? if(empty($detailsearch)) echo "none"; else echo $detailsearch; ?>">
         <table width="100%" border="0" cellspacing="1" cellpadding="3" class="t_style">
         <tr>
         <td width="15%" class="t_name">&nbsp; 오늘 생일</td>
@@ -392,8 +413,8 @@ function reserveList(id,name){
 		$today = date('n-d');
 		$toyear = date('Y');
 		
-		$age_syear = substr($toyear-($s_age+9),-2)+1;
-		$age_eyear = substr($toyear-$s_age,-2)+2;
+		$age_syear = (int)substr((int)$toyear-((int)$s_age+9),-2)+1;
+		$age_eyear = (int)substr((int)$toyear-(int)$s_age,-2)+2;
 		
 		$join_sdate = $prev_year."-".$prev_month."-".$prev_day;
 		$join_edate = $next_year."-".$next_month."-".$next_day;
@@ -422,8 +443,8 @@ function reserveList(id,name){
 		$rows = 20;
 		$lists = 5;
 		$page_count = ceil($total/$rows);
-		if(!$page || $page > $page_count) $page = 1;
-		$start = ($page-1)*$rows;
+		if(!isset($page) || !$page ||  $page > $page_count) $page = 1;
+		$start = ((int)$page-1)*(int)$rows;
 		$no = $total-$start;
 		?>
     <table width="100%" border="0" cellpadding="0" cellspacing="0">
@@ -468,7 +489,7 @@ function reserveList(id,name){
 			if($s_job != "")       $sql .= " and wm.job = '$s_job'";
 			if($s_marriage != "")  $sql .= " and wm.marriage = '$s_marriage'";
 			$sql .=" order by wm.wdate desc limit $start, $rows";
-	
+			
 	  	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 	  	
 			while(($row = mysqli_fetch_object($result)) && $rows){

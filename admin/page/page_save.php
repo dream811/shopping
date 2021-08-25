@@ -7,8 +7,8 @@ $upfile_path = "../../data/subimg";		// 업로드파일 위치
 
 function addUpdate($type,$subimg,$subimg_size,$subimg_name){
 
-	global $content, $upfile_path, $content2, $addinfo, $addinfo2, $info_use, $info_ess;
-
+	global $content, $upfile_path, $content2, $addinfo, $addinfo2, $info_use, $info_ess, $connect;
+	$subimg_sql = "";
 	if($subimg_size > 0){
 		file_check($subimg_name);
 
@@ -20,9 +20,11 @@ function addUpdate($type,$subimg,$subimg_size,$subimg_name){
 	$sql = "select idx from wiz_page where  type='$type'";
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 	$exist = mysqli_num_rows($result);
-
+	if(!isset($info_use)) $info_use = array();
+	if(!isset($info_ess)) $info_ess = array();
+	
 	for($ii=0; $ii<count($info_use); $ii++){
-   $addinfo .= $info_use[$ii]."/";
+   		$addinfo .= $info_use[$ii]."/";
 	}
 	for($ii=0; $ii<count($info_ess); $ii++){
 	   $addinfo2 .= $info_ess[$ii]."/";
@@ -43,8 +45,12 @@ function addUpdate($type,$subimg,$subimg_size,$subimg_name){
 
 
 if($mode == "update"){
-
-	addUpdate($type,$subimg[tmp_name],$subimg[size],$subimg[name]);
+	if(!isset($subimg['tmp_name'])){
+		$subimg['tmp_name'] = "";
+		$subimg['size'] = "";
+		$subimg['name'] = "";
+	}
+	addUpdate($type,$subimg['tmp_name'],$subimg['size'],$subimg['name']);
 
 	complete("수정되었습니다.","$page");
 
@@ -59,47 +65,47 @@ if($mode == "update"){
 
 }else if($mode == "other"){
 
-	if($sitemap_subimg[size] > 0)
-		addUpdate("sitemap",$sitemap_subimg[tmp_name],$sitemap_subimg[size],$sitemap_subimg[name]);
+	if($sitemap_subimg['size'] > 0)
+		addUpdate("sitemap",$sitemap_subimg['tmp_name'],$sitemap_subimg['size'],$sitemap_subimg['name']);
 
-	if($faq_subimg[size] > 0)
-		addUpdate("faq",$faq_subimg[tmp_name],$faq_subimg[size],$faq_subimg[name]);
+	if($faq_subimg['size'] > 0)
+		addUpdate("faq",$faq_subimg['tmp_name'],$faq_subimg['size'],$faq_subimg['name']);
 
-	if($login_subimg[size] > 0)
-		addUpdate("login",$login_subimg[tmp_name],$login_subimg[size],$login_subimg[name]);
+	if($login_subimg['size'] > 0)
+		addUpdate("login",$login_subimg['tmp_name'],$login_subimg['size'],$login_subimg['name']);
 
-	if($myshop_subimg[size] > 0)
-		addUpdate("myshop",$myshop_subimg[tmp_name],$myshop_subimg[size],$myshop_subimg[name]);
+	if($myshop_subimg['size'] > 0)
+		addUpdate("myshop",$myshop_subimg['tmp_name'],$myshop_subimg['size'],$myshop_subimg['name']);
 
-	if($orderform_subimg[size] > 0)
-		addUpdate("orderform",$orderform_subimg[tmp_name],$orderform_subimg[size],$orderform_subimg[name]);
+	if($orderform_subimg['size'] > 0)
+		addUpdate("orderform",$orderform_subimg['tmp_name'],$orderform_subimg['size'],$orderform_subimg['name']);
 
-	if($orderpay_subimg[size] > 0)
-		addUpdate("orderpay",$orderpay_subimg[tmp_name],$orderpay_subimg[size],$orderpay_subimg[name]);
+	if($orderpay_subimg['size'] > 0)
+		addUpdate("orderpay",$orderpay_subimg['tmp_name'],$orderpay_subimg['size'],$orderpay_subimg['name']);
 
-	if($ordercom_subimg[size] > 0)
-		addUpdate("ordercom",$ordercom_subimg[tmp_name],$ordercom_subimg[size],$ordercom_subimg[name]);
+	if($ordercom_subimg['size'] > 0)
+		addUpdate("ordercom",$ordercom_subimg['tmp_name'],$ordercom_subimg['size'],$ordercom_subimg['name']);
 
-	if($orderdel_subimg[size] > 0)
-		addUpdate("orderdel",$orderdel_subimg[tmp_name],$orderdel_subimg[size],$orderdel_subimg[name]);
+	if($orderdel_subimg['size'] > 0)
+		addUpdate("orderdel",$orderdel_subimg['tmp_name'],$orderdel_subimg['size'],$orderdel_subimg['name']);
 
-	if($prdsearch_subimg[size] > 0)
-		addUpdate("prdsearch",$prdsearch_subimg[tmp_name],$prdsearch_subimg[size],$prdsearch_subimg[name]);
+	if($prdsearch_subimg['size'] > 0)
+		addUpdate("prdsearch",$prdsearch_subimg['tmp_name'],$prdsearch_subimg['size'],$prdsearch_subimg['name']);
 
-	if($new_subimg[size] > 0)
-		addUpdate("new",$new_subimg[tmp_name],$new_subimg[size],$new_subimg[name]);
+	if($new_subimg['size'] > 0)
+		addUpdate("new",$new_subimg['tmp_name'],$new_subimg['size'],$new_subimg['name']);
 
-	if($recom_subimg[size] > 0)
-		addUpdate("recom",$recom_subimg[tmp_name],$recom_subimg[size],$recom_subimg[name]);
+	if($recom_subimg['size'] > 0)
+		addUpdate("recom",$recom_subimg['tmp_name'],$recom_subimg['size'],$recom_subimg['name']);
 
-	if($popular_subimg[size] > 0)
-		addUpdate("popular",$popular_subimg[tmp_name],$popular_subimg[size],$popular_subimg[name]);
+	if($popular_subimg['size'] > 0)
+		addUpdate("popular",$popular_subimg['tmp_name'],$popular_subimg['size'],$popular_subimg['name']);
 
-	if($sale_subimg[size] > 0)
-		addUpdate("sale",$sale_subimg[tmp_name],$sale_subimg[size],$sale_subimg[name]);
+	if($sale_subimg['size'] > 0)
+		addUpdate("sale",$sale_subimg['tmp_name'],$sale_subimg['size'],$sale_subimg['name']);
 
-	if($best_subimg[size] > 0)
-		addUpdate("best",$best_subimg[tmp_name],$best_subimg[size],$best_subimg[name]);
+	if($best_subimg['size'] > 0)
+		addUpdate("best",$best_subimg['tmp_name'],$best_subimg['size'],$best_subimg['name']);
 
 	complete("수정되었습니다.","page_other.php");
 

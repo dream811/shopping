@@ -335,7 +335,7 @@ function accCheck(frm) {
 		$rows = 20;
 		$lists = 5;
 		$page_count = ceil($total/$rows);
-		if($page < 1 || $page > $page_count) $page = 1;
+		if(!isset($page) || $page < 1 || $page > $page_count) $page = 1;
 		$start = ($page-1)*$rows;
 		$no = $total-$start;
 
@@ -420,7 +420,7 @@ function accCheck(frm) {
 
 			//echo $sql;
 
-			$result = mysqli_query($connect, $sql) or die(mysql_error());
+			$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 			while($row = mysqli_fetch_array($result)) {
 
 				if(empty($row['mall_name'])) {

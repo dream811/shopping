@@ -23,21 +23,25 @@ $ordmail = "
 	$sql = "select count(idx) as cnt, sum(prdprice) as total, mallid from wiz_basket where orderid='".$order_info->orderid."' group by mallid";
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 	while($row = mysqli_fetch_array($result)) {
-
-		$mall_list[$row[mallid]]['cnt'] = $row['cnt'];
-		$mall_list[$row[mallid]][total] = $row[total];
+		$mall_list[$row['mallid']]['cnt'] = $row['cnt'];
+		$mall_list[$row['mallid']]['total'] = $row['total'];
 
 	}
 
 	$sql = "select wb.*, wm.com_name, wm.com_tel, wm.del_method, wm.del_fixprice, wm.del_staprice, wm.del_staprice2, wm.del_staprice3, wm.del_prd, wm.del_prd2 from wiz_basket as wb left join wiz_mall as wm on wb.mallid = wm.id where orderid = '$order_info->orderid' order by wb.mallid";
-	$result = mysqli_query($connect, $sql,$connect) or error(mysql_error());
+	$result = mysqli_query($connect, $sql) or error(mysqli_error($connect));
 	$prd_num = mysqli_num_rows($result);
 
 	$no = 0;
+	if(!isset($prd_price)) $prd_price = 0;
+	if(!isset($mall_no)) $mall_no = array();
+	if(!isset($deliver_price)) $deliver_price = 0;
+	if(!isset($deliver_msg)) $deliver_msg = "";
+	if(!isset($coupon_msg_mall)) $coupon_msg_mall = array();
 	while($row = mysqli_fetch_object($result)){
-
+		
 		$prd_price += ($row->prdprice * $row->amount);
-		if($row->prdimg == "") $row->prdimg = "http://$HTTP_HOST/images/noimage.gif";
+		if(!isset($row->prdimg) || $row->prdimg == "") $row->prdimg = "http://$HTTP_HOST/images/noimage.gif";
 		else $row->prdimg = "http://$HTTP_HOST/data/prdimg/".$row->prdimg;
 
 		$optcode = "";
@@ -68,7 +72,7 @@ $ordmail = "
 			$row->com_name = $shop_info->shop_name;
 			$row->com_tel = $shop_info->shop_tel;
 		}
-
+		if(!isset($mall_no[$row->mallid])) $mall_no[$row->mallid] = 0;
 		$mall_no[$row->mallid]++;
 
 $ordmail .= "
@@ -101,7 +105,7 @@ $ordmail .= "
 				}
 
 				// 배송비
-				$deliver_price_mall[$row->mallid] = deliver_price($mall_list[$row->mallid][total], $tmp_oper_info, $row->mallid);
+				$deliver_price_mall[$row->mallid] = deliver_price($mall_list[$row->mallid]['total'], $tmp_oper_info, $row->mallid);
 
 				$deliver_price += $deliver_price_mall[$row->mallid];
 
@@ -109,6 +113,7 @@ $ordmail .= "
 		   		$deliver_msg .= " , 배송비 할증";
 		   	}
 
+			if(!isset($coupon_msg_mall[$row->mallid])) $coupon_msg_mall[$row->mallid] = "";
 		    // 쿠폰사용
 		    if($row->coupon_use > 0){
 		    	$coupon_msg_mall[$row->mallid] = " - 쿠폰사용(<b>".number_format($row->coupon_use)."</b>)";
@@ -130,7 +135,7 @@ $ordmail .= "
 								[배송비 : ".$deliver_msg."]
 							</td>
 							<td align='right' width='45%'>
-								상품(<b>".number_format($mall_list[$row->mallid][total])."원</b>) +
+								상품(<b>".number_format($mall_list[$row->mallid]['total'])."원</b>) +
 								배송비(<b>".number_format($deliver_price_mall[$row->mallid])."원</b>)
 								".$coupon_msg_mall[$row->mallid]."
 							</td>
@@ -158,7 +163,9 @@ $ordmail .= "
 
 		$no++;
 	}
-
+if(!isset($discount_msg)) $discount_msg = "";
+if(!isset($coupon_msg)) $coupon_msg = "";
+if(!isset($reserve_msg)) $reserve_msg = "";
 // 회원할인
 if($order_info->discount_price > 0){
 	$discount_msg = " - 회원할인(<b>".number_format($order_info->discount_price)."원</b>)";

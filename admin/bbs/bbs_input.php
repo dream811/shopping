@@ -102,7 +102,7 @@ function inputCheck(frm){
       <tr>
         <td>
         	<?
-					if($bbs_row[prdcode] != ""){
+					if($bbs_row['prdcode'] != ""){
 						$prd_sql = "select prdcode,prdname,sellprice,strprice,prdimg_R from wiz_product where prdcode='$bbs_row[prdcode]'";
 						$prd_result = mysqli_query($connect, $prd_sql);
 						$prd_info = mysqli_fetch_object($prd_result);
@@ -135,15 +135,15 @@ function inputCheck(frm){
           <table width="100%" border="0" cellspacing="1" cellpadding="6" class="t_style">
             <tr>
               <td width="15%" class="t_name">작성자</td>
-              <td width="35%" class="t_value"><input name="name" type="text" value="<?=$bbs_row[name]?>" class="input"></td>
+              <td width="35%" class="t_value"><input name="name" type="text" value="<?=$bbs_row['name']?>" class="input"></td>
               <td width="15%" class="t_name">이메일</td>
-              <td width="35%" class="t_value"><input name="email" type="text" value="<?=$bbs_row[email]?>" size="30" class="input"></td>
+              <td width="35%" class="t_value"><input name="email" type="text" value="<?=$bbs_row['email']?>" size="30" class="input"></td>
             </tr>
             <tr>
               <td class="t_name">작성일</td>
               <td class="t_value"><input name="wdate" type="text" value="<?=$bbs_row['wdate']?>" class="input"></td>
               <td class="t_name">조회수</td>
-              <td class="t_value"><input name="count" type="text" value="<?=$bbs_row[count]?>" class="input"></td>
+              <td class="t_value"><input name="count" type="text" value="<?=$bbs_row['count']?>" class="input"></td>
             </tr>
             <? if(!strcmp($code, "review")) { ?>
             <tr>
@@ -168,17 +168,17 @@ function inputCheck(frm){
                   echo "<select name='category'>";
                   echo "<option value=''>분류</option>";
 									while($row = mysqli_fetch_array($result)) {
-										if($bbs_row[category] == $row['idx']) $selected = "selected";
+										if($bbs_row['category'] == $row['idx']) $selected = "selected";
 										else $selected = "";
-			          		echo "<option value='".$row['idx']."'".$selected.">".$row[catname]."</option>";
+			          		echo "<option value='".$row['idx']."'".$selected.">".$row['catname']."</option>";
 									}
                 	echo "</select>";
 								}
 								?>
 
-                <input type="checkbox" name="notice" value="Y" <? if($bbs_row[notice] == "Y") echo "checked"; ?>> 공지글
-                <input type="checkbox" name="privacy" value="Y" <? if($bbs_row[privacy] == "Y" || ($mode != "update" && $bbs_info[privacy] == "Y")) echo "checked"; ?>> 비밀글
-                <input type="checkbox" name="ctype" value="H" <? if($bbs_row[ctype] == "H") echo "checked"; ?>> HTML사용<br>
+                <input type="checkbox" name="notice" value="Y" <? if($bbs_row['notice'] == "Y") echo "checked"; ?>> 공지글
+                <input type="checkbox" name="privacy" value="Y" <? if($bbs_row['privacy'] == "Y" || ($mode != "update" && $bbs_info['privacy'] == "Y")) echo "checked"; ?>> 비밀글
+                <input type="checkbox" name="ctype" value="H" <? if($bbs_row['ctype'] == "H") echo "checked"; ?>> HTML사용<br>
                 <input name="subject" type="text" value="<?=$bbs_row['subject']?>" size="70" class="input" style="word-break:break-all;">
               </td>
             </tr>
@@ -186,7 +186,7 @@ function inputCheck(frm){
               <td class="t_name">내용</td>
               <td class="t_value" colspan="3">
               <?
-				 			if($bbs_info[editor] == "Y"){
+				 			if($bbs_info['editor'] == "Y"){
                 $edit_content = $bbs_row['content'];
                 include "../webedit/WIZEditor.html";
 			    		}else{
@@ -199,7 +199,7 @@ function inputCheck(frm){
             </tr>
             <tr>
               <td class="t_name">비밀번호</td>
-              <td width="275" class="t_value" colspan="3"><input name="passwd" type="text" value="<?=$bbs_row[passwd]?>" class="input"></td>
+              <td width="275" class="t_value" colspan="3"><input name="passwd" type="text" value="<?=$bbs_row['passwd']?>" class="input"></td>
             </tr>
 
 <?php

@@ -190,7 +190,7 @@ if($mode == "shop_info"){
 	else $coupon_use="N";
 
 	$sql = "update wiz_mycoupon set coupon_use ='$coupon_use'  where idx = '$cidx' ";
-	$result = mysqli_query($connect, $sql,$connect) or error(mysql_error());
+	$result = mysqli_query($connect, $sql) or error(mysqli_error($connect));
 	complete("쿠폰사용을 변경하였습니다..","shop_coupon_input.php?sub_mode=update&idx=$idx&prdcode=$prdcode");
 
 // 쿠폰사용여부 설정

@@ -25,7 +25,7 @@ else if($mode == "update"){
 }
 
 	$lsql = "select count(*) from wiz_dellist where id='$wiz_session['id']'";
-	$lresult = mysqli_query($connect, $lsql) or error(mysql_error());
+	$lresult = mysqli_query($connect, $lsql) or error(mysqli_error($connect));
 	$lrow = mysql_fetch_row($lresult);
 
 	if($lrow[0] > 4){

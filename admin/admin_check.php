@@ -42,7 +42,7 @@ if($admin_info->passwd == $admin_pw){
 		$wiz_admin['name'] = $_SESSION['wiz_admin']['name']	= $shop_info->shop_name;
 		$wiz_admin['email'] = $_SESSION['wiz_admin']['email']	= $shop_info->shop_email;
 		$wiz_admin['designer'] = $_SESSION['wiz_admin']['designer']= 'Y';
-
+		$wiz_admin['permi']	= $_SESSION['wiz_admin']['permi'] = "";
 		Header("Location: $start_page");
 
 	}else{

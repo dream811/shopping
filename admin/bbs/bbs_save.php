@@ -8,8 +8,8 @@
 $upfile_path = "../../data/bbs/".$code;						// 업로드파일 위치
 $upfile_idx = date('ymdhis').rand(1,9);						// 업로드파일명
 
-$S_width = $bbs_info[simgsize]; $S_height = $bbs_info[simgsize];	// 스몰섬네일 크기
-$M_width = $bbs_info[mimgsize]; $M_height = $bbs_info[mimgsize];	// 중간섬네일 크기
+$S_width = $bbs_info['simgsize']; $S_height = $bbs_info['simgsize'];	// 스몰섬네일 크기
+$M_width = $bbs_info['mimgsize']; $M_height = $bbs_info['mimgsize'];	// 중간섬네일 크기
 
 // 검색 파라미터
 $param = "code=$code&idx=$idx&page=$page&category=$category&searchopt=$searchopt&searchkey=$searchkey";
@@ -25,14 +25,14 @@ if($mode == "insert"){
 	$sql = "select max(prino) as prino from wiz_bbs where code = '$code'";
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 	if($row = mysqli_fetch_array($result)){
-		$prino = $row[prino] + 1;
+		$prino = $row['prino'] + 1;
 	}
 	$grpno = $prino;
 
 	$memid = $wiz_admin['id'];
 	$memgrp = $wiz_admin['id'];
 	if(!get_magic_quotes_gpc()) $content= addslashes($content);
-	if($bbs_info[editor] == "Y") $ctype = "H";
+	if($bbs_info['editor'] == "Y") $ctype = "H";
 
 	if($wdate == "") $wdate = date('Y-m-d H:i:s');
 
@@ -62,6 +62,26 @@ if($mode == "insert"){
 	include "./bbs_upfile.inc";
 	if(!get_magic_quotes_gpc()) $content= addslashes($content);
 
+	if(!isset($star)) $star = "";
+	if(!isset($notice )) $notice = "";
+	if(!isset($tphone )) $tphone = "";
+	if(!isset($hphone )) $hphone = "";
+	if(!isset($zipcode )) $zipcode = "";
+	if(!isset($address )) $address = "";
+	if(!isset($addinfo1 )) $addinfo1 = "";
+	if(!isset($addinfo2 )) $addinfo2 = "";
+	if(!isset($addinfo3 )) $addinfo3 = "";
+	if(!isset($addinfo4)) $addinfo4 = "";
+	if(!isset($addinfo5 )) $addinfo5 = "";
+	if(!isset($privacy )) $privacy = "";
+	if(!isset($upfile1_sql )) $upfile1_sql = "";
+	if(!isset($upfile2_sql )) $upfile2_sql = "";
+	if(!isset($upfile3_sql )) $upfile3_sql = "";
+	if(!isset($upfile_sql )) $upfile_sql = "";
+	if(!isset($movie1_sql )) $movie1_sql = "";
+	if(!isset($movie2 )) $movie2 = "";
+	if(!isset($movie3 )) $movie3 = "";
+
 	$sql = "update wiz_bbs set star='$star',notice='$notice',category='$category',name='$name',email='$email',tphone='$tphone',hphone='$hphone',zipcode='$zipcode',address='$address',subject='$subject',content='$content',addinfo1='$addinfo1',addinfo2='$addinfo2',addinfo3='$addinfo3',addinfo4='$addinfo4',addinfo5='$addinfo5',ctype='$ctype',privacy='$privacy' $upfile1_sql $upfile2_sql $upfile3_sql $upfile_sql $movie1_sql ,movie2='$movie2',movie3='$movie3',passwd='$passwd',count='$count',wdate=unix_timestamp('$wdate') where idx = '$idx'";
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 
@@ -72,22 +92,22 @@ if($mode == "insert"){
 	$sql = "select idx,grpno,prino,depno,memid,memgrp,name,email,prdcode from wiz_bbs where idx='$idx'";
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 	$row = mysqli_fetch_array($result);
-	$re_name = $row[name];
-	$re_email = $row[email];
+	$re_name = $row['name'];
+	$re_email = $row['email'];
 
-	$grpno = $row[grpno];
-	$prino = $row[prino];
-	$depno = ++$row[depno];
+	$grpno = $row['grpno'];
+	$prino = $row['prino'];
+	$depno = ++$row['depno'];
 
-	$prdcode = $row[prdcode];
+	$prdcode = $row['prdcode'];
 
 	include "./bbs_upfile.inc";
 
 	$memid = $wiz_admin['id'];
-	$memgrp = $row[memgrp].",".$memid;
-	if($privacy == "Y") $memid = $row[memid];
+	$memgrp = $row['memgrp'].",".$memid;
+	if($privacy == "Y") $memid = $row['memid'];
 	if(!get_magic_quotes_gpc()) $content= addslashes($content);
-	if($bbs_info[editor] == "Y") $ctype = "H";
+	if($bbs_info['editor'] == "Y") $ctype = "H";
 
 	$sql = "update wiz_bbs set prino = prino+1 where code = '$code' and prino >= '$prino'";
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
@@ -107,16 +127,16 @@ if($mode == "insert"){
 
 	for($ii = 1; $ii <= $upfile_max; $ii++) {
 
-		if($bbs_row[upfile.$ii] != ""){
-			@unlink($upfile_path."/".$bbs_row[upfile.$ii]);
-			@unlink($upfile_path."/S".$bbs_row[upfile.$ii]);
-			@unlink($upfile_path."/M".$bbs_row[upfile.$ii]);
+		if($bbs_row['upfile'.$ii] != ""){
+			@unlink($upfile_path."/".$bbs_row['upfile'.$ii]);
+			@unlink($upfile_path."/S".$bbs_row['upfile'.$ii]);
+			@unlink($upfile_path."/M".$bbs_row['upfile'.$ii]);
 		}
 
 	}
 
-	if($bbs_row[movie1] != ""){
-		@unlink($upfile_path."/".$bbs_row[movie1]);
+	if($bbs_row['movie1'] != ""){
+		@unlink($upfile_path."/".$bbs_row['movie1']);
 	}
 
 	$sql = "delete from wiz_bbs where code = '$code' and idx='$idx'";
@@ -137,16 +157,16 @@ if($mode == "insert"){
 
 		for($jj = 1; $jj <= $upfile_max; $jj++) {
 
-			if($bbs_row[upfile.$jj] != ""){
-				@unlink($upfile_path."/".$bbs_row[upfile.$jj]);
-				@unlink($upfile_path."/S".$bbs_row[upfile.$jj]);
-				@unlink($upfile_path."/M".$bbs_row[upfile.$jj]);
+			if($bbs_row['upfile'.$jj] != ""){
+				@unlink($upfile_path."/".$bbs_row['upfile'.$jj]);
+				@unlink($upfile_path."/S".$bbs_row['upfile'.$jj]);
+				@unlink($upfile_path."/M".$bbs_row['upfile'.$jj]);
 			}
 
 		}
 
-		if($bbs_row[movie1] != ""){
-			@unlink($upfile_path."/".$bbs_row[movie1]);
+		if($bbs_row['movie1'] != ""){
+			@unlink($upfile_path."/".$bbs_row['movie1']);
 		}
 
 		$sql = "delete from wiz_bbs where idx='$idx'";
@@ -166,9 +186,9 @@ if($mode == "insert"){
 	for($ii = 1; $ii <= $upfile_max; $ii++) {
 
 		if($file != "upfile".$ii){
-			@unlink($upfile_path."/".$bbs_row[upfile.$ii]);
-			@unlink($upfile_path."/S".$bbs_row[upfile.$ii]);
-			@unlink($upfile_path."/M".$bbs_row[upfile.$ii]);
+			@unlink($upfile_path."/".$bbs_row['upfile'.$ii]);
+			@unlink($upfile_path."/S".$bbs_row['upfile'.$ii]);
+			@unlink($upfile_path."/M".$bbs_row['upfile'.$ii]);
 			$upfile_sql = " upfile".$ii." = '', upfile".$ii."_name = ''";
 		}
 
@@ -176,7 +196,7 @@ if($mode == "insert"){
 
 	if($file == "movie1"){
 		$upfile_sql = " movie1 = '' ";
-		@unlink($upfile_path."/".$bbs_row[movie1]);
+		@unlink($upfile_path."/".$bbs_row['movie1']);
 	}
 
 	$sql = "update wiz_bbs set $upfile_sql where idx='$idx'";
@@ -190,7 +210,7 @@ if($mode == "insert"){
 	$ctype = "BBS";
 
 	$sql = "insert into wiz_comment(idx,ctype,cidx,prdcode,star,id,name,content,passwd,wdate,wip)
-					values('', '$ctype', '$cidx', '$prdcode', '$star', '$wiz_session['id']', '$name', '$content', '$passwd', now(), '$_SERVER[REMOTE_ADDR]')";
+					values('', '$ctype', '$cidx', '$prdcode', '$star', '".$wiz_session['id']."', '$name', '$content', '$passwd', now(), '$_SERVER[REMOTE_ADDR]')";
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 
 	// 댓글수 업데이트

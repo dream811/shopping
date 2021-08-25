@@ -345,7 +345,7 @@ window.open(url,"searchZip","height=350, width=367, menubar=no, scrollbars=yes, 
 			$rows = 20;
 			$lists = 5;
 			$page_count = ceil($total/$rows);
-			if($page < 1 || $page > $page_count) $page = 1;
+			if(!isset($page) || $page < 1 || $page > $page_count) $page = 1;
 			$start = ($page-1)*$rows;
 			$no = $total-$start;
 			?>
@@ -403,7 +403,7 @@ window.open(url,"searchZip","height=350, width=367, menubar=no, scrollbars=yes, 
 
 				// 각 입점업체별 상품 수 구하기
 				$b_sql = "select count(idx) as cnt, sum(prdprice) as total, mallid from wiz_basket where orderid='".$row->orderid."' and mallid = '".$wiz_mall['id']."' group by mallid";
-				$b_result = mysqli_query($connect, $b_sql) or error(mysql_error());
+				$b_result = mysqli_query($connect, $b_sql) or error(mysqli_error($connect));
 				while($b_row = mysqli_fetch_array($b_result)) {
 
 					$mall_list[$b_row[mallid]]['cnt'] = $b_row['cnt'];
@@ -414,7 +414,7 @@ window.open(url,"searchZip","height=350, width=367, menubar=no, scrollbars=yes, 
 				$b_sql = "select wb.*, wm.com_name, wm.com_tel, wm.del_method, wm.del_fixprice, wm.del_staprice, wm.del_staprice2, wm.del_staprice3, wm.del_prd, wm.del_prd2
 								from wiz_basket as wb inner join wiz_mall as wm on wb.mallid = wm.id
 								where wb.orderid='".$row->orderid."' and wb.mallid = '".$wiz_mall['id']."' order by wb.mallid";
-				$b_result = mysqli_query($connect, $b_sql) or error(mysql_error());
+				$b_result = mysqli_query($connect, $b_sql) or error(mysqli_error($connect));
 				while($b_row = mysqli_fetch_object($b_result)){
 
 					$mall_no[$b_row->mallid]++;

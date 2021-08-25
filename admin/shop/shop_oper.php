@@ -600,8 +600,8 @@ function delDel(no) {
         <tr>
           <td width="15%" class="t_name">사용여부</td>
           <td width="35%" class="t_value">
-	          <input type="radio" name="review_usetype" value="Y" <? if($review_info[usetype] == "Y") echo "checked"; ?>>사용함
-	          <input type="radio" name="review_usetype" value="N" <? if($review_info[usetype] == "N") echo "checked"; ?>>사용안함
+	          <input type="radio" name="review_usetype" value="Y" <? if($review_info['usetype'] == "Y") echo "checked"; ?>>사용함
+	          <input type="radio" name="review_usetype" value="N" <? if($review_info['usetype'] == "N") echo "checked"; ?>>사용안함
           </td>
           <td width="15%" class="t_name">작성권한</td>
           <td width="35%" class="t_value">
@@ -618,7 +618,7 @@ function delDel(no) {
         <!--
           wpermi = document.frm.review_wpermi;
           for(ii=0; ii<wpermi.length; ii++){
-             if(wpermi.options[ii].value == "<?=$review_info[wpermi]?>")
+             if(wpermi.options[ii].value == "<?=$review_info['wpermi']?>")
                 wpermi.options[ii].selected = true;
           }
         -->
@@ -634,8 +634,8 @@ function delDel(no) {
         <tr>
           <td width="15%" class="t_name">사용여부</td>
           <td width="35%" class="t_value">
-	          <input type="radio" name="qna_usetype" value="Y" <? if($qna_info[usetype] == "Y") echo "checked"; ?>>사용함
-	          <input type="radio" name="qna_usetype" value="N" <? if($qna_info[usetype] == "N") echo "checked"; ?>>사용안함
+	          <input type="radio" name="qna_usetype" value="Y" <? if($qna_info['usetype'] == "Y") echo "checked"; ?>>사용함
+	          <input type="radio" name="qna_usetype" value="N" <? if($qna_info['usetype'] == "N") echo "checked"; ?>>사용안함
           </td>
           <td width="15%" class="t_name">작성권한</td>
           <td width="35%" class="t_value">
@@ -651,7 +651,7 @@ function delDel(no) {
         <!--
           wpermi = document.frm.qna_wpermi;
           for(ii=0; ii<wpermi.length; ii++){
-             if(wpermi.options[ii].value == "<?=$qna_info[wpermi]?>")
+             if(wpermi.options[ii].value == "<?=$qna_info['wpermi']?>")
                 wpermi.options[ii].selected = true;
           }
         -->

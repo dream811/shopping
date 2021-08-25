@@ -54,7 +54,7 @@ $rows = 30;
 $lists = 5;
 $total = mysqli_num_rows($result);
 $page_count = ceil($total/$rows);
-if(!$page || $page > $page_count) $page = 1;
+if(!isset($page) || !$page ||  $page > $page_count) $page = 1;
 $start = ($page-1)*$rows;
 $no = $total-$start;
 
@@ -73,7 +73,7 @@ while(($row = mysqli_fetch_object($result)) && $rows){
  	if($row->privacy == "Y"){
 
 		$grp_sql = "select idx from wiz_bbs where code='$code' and grpno='$row->grpno' and passwd='$passwd' and idx = '$idx'";
-		$grp_result = mysqli_query($connect, $grp_sql) or error(mysql_error());
+		$grp_result = mysqli_query($connect, $grp_sql) or error(mysqli_error($connect));
 		$grp_passwd = mysqli_num_rows($grp_result);
 
 		if(

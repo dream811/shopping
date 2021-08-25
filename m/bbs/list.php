@@ -180,7 +180,7 @@ if($lists == "" || $rows < 1) $lists = "5";
 
 $ttime = mktime(0,0,0,date('m'),date('d'),date('Y'));
 $page_count = ceil($total/$rows);
-if(!$page || $page > $page_count) $page = 1;
+if(!isset($page) || !$page ||  $page > $page_count) $page = 1;
 $start = ($page-1)*$rows;
 $no = $total-$start;
 

@@ -16,7 +16,7 @@
 
 			unset($arrCat);
 			$c_sql	= "select catcode, catname, catimg, catimg_over from wiz_category where catcode like '".substr($row->catcode, 0, 2)."%' and depthno=2 and catuse != 'N' order by priorno02 asc";
-			$c_result	= mysqli_query($connect, $c_sql) or error(mysql_error());
+			$c_result	= mysqli_query($connect, $c_sql) or error(mysqli_error($connect));
 			while($c_row = mysqli_fetch_object($c_result)) $arrCat[] = $c_row;
 		?>
 		<li>

@@ -7,7 +7,7 @@ if($idx != "" && !strcmp($mode, "update")){
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 	$bbs_row = mysqli_fetch_array($result);
 }
-
+if(!isset($delupfile)) $delupfile = array();
 for($ii = 0; $ii < count($delupfile); $ii++) {
 	
 	if($bbs_row[$delupfile[$ii]] != ""){
@@ -29,7 +29,7 @@ for($ii = 1; $ii <= $upfile_max; $ii++) {
 	$upfile_tmp = "";
 	$upfile_name = "";
 	
-	$upfile = ${upfile.$ii};
+	$upfile = ${'upfile'.$ii};
 	$upfile_size = $_FILES['upfile'.$ii]['size'];
 	$upfile_name = $_FILES['upfile'.$ii]['name'];
 	
@@ -59,20 +59,20 @@ for($ii = 1; $ii <= $upfile_max; $ii++) {
 		
 	}
 	
-	${upfile.$ii._tmp} = $upfile_tmp;
-	${upfile.$ii._name} = $upfile_name;
+	${'upfile'.$ii.'_tmp'} = $upfile_tmp;
+	${'upfile'.$ii.'_name'} = $upfile_name;
 	
 }
 
-if($movie1[size] > 0){
+if(isset($movie1['size']) && $movie1['size'] > 0){
 	
-	file_check($movie1[name]);
+	file_check($movie1['name']);
 	
-	$movie1_tmp = $upfile_idx."_m1.".substr($movie1[name],-3);
-	copy($movie1[tmp_name], $upfile_path."/".$movie1_tmp);
+	$movie1_tmp = $upfile_idx."_m1.".substr($movie1['name'],-3);
+	copy($movie1['tmp_name'], $upfile_path."/".$movie1_tmp);
 	chmod($upfile_path."/".$movie1_tmp, 0606);
-	if($bbs_row[movie1] != ""){
-		@unlink($upfile_path."/".$bbs_row[movie1]);
+	if($bbs_row['movie1'] != ""){
+		@unlink($upfile_path."/".$bbs_row['movie1']);
 	}
 	$movie1_sql = " , movie1='$movie1_tmp' ";
 	

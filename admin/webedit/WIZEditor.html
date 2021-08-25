@@ -2,9 +2,9 @@
 include 'config.php';
 
 // 웹에디터 필드명
-if(!$edit_name)		$edit_name	= "content";
-if(!$edit_width)	$edit_width	= "100%";
-if(!$edit_height)	$edit_height= "300";
+if(!isset($edit_name))		$edit_name	= "content";
+if(!isset($edit_width))	$edit_width	= "100%";
+if(!isset($edit_height))	$edit_height= "300";
 ?>
 <script type="text/javascript" src="<?=WEBEDIT_URL?>/js/service/HuskyEZCreator.js" charset="utf-8"></script>
 <textarea name="<?=$edit_name?>" id="<?=$edit_name?>" rows="10" cols="100" style="width:<?=$edit_width?>; height:<?=$edit_height?>px; display:none;"><?=$edit_content?></textarea>

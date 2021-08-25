@@ -838,7 +838,7 @@ function saveWish(){
                   <td style="padding-left:10px;">
                   <?php
                   $m_sql = "select * from wiz_mall where id = '$prd_info->mallid'";
-                  $m_result = mysqli_query($connect, $m_sql) or error(mysql_error());
+                  $m_result = mysqli_query($connect, $m_sql) or error(mysqli_error($connect));
                   $m_row = mysqli_fetch_array($m_result);
 
                   $m_url = "/shop/minishop.php?mallid=".$m_row['id'];

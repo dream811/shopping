@@ -5,9 +5,12 @@
 
 <body topmargin=0 leftmargin=0>
 <?php
+if(!isset($payment)) $payment = "A";
+if(!isset($coin)) $coin = 0;
+if(!isset($gpay)) $gpay = 0;
 switch($payment) {
 	case "A" : $payment = "충전제"; break;
-	case "A" : $payment = "정액제"; break;
+	case "B" : $payment = "정액제"; break;
 	default : $payment = "기타"; break;
 }
 ?>

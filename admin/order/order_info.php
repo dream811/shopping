@@ -308,8 +308,8 @@ function setBasketStatus(state, mallid) {
         $result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
         while($row = mysqli_fetch_array($result)) {
     
-            $mall_list[$row[mallid]]['cnt'] = $row['cnt'];
-            $mall_list[$row[mallid]][total] = $row[total];
+            $mall_list[$row['mallid']]['cnt'] = $row['cnt'];
+            $mall_list[$row['mallid']]['total'] = $row['total'];
     
         }
     
@@ -320,7 +320,10 @@ function setBasketStatus(state, mallid) {
         $total = mysqli_num_rows($result);
     
         $prd_info = "";
-    
+        if(!isset($prd_price)) $prd_price = 0;
+        if(!isset($reserve_price)) $reserve_price = 0;
+        if(!isset($shop_info)) { $shop_info = new stdClass(); $shop_info->shop_name=""; $shop_info->shop_tel=""; }
+        if(!isset($mall_no)) $mall_no = array();
         while($row = mysqli_fetch_object($result)){
             if($row->prdimg == "") $row->prdimg = "/images/noimage.gif";
             else $row->prdimg = "/data/prdimg/$row->prdimg";
@@ -341,7 +344,7 @@ function setBasketStatus(state, mallid) {
                 $row->com_name = $shop_info->shop_name;
                 $row->com_tel = $shop_info->shop_tel;
             }
-    
+            if(!isset($mall_no[$row->mallid])) $mall_no[$row->mallid] = 0;
             $mall_no[$row->mallid]++;
         ?>
 		<tr bgcolor="#FFFFFF">
@@ -443,14 +446,14 @@ function setBasketStatus(state, mallid) {
 					}
 
 					// 배송비
-					$deliver_price_mall[$row->mallid] = deliver_price($mall_list[$row->mallid][total], $tmp_oper_info, $row->mallid);
-
+					$deliver_price_mall[$row->mallid] = deliver_price($mall_list[$row->mallid]['total'], $tmp_oper_info, $row->mallid);
+          if(!isset($deliver_price)) $deliver_price = 0;
 					$deliver_price += $deliver_price_mall[$row->mallid];
 
 					if($row->del_price_mall > $deliver_price_mall[$row->mallid]){
 						$deliver_msg .= " , 배송비 할증";
 					}
-
+          if(!isset($coupon_msg)) $coupon_msg = "";
 					// 쿠폰사용
 					if($row->coupon_use > 0){
 						$coupon_msg = " - 쿠폰 사용(<b>".number_format($row->coupon_use)."</b>)";
@@ -471,7 +474,7 @@ function setBasketStatus(state, mallid) {
 									[배송비 : <?=$deliver_msg?>]
 								</td>
 								<td align="right" width="50%" style="padding-right:5px">
-									상품(<b><?=number_format($mall_list[$row->mallid][total])?>원</b>) +
+									상품(<b><?=number_format($mall_list[$row->mallid]['total'])?>원</b>) +
 									배송비(<b><?=number_format($deliver_price_mall[$row->mallid])?>원</b>)
 									<?=$coupon_msg?>
 								</td>
@@ -603,16 +606,17 @@ $bank_list = explode(",", $bank_str);
         <?php
         	}
       	}
-
+        if(!isset($discount_msg)) $discount_msg = "";
         // 회원할인
         if($order_info->discount_price > 0){
         	$discount_msg = " - 회원할인( <b><font color=#ED1C24>".number_format($order_info->discount_price)."원</font></b> )";
         }
+        if(!isset($reserve_msg)) $reserve_msg = "";
         // 적립금 사용
 				if($order_info->reserve_use > 0){
 					$reserve_msg = " - 적립금 사용(<b><font color=#ED1C24>".number_format($order_info->reserve_use)."원</font></b>)";
 				}
-
+        if(!isset($coupon_msg)) $coupon_msg = "";
 				// 쿠폰사용
 				if($order_info->coupon_use > 0){
 					$coupon_msg = " - 쿠폰 사용(<b><font color=#ED1C24>".number_format($order_info->coupon_use)."원</font></b>)";
@@ -802,7 +806,7 @@ $bank_list = explode(",", $bank_str);
                 	<? } else { ?>
                 	<b><?=order_status($order_info->status);?></b>
                 	<? } ?>
-                	<?php/*
+                	<?/*
                 	<? if(!strcmp($order_info->status, "OC") || !strcmp($order_info->status, "RC")) {	//주문취소,취소완료인 경우 상태변경 불가능 ?>
                 	<b><font color="#ED1C24"><?=order_status($order_info->status);?></font></b>
                 	<? } else { ?>
@@ -994,29 +998,29 @@ $bank_list = explode(",", $bank_str);
 	<table border="0" cellspacing="1" cellpadding="2" class="t_style">
 		<tr>
         	<td class="t_name">사업자 번호</td>
-            <td colspan="3" class="t_value"><input type="text" name="com_num" value="<?=$tax_info[com_num]?>" class="input" size="20"></td>
+            <td colspan="3" class="t_value"><input type="text" name="com_num" value="<?=$tax_info['com_num']?>" class="input" size="20"></td>
 		</tr>
         <tr>
 			<td width="100" class="t_name">상 호</td>
-            <td width="180" class="t_value"><input type="text" name="com_name" value="<?=$tax_info[com_name]?>" class="input"></td>
+            <td width="180" class="t_value"><input type="text" name="com_name" value="<?=$tax_info['com_name']?>" class="input"></td>
             <td width="100" class="t_name">대표자</td>
-            <td width="180" class="t_value"><input type="text" name="com_owner" value="<?=$tax_info[com_owner]?>" class="input"></td>
+            <td width="180" class="t_value"><input type="text" name="com_owner" value="<?=$tax_info['com_owner']?>" class="input"></td>
         </tr>
         <tr>
         	<td class="t_name">사업장 소재지</td>
-            <td colspan="3" class="t_value"><input type="text" name="com_address" value="<?=$tax_info[com_address]?>" class="input" size="50"></td>
+            <td colspan="3" class="t_value"><input type="text" name="com_address" value="<?=$tax_info['com_address']?>" class="input" size="50"></td>
         </tr>
         <tr>
         	<td class="t_name">업 태</td>
-            <td class="t_value"><input type="text" name="com_kind" value="<?=$tax_info[com_kind]?>" class="input"></td>
+            <td class="t_value"><input type="text" name="com_kind" value="<?=$tax_info['com_kind']?>" class="input"></td>
             <td class="t_name">종 목</td>
-            <td class="t_value"><input type="text" name="com_class" value="<?=$tax_info[com_class]?>" class="input"></td>
+            <td class="t_value"><input type="text" name="com_class" value="<?=$tax_info['com_class']?>" class="input"></td>
         </tr>
         <tr>
         	<td class="t_name">전화번호</td>
-            <td class="t_value"><input type="text" name="com_tel" value="<?=$tax_info[com_tel]?>" class="input"></td>
+            <td class="t_value"><input type="text" name="com_tel" value="<?=$tax_info['com_tel']?>" class="input"></td>
             <td class="t_name">이메일</td>
-            <td class="t_value"><input type="text" name="com_email" value="<?=$tax_info[com_email]?>" class="input"></td>
+            <td class="t_value"><input type="text" name="com_email" value="<?=$tax_info['com_email']?>" class="input"></td>
         </tr>
 	</table>
 </div>
@@ -1026,26 +1030,26 @@ $bank_list = explode(",", $bank_str);
         <tr>
             <td width="100" class="t_name">발급사유</td>
             <td width="500" class="t_value">
-                <input type="radio" name="cash_type" value="C" <? if(!strcmp($tax_info[cash_type], "C")) echo "checked" ?>> 사업자 지출증빙용
+                <input type="radio" name="cash_type" value="C" <? if(!strcmp($tax_info['cash_type'], "C")) echo "checked" ?>> 사업자 지출증빙용
                 <input type="radio" name="cash_type" value="P" <? if(!strcmp($tax_info[cash_type], "P")) echo "checked" ?>> 개인소득 공제용
             </td>
         </tr>
         <tr>
             <td class="t_name">신청정보</td>
             <td class="t_value">
-                <input type="radio" name="cash_type2" value="CARDNUM" <? if(!strcmp($tax_info[cash_type2], "CARDNUM")) echo "checked" ?>> 현금영수증 카드번호
-                <input type="radio" name="cash_type2" value="COMNUM" <? if(!strcmp($tax_info[cash_type2], "COMNUM")) echo "checked" ?>> 사업자 등록번호
-                <input type="radio" name="cash_type2" value="HPHONE" <? if(!strcmp($tax_info[cash_type2], "HPHONE")) echo "checked" ?>> 휴대전화번호
-                <input type="radio" name="cash_type2" value="RESNO" <? if(!strcmp($tax_info[cash_type2], "RESNO")) echo "checked" ?>> 주민등록번호
+                <input type="radio" name="cash_type2" value="CARDNUM" <? if(!strcmp($tax_info['cash_type2'], "CARDNUM")) echo "checked" ?>> 현금영수증 카드번호
+                <input type="radio" name="cash_type2" value="COMNUM" <? if(!strcmp($tax_info['cash_type2'], "COMNUM")) echo "checked" ?>> 사업자 등록번호
+                <input type="radio" name="cash_type2" value="HPHONE" <? if(!strcmp($tax_info['cash_type2'], "HPHONE")) echo "checked" ?>> 휴대전화번호
+                <input type="radio" name="cash_type2" value="RESNO" <? if(!strcmp($tax_info['cash_type2'], "RESNO")) echo "checked" ?>> 주민등록번호
             </td>
         </tr>
         <tr>
             <td class="t_name"></td>
-            <td class="t_value"><input type="text" name="cash_info" value="<?=$tax_info[cash_info]?>" class="input" size="30"></td>
+            <td class="t_value"><input type="text" name="cash_info" value="<?=$tax_info['cash_info']?>" class="input" size="30"></td>
         </tr>
         <tr>
             <td class="t_name">신청자명</td>
-            <td class="t_value"><input type="text" name="cash_name" value="<?=$tax_info[cash_name]?>" class="input" size="30"></td>
+            <td class="t_value"><input type="text" name="cash_name" value="<?=$tax_info['cash_name']?>" class="input" size="30"></td>
         </tr>
     </table>
 </div>

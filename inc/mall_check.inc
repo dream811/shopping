@@ -1,5 +1,6 @@
 <?
 // 관리자 로그인 체크
+$wiz_mall = $_SESSION['wiz_mall'];
 if($wiz_mall['id'] == ""){
 ?>
 <script language="javascript">

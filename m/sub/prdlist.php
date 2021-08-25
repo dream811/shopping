@@ -81,7 +81,7 @@ $sub_tit .= " <small>(".number_format($total).")</small>";
 	$rows = $cat_info->prd_num;		// 상품수
 	$lists = 5;										// 페이징 갯수
 	$page_count = ceil($total/$rows);
-	if(!$page || $page > $page_count) $page = 1;
+	if(!isset($page) || !$page ||  $page > $page_count) $page = 1;
 	$start = ($page-1)*$rows;
 
 	$sql = "select distinct wp.prdcode, wp.prdname, wp.stortexp, wp.prdcom, wp.reserve, wp.sellprice, wp.strprice, wp.prdimg_R, wp.popular, wp.recom, wp.new, wp.best, wp.sale, wp.shortage, wp.prdicon, wp.stock,

@@ -4,6 +4,9 @@
 <? include "../../inc/admin_check.inc"; ?>
 <? include "../header.php"; ?>
 <?
+if(!isset($category)) $category = "";
+if(!isset($searchopt)) $searchopt = "";
+if(!isset($searchkey)) $searchkey = "";
 $param = "code=$code&category=$category&searchopt=$searchopt&searchkey=$searchkey";
 ?>
 <script language="JavaScript" type="text/javascript">
@@ -228,7 +231,8 @@ function copyBbs(){
 		if($category) $category_sql = " and category = '$category' ";
 		if($searchopt) $search_sql = " and $searchopt like '%$searchkey%' ";
 
-
+		if(!isset($category_sql)) $category_sql = "";
+		if(!isset($search_sql)) $search_sql = "";
 		$sql = "select wb.*, wb.wdate as wtime, from_unixtime(wb.wdate, '%Y-%m-%d') as wdate, wc.catname
 						from wiz_bbs as wb left join wiz_bbscat as wc on wb.category = wc.idx
 						where wb.code = '$code' $category_sql $search_sql order by wb.prino desc";
@@ -241,7 +245,7 @@ function copyBbs(){
     $ttime = mktime(0,0,0,date('m'),date('d'),date('Y'));
 		$today = date('Ymd');
 		$page_count = ceil($total/$rows);
-		if(!$page || $page > $page_count) $page = 1;
+		if(!isset($page) || !$page || $page > $page_count) $page = 1;
 		$start = ($page-1)*$rows;
 		$no = $total-$start;
 
@@ -273,11 +277,11 @@ function copyBbs(){
 			if(!empty($row['prdcode'])) {
 
 			 	// 상품정보
-			 	$prd_sql = "select prdcode,prdname,prdimg_S1 from wiz_product where prdcode='$row[prdcode]'";
+			 	$prd_sql = "select prdcode,prdname,prdimg_S1 from wiz_product where prdcode='".$row['prdcode']."'";
 			 	$prd_result = mysqli_query($connect, $prd_sql);
 			 	$prd_row = mysqli_fetch_array($prd_result);
 
-			 	$prdimg = "<a href='/shop/prd_view.php?prdcode=$prd_row[prdcode]' target='_blank'><img src='/data/prdimg/$prd_row[prdimg_S1]' width='50' height='50' border='0'></a>";
+			 	$prdimg = "<a href='/shop/prd_view.php?prdcode=".$prd_row['prdcode']."' target='_blank'><img src='/data/prdimg/".$prd_row['prdimg_S1']."' width='50' height='50' border='0'></a>";
 			 	$prdname = $prd_row['prdname'];
 
 			} else {

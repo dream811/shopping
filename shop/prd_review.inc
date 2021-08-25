@@ -77,7 +77,7 @@ function openImg(img){
 	 	if($row->privacy == "Y"){
 
 			$grp_sql = "select idx from wiz_bbs where code='$code' and grpno='$row->grpno' and passwd='$passwd' and idx = '$idx'";
-			$grp_result = mysqli_query($connect, $grp_sql) or error(mysql_error());
+			$grp_result = mysqli_query($connect, $grp_sql) or error(mysqli_error($connect));
 			$grp_passwd = mysqli_num_rows($grp_result);
 			
 			$memgrp = explode(',', $row->memgrp);
@@ -101,9 +101,9 @@ function openImg(img){
 
 	 	$re_space = ""; for($ii=0; $ii < $row->depno; $ii++) $re_space .= "&nbsp;&nbsp;";				// respace
 	 	if($row->depno != 0) $depno = "<img src='/images/icon_re.gif' align='absmiddle'>";												// re
-
+		if(!isset($upfile_max)) $upfile_max = 0;
 		for($ii = 1; $ii <= $upfile_max; $ii++) {
-			if(img_type($DOCUMENT_ROOT."/data/bbs/$code/M".$row->{upfile.$ii})) ${upimg.$ii} = "<div align='".$bbs_info[img_align]."'><a href=javascript:openImg('".$row->{upfile.$ii}."');><img src='/data/bbs/$code/M".$row->{upfile.$ii}."' border='0'></a></div>";
+			if(img_type($DOCUMENT_ROOT."/data/bbs/$code/M".$row->{'upfile'.$ii})) ${'upimg'.$ii} = "<div align='".$bbs_info['img_align']."'><a href=javascript:openImg('".$row->{'upfile'.$ii}."');><img src='/data/bbs/$code/M".$row->{'upfile'.$ii}."' border='0'></a></div>";
 		}
 
 		if($row->ctype != "H")  $row->content = str_replace("\n", "<br>", $row->content);

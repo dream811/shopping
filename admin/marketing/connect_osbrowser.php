@@ -97,7 +97,7 @@ function delConnect(){
         
     	$page_count = ceil($total/$rows);
 
-    	if($page < 1 || $page > $page_count) $page = 1;
+    	if(!isset($page) || $page < 1 || $page > $page_count) $page = 1;
 
     	$start = ($page-1)*$rows;
 
@@ -200,7 +200,7 @@ function delConnect(){
 
     	$page_count = ceil($total/$rows);
 
-    	if($page < 1 || $page > $page_count) $page = 1;
+    	if(!isset($page) || $page < 1 || $page > $page_count) $page = 1;
 
     	$start = ($page-1)*$rows;
 

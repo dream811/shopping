@@ -34,7 +34,7 @@ function deleteBanner( idx, code ){
       $rows = 12;
       $lists = 5;
     	$page_count = ceil($total/$rows);
-    	if($page < 1 || $page > $page_count) $page = 1;
+    	if(!isset($page) || $page < 1 || $page > $page_count) $page = 1;
     	$start = ($page-1)*$rows;
     	$no = $total-$start;
       ?>

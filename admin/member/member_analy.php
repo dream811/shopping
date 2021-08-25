@@ -31,7 +31,7 @@
 			}
 			$nowy=date("Y");
 			$nowm=date("m");
-			if(!$prev_date){
+			if(!isset($prev_date) || !$prev_date){
 				$prev_date=$nowy;
 			}
 		
@@ -110,7 +110,7 @@
       while($row = mysqli_fetch_object($result)){
       	
       	$m_sql = "select id from wiz_member where level = '$row->idx'";
-      	$m_result = mysqli_query($connect, $m_sql) or error(mysql_error());
+      	$m_result = mysqli_query($connect, $m_sql) or error(mysqli_error($connect));
       	$member_cnt = mysqli_num_rows($m_result);
       	
       	$member_percent = ($member_cnt/$member_all)*100;
@@ -155,7 +155,22 @@
            $total += $row->areatotal;
        }
        if($total == 0) $total = 1;
-       
+        $arr_address["서울"] = isset($arr_address["서울"]) ? $arr_address["서울"] : 0;
+        $arr_address["경기"] = isset($arr_address["경기"]) ? $arr_address["경기"] : 0;
+        $arr_address["인천"] = isset($arr_address["인천"]) ? $arr_address["인천"] : 0;
+        $arr_address["대전"] = isset($arr_address["대전"]) ? $arr_address["대전"] : 0;
+        $arr_address["대구"] = isset($arr_address["대구"]) ? $arr_address["대구"] : 0;
+        $arr_address["광주"] = isset($arr_address["광주"]) ? $arr_address["광주"] : 0;
+        $arr_address["울산"] = isset($arr_address["울산"]) ? $arr_address["울산"] : 0;
+        $arr_address["부산"] = isset($arr_address["부산"]) ? $arr_address["부산"] : 0;
+        $arr_address["제주"] = isset($arr_address["제주"]) ? $arr_address["제주"] : 0;
+        $arr_address["강원"] = isset($arr_address["강원"]) ? $arr_address["강원"] : 0;
+        $arr_address["경북"] = isset($arr_address["경북"]) ? $arr_address["경북"] : 0;
+        $arr_address["경남"] = isset($arr_address["경남"]) ? $arr_address["경남"] : 0;
+        $arr_address["전북"] = isset($arr_address["전북"]) ? $arr_address["전북"] : 0;
+        $arr_address["전남"] = isset($arr_address["전남"]) ? $arr_address["전남"] : 0;
+        $arr_address["충북"] = isset($arr_address["충북"]) ? $arr_address["충북"] : 0;
+        $arr_address["충남"] = isset($arr_address["충남"]) ? $arr_address["충남"] : 0;
        $posi1_percent = ($arr_address["서울"]/$total)*100;
        $posi2_percent = ($arr_address["경기"]/$total)*100;
        $posi3_percent = ($arr_address["인천"]/$total)*100;

@@ -10,7 +10,8 @@
 			<?
             $sql = "select code,title from wiz_bbsinfo where type != 'SCH'";
             $result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
-                while($row = mysqli_fetch_object($result)){
+            if(!isset($code)) $code = "";    
+            while($row = mysqli_fetch_object($result)){
                 if($row->code == $code) $row->title = "<b>".$row->title."</b>";
             ?>
             <li><a href="bbs_list.php?code=<?=$row->code?>"><?=$row->title?></a></li>

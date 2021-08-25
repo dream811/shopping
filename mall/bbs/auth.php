@@ -37,7 +37,7 @@ $bbs_row = mysqli_fetch_array($result);
 // 코멘트정보
 if($mode == "delco"){
 	$co_sql = "select id from wiz_comment where idx = '$idx'";
-	$co_result = mysqli_query($connect, $co_sql) or error(mysql_error());
+	$co_result = mysqli_query($connect, $co_sql) or error(mysqli_error($connect));
 	$co_row = mysqli_fetch_array($co_result);
 }
 
@@ -53,8 +53,8 @@ else
 // 관리자이거나 자기글인경우
 if(
 	$mem_level == "0" ||																																			// 전체관리자
-	($bbs_info[bbsadmin] != "" && strpos($bbs_info[bbsadmin],$wiz_session['id']) !== false)  ||	// 게시판관리자
-	($bbs_row[memid] != "" && $bbs_row[memid] == $wiz_session['id']) ||													// 자신의글
+	($bbs_info['bbsadmin'] != "" && strpos($bbs_info['bbsadmin'],$wiz_session['id']) !== false)  ||	// 게시판관리자
+	($bbs_row['memid'] != "" && $bbs_row['memid'] == $wiz_session['id']) ||													// 자신의글
 	($co_row['id'] != "" && $co_row['id'] == $wiz_session['id'])															// 자신의코멘드
 ){
 	$input_passwd = "글을 삭제하시겠습니까?";

@@ -5,7 +5,7 @@
 
 	$b_amount = 0;
 	$b_sql = "select * from wiz_basket where orderid='".$orderid."'";
-	$b_result = mysqli_query($connect, $b_sql) or error(mysql_error());
+	$b_result = mysqli_query($connect, $b_sql) or error(mysqli_error($connect));
 	$b_total = mysqli_num_rows($b_result);
 	while($b_row = mysqli_fetch_object($b_result)){
 

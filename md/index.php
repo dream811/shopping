@@ -1,0 +1,1 @@
+<script>document.location='md_login.php';</script>

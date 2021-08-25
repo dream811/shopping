@@ -35,7 +35,7 @@ function deleteBbs(code){
 			$rows = 20;
 			$lists = 5;
 			$page_count = ceil($total/$rows);
-			if(!$page || $page > $page_count) $page = 1;
+			if(!isset($page) || !$page || $page > $page_count) $page = 1;
 			$start = ($page-1)*$rows;
 			$no = $total-$start;
 			?>
@@ -84,6 +84,8 @@ function deleteBbs(code){
 
 					if(!strcmp($row->skin, "photoBasic")) $bbstype = "포토게시판";
 					else $bbstype = "게시판";
+
+          if(!isset($param)) $param = "";
 				?>
 			  <tr class="t_tr">
           <td height="30" align="center"><?=$no?></td>

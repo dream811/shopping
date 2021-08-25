@@ -62,7 +62,7 @@ if(empty($selorder)) {
 
 	// 각 입점업체별 상품 수 구하기
 	$b_sql = "select count(idx) as cnt, sum(prdprice) as total, mallid from wiz_basket where orderid='".$orderid."' group by mallid";
-	$b_result = mysqli_query($connect, $b_sql) or error(mysql_error());
+	$b_result = mysqli_query($connect, $b_sql) or error(mysqli_error($connect));
 	while($b_row = mysqli_fetch_array($b_result)) {
 
 		$mall_list[$b_row[mallid]]['cnt'] = $b_row['cnt'];
@@ -74,7 +74,7 @@ if(empty($selorder)) {
 						from wiz_basket as wb left join wiz_mall as wm on wb.mallid = wm.id
 						where wb.orderid = '$orderid'
 						order by wb.mallid";
-	$b_result = mysqli_query($connect, $b_sql) or error(mysql_error());
+	$b_result = mysqli_query($connect, $b_sql) or error(mysqli_error($connect));
 	$b_total = mysqli_num_rows($b_result);
 
 	while($b_row = mysqli_fetch_object($b_result)){

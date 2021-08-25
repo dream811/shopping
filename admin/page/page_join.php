@@ -82,88 +82,88 @@ function setEss(frm, val) {
                <td>사용함</td>
                <td  class="t_name">주민번호</td>
                <td>
-                 <input type="checkbox" name="info_use[]" value="resno" <? if($info_use["resno"]==true) echo "checked";?>>사용함
-                 <input type="checkbox" name="info_ess[]" value="resno" <? if($info_ess["resno"]==true) echo "checked";?>>필수항목
+                 <input type="checkbox" name="info_use[]" value="resno" <? if(isset($info_use["resno"]) && $info_use["resno"]==true) echo "checked";?>>사용함
+                 <input type="checkbox" name="info_ess[]" value="resno" <? if(isset($info_ess["resno"]) && $info_ess["resno"]==true) echo "checked";?>>필수항목
                </td>
              </tr>
              <tr>
                <td  class="t_name" height="25">이메일</td>
                <td>
-                 <input type="checkbox" name="info_use[]" value="email" <? if($info_use["email"]==true) echo "checked";?>>사용함
-                 <input type="checkbox" name="info_ess[]" value="email" <? if($info_ess["email"]==true) echo "checked";?>>필수항목
+                 <input type="checkbox" name="info_use[]" value="email" <? if(isset($info_use["email"]) && $info_use["email"]==true) echo "checked";?>>사용함
+                 <input type="checkbox" name="info_ess[]" value="email" <? if(isset($info_ess["email"]) && $info_ess["email"]==true) echo "checked";?>>필수항목
                </td>
                <td  class="t_name">주소</td>
                <td>
-                 <input type="checkbox" name="info_use[]" value="address" <? if($info_use["address"]==true) echo "checked";?>>사용함
-                 <input type="checkbox" name="info_ess[]" value="address" <? if($info_ess["address"]==true) echo "checked";?>>필수항목
+                 <input type="checkbox" name="info_use[]" value="address" <? if(isset($info_use["address"]) && $info_use["address"]==true) echo "checked";?>>사용함
+                 <input type="checkbox" name="info_ess[]" value="address" <? if(isset($info_ess["address"]) && $info_ess["address"]==true) echo "checked";?>>필수항목
                </td>
              </tr>
              <tr>
                <td  class="t_name" height="25">전화번호</td>
                <td>
-                 <input type="checkbox" name="info_use[]" value="tphone" <? if($info_use["tphone"]==true) echo "checked";?>>사용함
-                 <input type="checkbox" name="info_ess[]" value="tphone" <? if($info_ess["tphone"]==true) echo "checked";?>>필수항목
+                 <input type="checkbox" name="info_use[]" value="tphone" <? if(isset($info_use["tphone"]) && $info_use["tphone"]==true) echo "checked";?>>사용함
+                 <input type="checkbox" name="info_ess[]" value="tphone" <? if(isset($info_ess["tphone"]) && $info_ess["tphone"]==true) echo "checked";?>>필수항목
                </td>
                <td  class="t_name">휴대폰</td>
                <td>
-                 <input type="checkbox" name="info_use[]" value="hphone" <? if($info_use["hphone"]==true) echo "checked";?>>사용함
-                 <input type="checkbox" name="info_ess[]" value="hphone" <? if($info_ess["hphone"]==true) echo "checked";?>>필수항목
+                 <input type="checkbox" name="info_use[]" value="hphone" <? if(isset($info_use["hphone"]) && $info_use["hphone"]==true) echo "checked";?>>사용함
+                 <input type="checkbox" name="info_ess[]" value="hphone" <? if(isset($info_ess["hphone"]) && $info_ess["hphone"]==true) echo "checked";?>>필수항목
                </td>
              </tr>
              <tr>
                <td  class="t_name" height="25">FAX</td>
                <td>
-                 <input type="checkbox" name="info_use[]" value="fax" <? if($info_use["fax"]==true) echo "checked";?>>사용함
-                 <input type="checkbox" name="info_ess[]" value="fax" <? if($info_ess["fax"]==true) echo "checked";?>>필수항목
+                 <input type="checkbox" name="info_use[]" value="fax" <? if(isset($info_use["fax"]) && $info_use["fax"]==true) echo "checked";?>>사용함
+                 <input type="checkbox" name="info_ess[]" value="fax" <? if(isset($info_ess["fax"]) && $info_ess["fax"]==true) echo "checked";?>>필수항목
                </td>
                <td  class="t_name">기업정보</td>
                <td>
-                 <input type="checkbox" name="info_use[]" value="company" <? if($info_use["company"]==true) echo "checked";?>>사용함
-                 <input type="checkbox" name="info_ess[]" value="company" <? if($info_ess["company"]==true) echo "checked";?>>필수항목
+                 <input type="checkbox" name="info_use[]" value="company" <? if(isset($info_use["company"]) && $info_use["company"]==true) echo "checked";?>>사용함
+                 <input type="checkbox" name="info_ess[]" value="company" <? if(isset($info_ess["company"]) && $info_ess["company"]==true) echo "checked";?>>필수항목
                </td>
               </tr>
              <tr><td colspan="4" height="2"></td></tr>
              <tr>
                <td  class="t_name" height="25">생년월일</td>
                <td>
-                 <input type="checkbox" name="info_use[]" value="birthday" <? if($info_use["birthday"]==true) echo "checked";?>>사용함
-                 <input type="checkbox" name="info_ess[]" value="birthday" <? if($info_ess["birthday"]==true) echo "checked";?>>필수항목
+                 <input type="checkbox" name="info_use[]" value="birthday" <? if(isset($info_use["birthday"]) && $info_use["birthday"]==true) echo "checked";?>>사용함
+                 <input type="checkbox" name="info_ess[]" value="birthday" <? if(isset($info_ess["birthday"]) && $info_ess["birthday"]==true) echo "checked";?>>필수항목
                </td>
                <td  class="t_name">관심분야</td>
                <td>
-                 <input type="checkbox" name="info_use[]" value="consph" <? if($info_use["consph"]==true) echo "checked";?>>사용함
-                 <input type="checkbox" name="info_ess[]" value="consph" <? if($info_ess["consph"]==true) echo "checked";?>>필수항목
+                 <input type="checkbox" name="info_use[]" value="consph" <? if(isset($info_use["consph"]) && $info_use["consph"]==true) echo "checked";?>>사용함
+                 <input type="checkbox" name="info_ess[]" value="consph" <? if(isset($info_ess["consph"]) && $info_ess["consph"]==true) echo "checked";?>>필수항목
                </td>
              </tr>
              <tr>
                <td  class="t_name" height="25">결혼여부</td>
                <td>
-                 <input type="checkbox" name="info_use[]" value="marriage" <? if($info_use["marriage"]==true) echo "checked";?>>사용함
-                 <input type="checkbox" name="info_ess[]" value="marriage" <? if($info_ess["marriage"]==true) echo "checked";?>>필수항목
+                 <input type="checkbox" name="info_use[]" value="marriage" <? if(isset($info_use["marriage"]) && $info_use["marriage"]==true) echo "checked";?>>사용함
+                 <input type="checkbox" name="info_ess[]" value="marriage" <? if(isset($info_ess["marriage"]) && $info_ess["marriage"]==true) echo "checked";?>>필수항목
                </td>
                <td  class="t_name">결혼기념일</td>
                <td>
-                 <input type="checkbox" name="info_use[]" value="memorial" <? if($info_use["memorial"]==true) echo "checked";?>>사용함
-                 <input type="checkbox" name="info_ess[]" value="memorial" <? if($info_ess["memorial"]==true) echo "checked";?>>필수항목
+                 <input type="checkbox" name="info_use[]" value="memorial" <? if(isset($info_use["memorial"]) && $info_use["memorial"]==true) echo "checked";?>>사용함
+                 <input type="checkbox" name="info_ess[]" value="memorial" <? if(isset($info_ess["memorial"]) && $info_ess["memorial"]==true) echo "checked";?>>필수항목
                </td>
              </tr>
              <tr>
                <td  class="t_name" height="25">직업</td>
                <td>
-                 <input type="checkbox" name="info_use[]" value="job" <? if($info_use["job"]==true) echo "checked";?>>사용함
-                 <input type="checkbox" name="info_ess[]" value="job" <? if($info_ess["job"]==true) echo "checked";?>>필수항목</td>
+                 <input type="checkbox" name="info_use[]" value="job" <? if(isset($info_use["job"]) && $info_use["job"]==true) echo "checked";?>>사용함
+                 <input type="checkbox" name="info_ess[]" value="job" <? if(isset($info_ess["job"]) && $info_ess["job"]==true) echo "checked";?>>필수항목</td>
                <td  class="t_name">학력
                </td>
                <td>
-                 <input type="checkbox" name="info_use[]" value="scholarship" <? if($info_use["scholarship"]==true) echo "checked";?>>사용함
-                 <input type="checkbox" name="info_ess[]" value="scholarship" <? if($info_ess["scholarship"]==true) echo "checked";?>>필수항목
+                 <input type="checkbox" name="info_use[]" value="scholarship" <? if(isset($info_use["scholarship"]) && $info_use["scholarship"]==true) echo "checked";?>>사용함
+                 <input type="checkbox" name="info_ess[]" value="scholarship" <? if(isset($info_ess["scholarship"]) && $info_ess["scholarship"]==true) echo "checked";?>>필수항목
                </td>
              </tr>
              <tr>
                <td  class="t_name" height="25"><b>스팸글체크</b></td>
                <td>
-	               <input type="checkbox" name="info_use[]" value="spam" <? if($info_use["spam"]==true) echo "checked";?> onClick="setEss(this.form, this.value)">사용함
-	               <input type="checkbox" name="info_ess[]" value="spam" <? if($info_ess["spam"]==true) echo "checked";?>>필수항목
+	               <input type="checkbox" name="info_use[]" value="spam" <? if(isset($info_use["spam"]) && $info_use["spam"]==true) echo "checked";?> onClick="setEss(this.form, this.value)">사용함
+	               <input type="checkbox" name="info_ess[]" value="spam" <? if(isset($info_ess["spam"]) && $info_ess["spam"]==true) echo "checked";?>>필수항목
                </td>
              </tr>
              <tr><td height="5"></td></tr>

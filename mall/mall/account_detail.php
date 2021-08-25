@@ -193,14 +193,14 @@ function setPeriod(pdate){
 		$row = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 		$total = $row['cnt'];
 
-		$result = mysqli_query($connect, $sql) or die(mysql_error());
+		$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 		$row = mysqli_fetch_array($result);
 		$total = $row['cnt'];
 
 		$rows = 50;
 		$lists = 5;
 		$page_count = ceil($total/$rows);
-		if($page < 1 || $page > $page_count) $page = 1;
+		if(!isset($page) || $page < 1 || $page > $page_count) $page = 1;
 		$start = ($page-1)*$rows;
 		$no = $total-$start;
 		?>
@@ -231,7 +231,7 @@ function setPeriod(pdate){
 							and (wb.ord_status = 'DC' or wb.ord_status = 'CC') $search_sql
 							order by wb.orderid desc";
 			//echo $sql;
-			$result = mysqli_query($connect, $sql) or die(mysql_error());
+			$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 			while($row = mysqli_fetch_array($result)) {
 
 				if(empty($row['total_price'])) {

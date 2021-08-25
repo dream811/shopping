@@ -6,7 +6,7 @@ include_once $_SERVER['DOCUMENT_ROOT']."/inc/shop_info.inc";
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-if($wiz_mall['id'] != ""){
+if(isset($wiz_mall['id']) && $wiz_mall['id'] != ""){
 echo "<script>document.location='./main/main.php';</script>";
 exit;
 }

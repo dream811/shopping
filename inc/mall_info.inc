@@ -12,7 +12,7 @@ function mallWish() {
 
 <?php
 $m_sql = "select * from wiz_mall where id = '$mallid'";
-$m_result = mysqli_query($connect, $m_sql) or error(mysql_error());
+$m_result = mysqli_query($connect, $m_sql) or error(mysqli_error($connect));
 $m_info = mysqli_fetch_array($m_result);
 
 if($m_info[photo] != "" && file("../data/mall/".$m_info[photo])) $photo = "../data/mall/".$m_info[photo];

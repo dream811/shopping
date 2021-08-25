@@ -44,7 +44,7 @@ function delAdmin(id){
 	      $rows = 12;
 	      $lists = 5;
 	    	$page_count = ceil($total/$rows);
-	    	if($page < 1 || $page > $page_count) $page = 1;
+	    	if(!isset($page) || $page < 1 || $page > $page_count) $page = 1;
 	    	$start = ($page-1)*$rows;
 	    	$no = $total-$start;
 	    	
@@ -56,8 +56,8 @@ function delAdmin(id){
 	        <tr align="center" class="t_tr"> 
 	          <td height="30" align="center"><?=$no?></td>
 	          <td><?=$row['id']?></td>
-	          <td><?=$row[name]?></td>
-	          <td><?=$row[last]?></td>
+	          <td><?=$row['name']?></td>
+	          <td><?=$row['last']?></td>
 	          <td><?=$row['wdate']?></td>
 	          <td>
               	<a onclick="document.location='shop_admin_input.php?sub_mode=update&id=<?=$row['id']?>'" class="AW-btn-s modify">수정</a>

@@ -30,7 +30,7 @@ $bbs_row = mysqli_fetch_array($result);
 // 코멘트정보
 if($mode == "delco"){
 	$co_sql = "select id from wiz_comment where idx = '$idx'";
-	$co_result = mysqli_query($connect, $co_sql) or error(mysql_error());
+	$co_result = mysqli_query($connect, $co_sql) or error(mysqli_error($connect));
 	$co_row = mysqli_fetch_array($co_result);
 }
 

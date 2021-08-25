@@ -45,6 +45,9 @@ $pageNum=5; $pageTxt="주문관리";
 } else if(strpos($_SERVER['PHP_SELF'],"/member/")!==false){
 $pageNum=6; $pageTxt="회원관리";
 
+} else if(strpos($_SERVER['PHP_SELF'],"/md/")!==false){
+	$pageNum=12; $pageTxt="MD회원관리";
+
 } else if(strpos($_SERVER['PHP_SELF'],"/marketing/")!==false){
 $pageNum=7; $pageTxt="마케팅 분석";
 
@@ -179,7 +182,7 @@ $('.AW-manage-wrap').toggleClass('left_close');
 <div class="Head-wrap clearfix">
 	<h1><a href="/admin/main/main.php">ADMIN<span>ISTRATOR</span></a></h1>
 	<ul class="Navi clearfix">
-    	<? if($wiz_admin['designer'] == "Y"){ ?>
+    	<? if(isset($wiz_admin['designer']) && $wiz_admin['designer'] == "Y"){ ?>
         <li class="adm-setting <?=$navi1?>"><a href="../config/basic_config.php">환경설정</a></li>
         <? } ?>
 
@@ -257,7 +260,21 @@ $('.AW-manage-wrap').toggleClass('left_close');
 			</ul>
 		</li>
         <? } ?>
-
+		
+		<? if(strpos($wiz_admin['permi'], "13-00") !== false || !strcmp($wiz_admin['designer'], "Y")){ ?>
+        <li class="<?=$navi6?>">
+			<a href="../md/md_list.php"><span>MD회원관리</span></a>
+			<ul class="category">
+				<li><a href="../md/md_list.php">회원목록</a></li>
+				<li><a href="../md/md_level.php">등급관리</a></li>
+				<!-- <li><a href="../md/md_qna.php">1:1 상담관리</a></li>
+				<li><a href="../md/md_out.php">탈퇴회원</a></li>
+				<li><a href="../md/md_email.php">메일발송</a></li>
+				<li><a href="../md/md_sms.php">SMS 발송</a></li>
+				<li><a href="../md/md_analy.php">회원통계</a></li> -->
+			</ul>
+		</li>
+        <? } ?>
 		<? if(strpos($wiz_admin['permi'], "04-00") !== false || !strcmp($wiz_admin['designer'], "Y")){ ?>
         <li class="<?=$navi4?>">
 			<a href="../product/prd_list.php"><span>상품관리</span></a>

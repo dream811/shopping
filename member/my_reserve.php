@@ -69,7 +69,7 @@ $pre_reserve = $row->pre_reserve;
 			$rows = 12;
 			$lists = 5;
 			$page_count = ceil($total/$rows);
-			if(!$page || $page > $page_count) $page = 1;
+			if(!isset($page) || !$page ||  $page > $page_count) $page = 1;
 			$start = ($page-1)*$rows;
 
 			$sql = "select wr.* from wiz_reserve as wr,wiz_order as wo where wr.orderid=wo.orderid and wr.memid = '".$wiz_session['id']."' order by wdate desc limit $start, $rows";

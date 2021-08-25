@@ -66,14 +66,14 @@ function delCoupon(idx){
 	      $total = mysqli_num_rows($result);
 		  $no = $total;
 	      while($row = mysqli_fetch_array($result)){
-	      	if($row[coupon_limit] == "N") $row[coupon_amount] = "수량제한없음";
+	      	if($row['coupon_limit'] == "N") $row['coupon_amount'] = "수량제한없음";
 	      ?>
         <tr class="t_tr">
           <td height="30" align="center"><?=$no?></td>
-          <td><?=$row[coupon_name]?></td>
-          <td align="center"><?=$row[coupon_sdate]?> ~ <?=$row[coupon_edate]?></td>
-          <td align="center"><?=$row[coupon_dis]?><?=$row[coupon_type]?></td>
-          <td align="center"><?=$row[coupon_amount]?></td>
+          <td><?=$row['coupon_name']?></td>
+          <td align="center"><?=$row['coupon_sdate']?> ~ <?=$row['coupon_edate']?></td>
+          <td align="center"><?=$row['coupon_dis']?><?=$row['coupon_type']?></td>
+          <td align="center"><?=$row['coupon_amount']?></td>
           <td align="center">
           	<a onclick="document.location='shop_coupon_input.php?sub_mode=update&idx=<?=$row['idx']?>'" class="AW-btn-s modify">수정</a>
             <a onclick="delCoupon('<?=$row['idx']?>');" class="AW-btn-s del">삭제</a>
@@ -117,7 +117,7 @@ function delCoupon(idx){
       $rows = 12;
       $lists = 5;
     	$page_count = ceil($total/$rows);
-    	if($page < 1 || $page > $page_count) $page = 1;
+    	if(!isset($page) || $page < 1 || $page > $page_count) $page = 1;
     	$start = ($page-1)*$rows;
     	$no = $total-$start;
 
@@ -125,16 +125,16 @@ function delCoupon(idx){
       $result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 
       while(($row = mysqli_fetch_array($result)) && $rows){
-      	if($row[coupon_limit] == "N") $row[coupon_amount] = "수량제한없음";
+      	if($row['coupon_limit'] == "N") $row['coupon_amount'] = "수량제한없음";
       ?>
         <tr class="t_tr">
           <td height="30" align="center"><?=$no?></td>
-          <td>[상품쿠폰]<?=$row[prdname]?></td>
-          <td align="center"><?=$row[coupon_sdate]?> ~ <?=$row[coupon_edate]?></td>
-          <td align="center"><?=$row[coupon_dis]?><?=$row[coupon_type]?></td>
-          <td align="center"><?=$row[coupon_amount]?></td>
+          <td>[상품쿠폰]<?=$row['prdname']?></td>
+          <td align="center"><?=$row['coupon_sdate']?> ~ <?=$row['coupon_edate']?></td>
+          <td align="center"><?=$row['coupon_dis']?><?=$row['coupon_type']?></td>
+          <td align="center"><?=$row['coupon_amount']?></td>
           <td align="center">
-          	<a onclick="document.location='shop_coupon_input.php?sub_mode=update&prdcode=<?=$row[prdcode]?>'" class="AW-btn-s modify">수정</a>
+          	<a onclick="document.location='shop_coupon_input.php?sub_mode=update&prdcode=<?=$row['prdcode']?>'" class="AW-btn-s modify">수정</a>
           </td>
         </tr>
         <tr><td colspan="20" class="t_line"></td></tr>

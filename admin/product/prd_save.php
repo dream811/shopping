@@ -115,7 +115,7 @@ if($mode == "insert"){
 					'$prdimg_L4_name','$prdimg_M4_name','$prdimg_S4_name','$prdimg_L5_name','$prdimg_M5_name','$prdimg_S5_name',
 					'$searchkey','$stortexp','$content',now(),now(),'$mallid','$status')";
 
-	mysqli_query($connect, $sql) or die(mysql_error());
+	mysqli_query($connect, $sql) or die(mysqli_error($connect));
 
 
 	// 카테고리정보 저장

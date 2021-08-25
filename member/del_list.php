@@ -55,7 +55,7 @@ function delDel(idx){
 					$rows = 12;
 					$lists = 5;
 					$page_count = ceil($total/$rows);
-					if(!$page || $page > $page_count) $page = 1;
+					if(!isset($page) || !$page ||  $page > $page_count) $page = 1;
 					$start = ($page-1)*$rows;
 
 					$sql = "select * from wiz_dellist where id = '$wiz_session['id']' order by idx desc limit $start, $rows";

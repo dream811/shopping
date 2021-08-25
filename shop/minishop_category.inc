@@ -39,7 +39,7 @@ $total_product = $row['cnt'];
 			if($row[depthno] == 2) $t_catcode = substr($row[catcode],0,4);
 
 			$t_sql = "select count(wcp.idx) as prd_count from wiz_cprelation as wcp inner join wiz_product as wp on wcp.prdcode = wp.prdcode inner join wiz_mall as wm on wp.mallid = wm.id where wcp.catcode like '$t_catcode%' and wp.mallid = '$mallid' and wp.status = 'Y' and wm.status = 'Y'";
-			$t_result = mysqli_query($connect, $t_sql) or error(mysql_error());
+			$t_result = mysqli_query($connect, $t_sql) or error(mysqli_error($connect));
 			$t_row = mysqli_fetch_object($t_result);
 			$prd_count = $t_row->prd_count;
 		?>

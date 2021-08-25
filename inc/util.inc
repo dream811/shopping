@@ -94,7 +94,7 @@ function deliver_price($prd_price, $oper_info, $mallid = "")
 {
 	global $connect;
 	global $deliver_msg; $deliver_price = 0;
-
+	if(!isset($oper_info->mallid)) $oper_info->mallid = "";
 	if($oper_info->mallid == "" && $mallid != "") $oper_info->mallid = $mallid;
 
 	// 장바구니에 담긴 상품의 배송정책 및 배송비
@@ -108,16 +108,18 @@ function deliver_price($prd_price, $oper_info, $mallid = "")
 
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 	$basket_total = mysqli_num_rows($result);
+	if(!isset($del_info)) $del_info = array();
 	while($row = mysqli_fetch_array($result)) {
 
-		if(empty($row[del_type])) $row[del_type] = "DA";
+		if(empty($row['del_type'])) $row['del_type'] = "DA";
 
-		if(!strcmp($row[del_type], "DC")) $del_price += $row[del_price];			// 상품별 배송비 합산
-		$del_info[$row[del_type]]['cnt'] = $del_info[$row[del_type]]['cnt'] + 1;	// 각 배송방법별 갯수
+		if(!strcmp($row['del_type'], "DC")) $del_price += $row[del_price];			// 상품별 배송비 합산
+		if(!isset($del_info[$row['del_type']]['cnt'])) $del_info[$row['del_type']]['cnt'] = 0;
+		$del_info[$row['del_type']]['cnt'] = $del_info[$row['del_type']]['cnt'] + 1;	// 각 배송방법별 갯수
 
-		if($row[del_type] != "DA") $prd_price -= $row[prdprice];							// 기본 배송정책이 아닌 경우 해당 상품의 금액을 제외한 상품 금액으로 배송비 책정
+		if($row['del_type'] != "DA") $prd_price -= $row[prdprice];							// 기본 배송정책이 아닌 경우 해당 상품의 금액을 제외한 상품 금액으로 배송비 책정
 
-		$del_type = $row[del_type];
+		$del_type = $row['del_type'];
 	}
 
 	/**************************************************************************************
@@ -152,7 +154,10 @@ function deliver_price($prd_price, $oper_info, $mallid = "")
 	/**************************************************************************************
 		상품별 배송정책
 	**************************************************************************************/
-
+	if(!isset($del_info["DA"]['cnt'])) $del_info["DA"]['cnt'] = 0;
+	if(!isset($del_info["DB"]['cnt'])) $del_info["DB"]['cnt'] = 0;
+	if(!isset($del_info["DC"]['cnt'])) $del_info["DC"]['cnt'] = 0;
+	if(!isset($del_info["DD"]['cnt'])) $del_info["DD"]['cnt'] = 0;
 	// 무료배송 상품과 함께 주문할 경우, 전체 배송비를 무료
 	if(!strcmp($oper_info->del_prd, "DA") && $del_info["DB"]['cnt'] > 0) {
 		$deliver_price = 0; $del_price = 0; $deliver_msg = "배송비 전액무료";
@@ -199,6 +204,28 @@ function level_list()
 	while($row = mysqli_fetch_object($result)){
 		echo "<option value='$row->idx'>$row->name";
 	}
+}
+
+// MD회원등급 리스트
+function md_level_list()
+{
+	global $connect;
+	$sql = "select idx,level,name from wiz_mdlevel order by level asc, idx asc";
+	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
+	while($row = mysqli_fetch_object($result)){
+		echo "<option value='$row->idx'>$row->name";
+	}
+}
+
+// 스크레핑회원등급 리스트
+function scrap_level_list()
+{
+	global $connect;
+	$sql = "select idx,level,name from wiz_scraplevel order by level asc, idx asc";
+	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
+	while($row = mysqli_fetch_object($result)){
+		echo "<option value='$row->idx'>$row->name";
+	}
 
 }
 
@@ -224,6 +251,51 @@ function level_info()
 	return $level_info;
 
 }
+
+// MD등급정보
+function md_level_info()
+{
+	global $connect;
+	$level_info[""]['level'] = 11;
+  $level_info[""]['name'] = "전체";
+	$level_info["-1"]['level'] = -1;
+  $level_info["-1"]['name'] = "구매회원";
+	$level_info["0"]['level'] = 0;
+  $level_info["0"]['name'] = "관리자";
+
+	$sql = "select * from wiz_mdlevel";
+	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
+
+	while($row = mysqli_fetch_object($result)){
+		$level_info[$row->idx]['level'] = $row->level;
+		$level_info[$row->idx]['name'] = $row->name;
+	}
+
+	return $level_info;
+
+}
+
+// 스크래핑등급정보
+function scrap_level_info()
+{
+	global $connect;
+	$level_info[""]['level'] = 11;
+  $level_info[""]['name'] = "전체";
+	$level_info["-1"]['level'] = -1;
+  $level_info["-1"]['name'] = "구매회원";
+	$level_info["0"]['level'] = 0;
+  $level_info["0"]['name'] = "관리자";
+
+	$sql = "select * from wiz_scraplevel";
+	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
+
+	while($row = mysqli_fetch_object($result)){
+		$level_info[$row->idx]['level'] = $row->level;
+		$level_info[$row->idx]['name'] = $row->name;
+	}
+	return $level_info;
+}
+
 
 // 등급할인액
 function level_discount($idx,$prd_price)
@@ -408,7 +480,7 @@ function print_pagelist($page, $list_amount, $page_count, $param, $page_type = "
 	if($page_type){
 		$page_name = $page_type."page";
 	}
-
+	if(!isset($page_name)) $page_name = "page";
 	if(mobile_check() == true) $skin_dir = "../img/sub/";
 	else $skin_dir = "/images/";
 
@@ -610,10 +682,18 @@ function info_replace($shop_info, $re_info, $order_info, $msg)
 
 	$date = date('Y')."년 ".date('m')."월 ".date('d')."일";
 
+	if(!isset($re_info['id'])) $re_info['id'] = "";
+	if(!isset($re_info['pw'])) $re_info['pw'] = "";
+	if(!isset($re_info['name'])) $re_info['name'] = "";
+
+	if(!isset($shop_info->shop_name)) $shop_info->shop_name = "";
+	if(!isset($shop_info->shop_email)) $shop_info->shop_email = "";
+	if(!isset($shop_info->shop_tel)) $shop_info->shop_tel = "";
+
 	$msg = str_replace("{DATE}", $date, $msg);
 	$msg = str_replace("{MEM_ID}", $re_info['id'], $msg);
-	$msg = str_replace("{MEM_PW}", $re_info[pw], $msg);
-	$msg = str_replace("{MEM_NAME}", $re_info[name], $msg);
+	$msg = str_replace("{MEM_PW}", $re_info['pw'], $msg);
+	$msg = str_replace("{MEM_NAME}", $re_info['name'], $msg);
 	$msg = str_replace("{SHOP_NAME}", $shop_info->shop_name, $msg);
 	$msg = str_replace("{SHOP_EMAIL}", $shop_info->shop_email, $msg);
 	$msg = str_replace("{SHOP_TEL}", $shop_info->shop_tel, $msg);
@@ -633,6 +713,16 @@ function send_mailsms($type, $re_info, $order_info="")
 	// 관리자 정보 가져오기
 	include_once "$DOCUMENT_ROOT/inc/shop_info.inc";
 
+	if(!isset($re_info['name'])) $re_info['name'] = "";
+	if(!isset($re_info['email'])) $re_info['email'] = "";
+	if(!isset($re_info['hphone'])) $re_info['hphone'] = "";
+	
+	if(!isset($shop_info)) $shop_info = new stdClass();
+	if(!isset($shop_info->shop_name)) $shop_info->shop_name = "";
+	if(!isset($shop_info->shop_email)) $shop_info->shop_email = "";
+	if(!isset($shop_info->shop_tel)) $shop_info->shop_tel = "";
+	if(!isset($shop_info->shop_hand)) $shop_info->shop_hand = "";
+
 	$se_name = $shop_info->shop_name;
 	$se_email = $shop_info->shop_email;
 	$se_tel = $shop_info->shop_tel;
@@ -640,7 +730,7 @@ function send_mailsms($type, $re_info, $order_info="")
 
 	// 메일/sms 발송내용 가져오기
 	$sql = "select * from wiz_mailsms where code = '$type'";
-	$result = mysqli_query($connect, $sql,$connect) or error(mysql_error());
+	$result = mysqli_query($connect, $sql) or error(mysqli_error($connect));
 	$row = mysqli_fetch_object($result);
 
 
@@ -649,13 +739,13 @@ function send_mailsms($type, $re_info, $order_info="")
 	$row->sms_msg = info_replace($shop_info, $re_info, $order_info, $row->sms_msg);
 
 	if($row->sms_cust == "Y"){
-		send_sms($se_tel, $re_info[hphone], $row->sms_msg, $se_name);
+		send_sms($se_tel, $re_info['hphone'], $row->sms_msg, $se_name);
 	}
 	if($row->sms_oper == "Y"){
 		send_sms($se_tel, $se_hand, $row->sms_msg, $se_name);
 	}
 	if($row->email_cust == "Y"){
-		send_mail($se_name, $se_email, $re_info[name], $re_info[email], $row->email_subj, $row->email_msg);
+		send_mail($se_name, $se_email, $re_info['name'], $re_info['email'], $row->email_subj, $row->email_msg);
 	}
 	if($row->email_oper == "Y"){
 		send_mail($se_name, $se_email, $se_name, $se_email, $row->email_subj, $row->email_msg);
@@ -807,17 +897,17 @@ function Exe_stock(){
 	$j_sql = "SELECT wb.optcode, wb.prdcode, wb.amount, wp.optcode as p_optcode, wp.optcode2 as p_optcode2, wp.optvalue, wp.opt_use, wp.shortage
 						FROM wiz_basket wb, wiz_product wp
 						WHERE wb.orderid = '$order_info->orderid' AND wb.prdcode = wp.prdcode";
-	$j_result = mysqli_query($connect, $j_sql) or die(mysql_error());
+	$j_result = mysqli_query($connect, $j_sql) or die(mysqli_error($connect));
 	while($row = mysqli_fetch_object($j_result)){
 		// 옵션별 재고관리 없는 제품이라면 전체재고 감소
 		if(strcmp($row->opt_use, "Y")){
 
 			if(!strcmp($row->shortage, "S")) {
 				$sql = "UPDATE wiz_product SET stock = stock - $row->amount , ordercnt = ordercnt + $row->amount WHERE prdcode = '$row->prdcode'";
-				$result = mysqli_query($connect, $sql) or die(mysql_error());
+				$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 			} else {
 				$sql = "UPDATE wiz_product SET ordercnt = ordercnt + $row->amount WHERE prdcode = '$row->prdcode'";
-				$result = mysqli_query($connect, $sql) or die(mysql_error());
+				$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 			}
 
 			// 옵션별 재고관리 상품
@@ -860,7 +950,7 @@ function Exe_stock(){
 			}
 
 			$sql = "UPDATE wiz_product SET optvalue = '$opt_list_app', ordercnt = ordercnt + $row->amount WHERE prdcode = '$row->prdcode'";
-			mysqli_query($connect, $sql) or die(mysql_error());
+			mysqli_query($connect, $sql) or die(mysqli_error($connect));
 
 			$tmp_prdcode[$row->prdcode] = $opt_list_app;
 
@@ -1021,7 +1111,7 @@ function Exe_payment($payment){
 			foreach($coupon_list as $c_idx => $cidx) {
 
 				$c_sql = "select * from wiz_mycoupon where idx='".$cidx."'";
-				$c_result = mysqli_query($connect, $c_sql) or error(mysql_error());
+				$c_result = mysqli_query($connect, $c_sql) or error(mysqli_error($connect));
 				$c_row = mysqli_fetch_array($c_result);
 
 				if($c_row[coupon_use] == "N" && $c_row[coupon_sdate] <= $today && $c_row[coupon_edate] >= $today) {
@@ -1470,7 +1560,7 @@ function escrow_delivery($order_info, $oper_info, $delsno="", $deldate="") {
 			            라이브러리 호출
 			########################*/
 
-			require($_SERVER[DOCUMENT_ROOT]."/shop/INICIS/EscrowLib.php");
+			require($_SERVER['DOCUMENT_ROOT']."/shop/INICIS/EscrowLib.php");
 
 			/*########################
 			            인스턴스 생성
@@ -1482,13 +1572,13 @@ function escrow_delivery($order_info, $oper_info, $delsno="", $deldate="") {
 			                  배송/반품 공통 정보 설정
 			########################################*/
 
-			$escrow->inipayhome	= $_SERVER[DOCUMENT_ROOT]."/shop/INICIS/";	// 이니페이 지불시스템 설치 절대 경로(반드시 절대 경로로 입력하시기 바랍니다.)
+			$escrow->inipayhome	= $_SERVER['DOCUMENT_ROOT']."/shop/INICIS/";	// 이니페이 지불시스템 설치 절대 경로(반드시 절대 경로로 입력하시기 바랍니다.)
 			$escrow->mid				= $oper_info->pay_id;		// 상점 아이디
 			$escrow->EscrowType	= "dr";									// 에스크로 타입
 			$escrow->hanatid		= $order_info->tno;			// 하나은행 거래 아이디
 			$escrow->invno 			= $delsno;							// 운송장 번호
 			$escrow->adminID 		= $wiz_admin['id'];				// 등록자 ID
-			$escrow->adminName 	= $wiz_admin[name];			// 등록자 성명
+			$escrow->adminName 	= $wiz_admin['name'];			// 등록자 성명
 			$escrow->regdate 		= date("Ymd");					// 등록요청 일자
 			$escrow->regtime 		= date("His");					// 등록요청 시간
 

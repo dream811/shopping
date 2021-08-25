@@ -267,7 +267,7 @@ function setPeriod(sdate,edate){
 		$rows = 20;
 		$lists = 5;
 		$page_count = ceil($total/$rows);
-		if(!$page || $page > $page_count) $page = 1;
+		if(!isset($page) || !$page ||  $page > $page_count) $page = 1;
 		$start = ($page-1)*$rows;
 		$no = $total-$start;
 		?>
@@ -344,7 +344,7 @@ function setPeriod(sdate,edate){
         <td align="center"><a href="javascript:sendEmail('<?=$row->com_name?>:<?=$row->email?>')"><?=$row->email?></a></td>
         <?
         $mall_sql = "select prdcode,status from wiz_product where mallid='$row->id'";
-        $mall_result = mysqli_query($connect, $mall_sql) or error(mysql_error());
+        $mall_result = mysqli_query($connect, $mall_sql) or error(mysqli_error($connect));
         $prd_total = mysqli_num_rows($mall_result);
         ?>
         <td align="center"><a href="../product/prd_list.php?s_mallid=<?=$row->id?>" target="_blank"><?=$prd_total?></a></td>

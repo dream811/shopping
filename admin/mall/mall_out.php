@@ -73,7 +73,7 @@ function mallOut(mallid) {
 		$rows = 20;
 		$lists = 5;
 		$page_count = ceil($total/$rows);
-		if(!$page || $page > $page_count) $page = 1;
+		if(!isset($page) || !$page ||  $page > $page_count) $page = 1;
 		$start = ($page-1)*$rows;
 		$no = $total-$start;
 

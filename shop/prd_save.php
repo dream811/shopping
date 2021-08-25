@@ -138,7 +138,7 @@ if($mode == "insert"){
 
 		// 같은상품에 같은 옵션을 선택했는지
 		$bsql = "SELECT * FROM wiz_basket_tmp WHERE uniq_id='".$_COOKIE["uniq_id"]."'";
-		$bresult = mysqli_query($connect, $bsql) or error(mysql_error());
+		$bresult = mysqli_query($connect, $bsql) or error(mysqli_error($connect));
 		while($result = mysqli_fetch_array($bresult)){
 			if($result['prdcode'] == $prdcode &&
 				$result['optcode'] == $optcode &&
@@ -194,7 +194,7 @@ if($mode == "insert"){
 								amount			= '$amount'
 							WHERE uniq_id='".$_COOKIE["uniq_id"]."' AND idx='".$basket_idx."'";
 
-			mysqli_query($connect, $update_sql) or error(mysql_error());
+			mysqli_query($connect, $update_sql) or error(mysqli_error($connect));
 		}
 
 	} else {
@@ -249,7 +249,7 @@ if($mode == "insert"){
 
 			// 같은상품에 같은 옵션을 선택했는지
     		$bsql = "SELECT * FROM wiz_basket_tmp WHERE uniq_id='".$_COOKIE["uniq_id"]."'";
-    		$bresult = mysqli_query($connect, $bsql) or error(mysql_error());
+    		$bresult = mysqli_query($connect, $bsql) or error(mysqli_error($connect));
     		while($result = mysqli_fetch_array($bresult)){
     			if($result['prdcode'] == $prdcode &&
     				$result['optcode'] == $optcode &&
@@ -280,7 +280,7 @@ if($mode == "insert"){
 				)VALUES(
 				'','".$_COOKIE["uniq_id"]."','$prdcode','$prd_info->prdname','$prd_info->prdimg','$prd_info->sellprice','$prd_info->reserve','$prd_info->supprice','$prd_info->mallid','$opttitle','$optcode','$opttitle2','$optcode2',
 				'$opttitle3','$optcode3','$opttitle4','$optcode4','$opttitle5','$optcode5','$opttitle6','$optcode6','$opttitle7','$optcode7','$amount',now())";
-				mysqli_query($connect, $insert_sql) or error(mysql_error());
+				mysqli_query($connect, $insert_sql) or error(mysqli_error($connect));
 
  				// 장바구니수 증가
  				$sql = "UPDATE wiz_product SET basketcnt = basketcnt + 1 WHERE prdcode='$prdcode'";

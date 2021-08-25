@@ -11,7 +11,7 @@
   <tr><td><textarea name="query" rows="10" cols="80"><?=stripslashes($query)?></textarea><input type="submit"></td></tr>
 </form>
 </table>
-<? if($query != "") mysqli_query($connect, stripslashes($query)) or die(mysql_error()); ?>
+<? if($query != "") mysqli_query($connect, stripslashes($query)) or die(mysqli_error($connect)); ?>
 <br><br>
 
 

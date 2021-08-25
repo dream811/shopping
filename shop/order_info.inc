@@ -26,7 +26,7 @@ include_once "../inc/shop_info.inc"; 		// 상점 정보
 	}
 
 	$sql = "select wb.*, wm.com_name, wm.com_tel, wm.del_method, wm.del_fixprice, wm.del_staprice, wm.del_staprice2, wm.del_staprice3, wm.del_prd, wm.del_prd2 from wiz_basket as wb left join wiz_mall as wm on wb.mallid = wm.id where orderid = '$order_info->orderid' order by wb.mallid";
-	$result = mysqli_query($connect, $sql,$connect) or error(mysql_error());
+	$result = mysqli_query($connect, $sql) or error(mysqli_error($connect));
 	$prd_num = mysqli_num_rows($result);
 
 	$no = 0;
@@ -113,7 +113,7 @@ include_once "../inc/shop_info.inc"; 		// 상점 정보
 
 	if(!empty($row->deliver_num)) {
 		$d_sql = "select * from wiz_mall where id = '$row->mallid'";
-		$d_result = mysqli_query($connect, $d_sql) or error(mysql_error());
+		$d_result = mysqli_query($connect, $d_sql) or error(mysqli_error($connect));
 		$d_row = mysqli_fetch_object($d_result);
 
 		echo "

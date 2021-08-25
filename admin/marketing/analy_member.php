@@ -38,7 +38,7 @@
       while($row = mysqli_fetch_object($result)){
       	
       	$m_sql = "select id from wiz_member where level = '$row->idx'";
-      	$m_result = mysqli_query($connect, $m_sql) or error(mysql_error());
+      	$m_result = mysqli_query($connect, $m_sql) or error(mysqli_error($connect));
       	$member_cnt = mysqli_num_rows($m_result);
       	
       	$member_percent = ($member_cnt/$member_all)*100;

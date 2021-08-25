@@ -37,7 +37,7 @@ include "../inc/mem_info.inc"; 		// 회원 정보
 				$rows = 12;
 				$lists = 5;
 				$page_count = ceil($total/$rows);
-				if(!$page || $page > $page_count) $page = 1;
+				if(!isset($page) || !$page ||  $page > $page_count) $page = 1;
 				$start = ($page-1)*$rows;
 
 				$sql = "select * from wiz_consult where memid = '$wiz_session['id']' $search_sql order by idx desc limit $start, $rows";

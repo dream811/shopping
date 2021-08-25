@@ -34,7 +34,7 @@ function json_encode($data) {
 }
 
 $sql = "SELECT * FROM wiz_dellist WHERE idx='$idx'";
-$result = mysqli_query($connect, $sql) or die (mysql_error());
+$result = mysqli_query($connect, $sql) or die (mysqli_error($connect));
 $data = mysqli_fetch_array($result);
 
 echo iconv("CP949", "UTF-8", json_encode($data));

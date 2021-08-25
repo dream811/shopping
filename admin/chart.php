@@ -41,7 +41,7 @@ if($chart_mode=='border'){
         group by substring(wdate,9,2) 
         order by substring(wdate,9,2) asc";
 
-    $cresult = mysqli_query($connect, $csql) or error(mysql_error());
+    $cresult = mysqli_query($connect, $csql) or error(mysqli_error($connect));
     $ctotal = mysqli_num_rows($cresult);
     while($crow = mysqli_fetch_assoc($cresult)){
     $crow['wdate']			= intval($crow['wdate']);
@@ -57,8 +57,8 @@ if($chart_mode=='border'){
     $comment_count=array();
     for($ii=1;$ii<=$month_count;$ii++){
 
-    if($cnt_list[$ii]=='')$cnt_list[$ii]=0;
-    if($ccnt_list[$ii]=='')$ccnt_list[$ii]=0;
+    if(!isset($cnt_list[$ii]) || $cnt_list[$ii]=='')$cnt_list[$ii]=0;
+    if(!isset($ccnt_list[$ii]) ||$ccnt_list[$ii]=='')$ccnt_list[$ii]=0;
 
 
     $bbs_count[$ii]=$cnt_list[$ii];
@@ -99,8 +99,9 @@ var ctx = document.getElementById('myChart');
 <?
 //메인 접속통계
 }else if($chart_mode=='common'){
-
-list($mode, $analy_type, $prev_date, $next_date, $search_engin) = explode('|', $chart_param);
+$arrChartData = explode('|', $chart_param);
+if(count($arrChartData) < 5) $arrChartData[] = "";
+list($mode, $analy_type, $prev_date, $next_date, $search_engin) = $arrChartData;
 
 
     $prev_period = $prev_date.'00';
@@ -144,7 +145,7 @@ list($mode, $analy_type, $prev_date, $next_date, $search_engin) = explode('|', $
 
 
 	$query	= "SELECT SUM(cnt) AS cnt, ".$substring_sql." AS time FROM wiz_contime ".$period_sql." GROUP BY ".$substring_sql." ORDER BY ".$substring_sql;
-	$result	= mysqli_query($connect, $query) or error(mysql_error());
+	$result	= mysqli_query($connect, $query) or error(mysqli_error($connect));
 	while($row = mysqli_fetch_assoc($result)){
 
 		$row['time']			= intval($row['time']);
@@ -286,7 +287,7 @@ var ctx = document.getElementById('myChart2');
 			group by substring(wdate,6,2) 
 			order by substring(wdate,6,2) asc";
     
-	$cresult = mysqli_query($connect, $csql) or error(mysql_error());
+	$cresult = mysqli_query($connect, $csql) or error(mysqli_error($connect));
 	$ctotal = mysqli_num_rows($cresult);
 	while($crow = mysqli_fetch_assoc($cresult)){
 		$crow['wdate']			= intval($crow['wdate']);
@@ -403,7 +404,7 @@ var ctx = document.getElementById('myChart');
 			group by substring(wdate,9,2) 
 			order by substring(wdate,9,2) asc";
 
-	$cresult = mysqli_query($connect, $csql) or error(mysql_error());
+	$cresult = mysqli_query($connect, $csql) or error(mysqli_error($connect));
 	$ctotal = mysqli_num_rows($cresult);
 	while($crow = mysqli_fetch_assoc($cresult)){
 		$crow['wdate']			= intval($crow['wdate']);
@@ -501,12 +502,12 @@ var ctx = document.getElementById('myChart');
     $period_sql = " WHERE wdate >= '$cprev_period' AND wdate <= '$cnext_period' ";
 
 	/*$query	= "SELECT SUM(cnt) AS total_cnt FROM wiz_contime";
-	$result	= mysqli_query($connect, $query) or error(mysql_error());
+	$result	= mysqli_query($connect, $query) or error(mysqli_error($connect));
 	$row	= mysqli_fetch_object($result);
 	$total_cnt = $row->total_cnt;*/
 
 	$query	= "SELECT count(*) AS cnt, ".$substring_sql." AS time FROM wiz_member ".$period_sql." GROUP BY ".$substring_sql." ORDER BY ".$substring_sql;
-	$result	= mysqli_query($connect, $query) or error(mysql_error());
+	$result	= mysqli_query($connect, $query) or error(mysqli_error($connect));
 	while($row = mysqli_fetch_assoc($result)){
 
 		$row['time']			= intval($row['time']);
@@ -517,7 +518,7 @@ var ctx = document.getElementById('myChart');
 
      for($ii=1;$ii<=$pr_end;$ii++){
         
-        if($cnt_list[$ii]=='')$cnt_list[$ii]=0;
+        if(!isset($cnt_list[$ii]) || $cnt_list[$ii]=='')$cnt_list[$ii]=0;
       
 
         $member_count[$ii]=$cnt_list[$ii];
@@ -613,7 +614,7 @@ var ctx = document.getElementById('myChart');
 	
 
 	$query	= "SELECT SUM(cnt) AS cnt, ".$substring_sql." AS time FROM wiz_contime ".$period_sql." GROUP BY ".$substring_sql." ORDER BY ".$substring_sql;
-	$result	= mysqli_query($connect, $query) or error(mysql_error());
+	$result	= mysqli_query($connect, $query) or error(mysqli_error($connect));
 	while($row = mysqli_fetch_assoc($result)){
 
 		$row['time']			= intval($row['time']);
@@ -694,7 +695,7 @@ var ctx = document.getElementById('myChart');
 
 
 	$sql2 = "select sum(cnt) as cnt,browser from wiz_conother where browser != '' GROUP BY browser order by cnt desc";
-	$result2 = mysqli_query($connect, $sql2) or error(mysql_error());
+	$result2 = mysqli_query($connect, $sql2) or error(mysqli_error($connect));
 
     for($i = 0; $row2 = mysqli_fetch_assoc($result2); $i++){
 
@@ -739,7 +740,7 @@ var ctx = document.getElementById('myChart');
 <?}else if($chart_mode=='os'){
 
     $sql2 = "select sum(cnt) as cnt,os from wiz_conother where os != '' GROUP BY os order by cnt desc";
-	$result2 = mysqli_query($connect, $sql2) or error(mysql_error());
+	$result2 = mysqli_query($connect, $sql2) or error(mysqli_error($connect));
 
 	for($i = 0; $row2 = mysqli_fetch_assoc($result2); $i++){
 
@@ -805,7 +806,7 @@ var ctx = document.getElementById('myChart');
     
 	$query2	= "SELECT sum(cnt) AS cnt, ".$group_sql." FROM wiz_conrefer WHERE host LIKE '%".$search_engin."%' AND ".$period_sql." GROUP BY ".$group_sql." ORDER BY cnt DESC";
 
-    $result2	= mysqli_query($connect, $query2) or error(mysql_error());
+    $result2	= mysqli_query($connect, $query2) or error(mysqli_error($connect));
 	for($i = 0; $row2 = mysqli_fetch_assoc($result2); $i++){
 
 		if(!$row2[$group_sql])	$row2[$group_sql] = "즐겨찾기나 직접방문";

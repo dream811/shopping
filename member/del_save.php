@@ -10,7 +10,7 @@ if($mode == 'insert'){
 	$hphone = $hphone1."-".$hphone2."-".$hphone3;
 
 	$query = "insert into wiz_dellist(idx,id,name,delname,address,tphone,hphone,post) values('','$wiz_session['id']', '$name', '$delname', '$address', '$tphone', '$hphone','$post')";
-	mysqli_query($connect, $query) or mysql_error();
+	mysqli_query($connect, $query) or mysqli_error($connect);
 
 	complete("저장되었습니다.","/member/del_list.php");	
 }
@@ -23,7 +23,7 @@ else if($mode == 'viewinsert'){
 	$hphone = $hphone1."-".$hphone2."-".$hphone3;
 
 	$query = "insert into wiz_dellist(idx,id,name,delname,address,tphone,hphone,post) values('','$wiz_session['id']', '$name', '$delname', '$address', '$tphone', '$hphone','$post')";
-	mysqli_query($connect, $query) or mysql_error();
+	mysqli_query($connect, $query) or mysqli_error($connect);
 
 	echo "<script>alert('저장되었습니다.');window.opener.document.location.href = window.opener.document.URL;self.close();</script>";
 }
@@ -35,7 +35,7 @@ else if($mode == 'update'){
 	$hphone = $hphone1."-".$hphone2."-".$hphone3;
 	
 	$query = "update wiz_dellist set id='$wiz_session['id']', name='$name', delname='$delname', address='$address', tphone='$tphone', hphone='$hphone',post='$post' where idx='$idx' and id='$wiz_session['id']'";
-	mysqli_query($connect, $query) or mysql_error();
+	mysqli_query($connect, $query) or mysqli_error($connect);
 
 	complete("수정되었습니다.","/member/del_list.php");
 }
@@ -50,7 +50,7 @@ else if($mode == 'delete'){
 	}
 	else{
 		$query = "delete from wiz_dellist where idx='$idx' and id='$wiz_session['id']'";
-		mysqli_query($connect, $query) or mysql_error();
+		mysqli_query($connect, $query) or mysqli_error($connect);
 
 		complete("삭제되었습니다.","/member/del_list.php");		
 	}

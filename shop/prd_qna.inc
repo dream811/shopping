@@ -71,7 +71,7 @@ function qnaCheck(frm) {
 	 	if($row->privacy == "Y"){
 
 			$grp_sql = "select idx from wiz_bbs where code='$code' and grpno='$row->grpno' and passwd='$passwd' and idx = '$idx'";
-			$grp_result = mysqli_query($connect, $grp_sql) or error(mysql_error());
+			$grp_result = mysqli_query($connect, $grp_sql) or error(mysqli_error($connect));
 			$grp_passwd = mysqli_num_rows($grp_result);
 			
 			$memgrp = explode(',', $row->memgrp);

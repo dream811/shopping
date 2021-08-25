@@ -8,25 +8,42 @@ $upfile_idx = date('ymdhis').rand(1,9);					// 업로드파일명
 $category_path = "../../data/category/$code";		// 카테고리 업로드 파일위치
 
 // 업로드 디렉토리 생성
-if(!is_dir($upfile_path)) mkdir($upfile_path, 0707);
+if(isset($code) && !is_dir($upfile_path)) mkdir($upfile_path, 0707);
 
 // 업로드 디렉토리 생성
-if(!is_dir($category_path)) mkdir($category_path, 0707);
+if(isset($code) && !is_dir($category_path)) mkdir($category_path, 0707);
+if(!isset($titleimg_sql)) $titleimg_sql = "";
+if(!isset($header)) $header = "";
+if(!isset($footer)) $footer = "";
+if(!isset($category)) $category = "";
+if(!isset($pageurl)) $pageurl = "";
+if(!isset($privacy)) $privacy = "";
+if(!isset($remail)) $remail = "";
+if(!isset($imgview)) $imgview = "";
+if(!isset($abuse)) $abuse = "";
 
 if($mode == "insert"){
 
-	if($titleimg[size] > 0){
+	if($titleimg['size'] > 0){
 
-		file_check($titleimg[name]);
+		file_check($titleimg['name']);
 
-		$ext = substr($titleimg[name],-3);
+		$ext = substr($titleimg['name'],-3);
 		$titleimg_name = $code."_title.".$ext;
-		copy($titleimg[tmp_name], $upfile_path."/".$titleimg_name);
+		copy($titleimg['tmp_name'], $upfile_path."/".$titleimg_name);
 		chmod($upfile_path."/".$titleimg_name, 0606);
 	}
 
 	if(empty($type)) $type = "BBS";
 	if(empty($skin)) $type = "bbsBasic";
+	if(isset($titleimg_sql)) $titleimg_sql = "";
+	if(isset($header)) $header = "";
+	if(isset($footer)) $footer = "";
+	if(isset($category)) $category = "";
+	if(isset($pageurl)) $pageurl = "";
+	if(isset($privacy)) $privacy = "";
+	if(isset($remail)) $remail = "";
+	if(isset($imgview)) $imgview = "";
 
 	$sql = "insert into wiz_bbsinfo (code,type,title,titleimg,header,footer,category,bbsadmin,lpermi,
 					rpermi,wpermi,apermi,cpermi,datetype_list,datetype_view,skin,permsg,perurl,pageurl,editor,
@@ -39,29 +56,28 @@ if($mode == "insert"){
 					'$newc','$hotc','$line','$subject_len','$img_align','$btn_view','$spam_check','$view_list')";
 	$result = mysqli_query($connect, $sql);
 
-	if(mysql_errno() > 0) echo "<script>alert('이미생성된 게시판입니다.');history.go(-1);</script>";
+	if(mysqli_errno($connect) > 0) echo "<script>alert('이미생성된 게시판입니다.');history.go(-1);</script>";
 	else {
 
 		if(empty($catname)) $catname = "전체";
 
 		//전체 카테고리 추가
-	  $sql = "insert into wiz_bbscat (idx,gubun,code,catname,catimg,catimg_over,caticon,prior)
+	  	$sql = "insert into wiz_bbscat (idx,gubun,code,catname,catimg,catimg_over,caticon,prior)
 	  				values('','A','$code','$catname','$catimg_tmp','$catimg_over_tmp','$caticon_tmp','1')";
-	  mysqli_query($connect, $sql) or die(mysqli_error($connect));
-
+	  	mysqli_query($connect, $sql) or die(mysqli_error($connect));
 		complete("게시판을 추가 하였습니다.","bbs_pro_input.php?mode=update&code=$code");
 	}
 
 
 }else if($mode == "update"){
 
-	if($titleimg[size] > 0){
+	if($titleimg['size'] > 0){
 
-		file_check($titleimg[name]);
+		file_check($titleimg['name']);
 
-		$ext = substr($titleimg[name],-3);
+		$ext = substr($titleimg['name'],-3);
 		$titleimg_name = $code."_title.".$ext;
-		copy($titleimg[tmp_name], $upfile_path."/".$titleimg_name);
+		copy($titleimg['tmp_name'], $upfile_path."/".$titleimg_name);
 		chmod($upfile_path."/".$titleimg_name, 0606);
 		$titleimg_sql = "titleimg='$titleimg_name', ";
 	}
@@ -73,7 +89,7 @@ if($mode == "insert"){
 					permsg='$permsg',perurl='$perurl',pageurl='$pageurl',editor='$editor',usetype='$usetype',
 					privacy='$privacy',upfile='$upfile',movie='$movie',comment='$comment',remail='$remail',
 					imgview='$imgview',recom='$recom',abuse='$abuse',abtxt='$abtxt',
-					simgsize='$simgsize',mimgsize='$mimgsize',rows='$rows',lists='$lists',newc='$newc',
+					simgsize='$simgsize',mimgsize='$mimgsize', wiz_bbsinfo.rows='$rows',lists='$lists',newc='$newc',
 					hotc='$hotc',line='$line',subject_len='$subject_len',img_align='$img_align',
 					btn_view='$btn_view',spam_check='$spam_check',view_list='$view_list' where code = '$code'";
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
@@ -109,7 +125,7 @@ if($mode == "insert"){
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 	$row = mysqli_fetch_array($result);
 
-	$titleimg_name = $row[titleimg];
+	$titleimg_name = $row['titleimg'];
 	unlink($upfile_path."/".$titleimg_name);
 
 	$sql = "update wiz_bbsinfo set titleimg='' where code = '$code'";
@@ -127,7 +143,7 @@ if($mode == "insert"){
 		$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 		$row = mysqli_fetch_array($result);
 
-		if(!empty($row[gubun])) {
+		if(!empty($row['gubun'])) {
 			error("이미 전체분류가 등록되어 있습니다.", "");
 			exit;
 		}
@@ -137,30 +153,30 @@ if($mode == "insert"){
 	// 업로드 디렉토리 생성
 	if(!is_dir($category_path)) mkdir($category_path, 0707);
 
-	if($catimg[size] > 0){
+	if($catimg['size'] > 0){
 
-		file_check($catimg[name]);
+		file_check($catimg['name']);
 
-		$catimg_tmp = $upfile_idx."_img.".substr($catimg[name],-3);
-		copy($catimg[tmp_name], $category_path."/".$catimg_tmp);
+		$catimg_tmp = $upfile_idx."_img.".substr($catimg['name'],-3);
+		copy($catimg['tmp_name'], $category_path."/".$catimg_tmp);
 		chmod($category_path."/".$catimg_tmp, 0606);
 
 	}
-	if($catimg_over[size] > 0){
+	if($catimg_over['size'] > 0){
 
-		file_check($catimg_over[name]);
+		file_check($catimg_over['name']);
 
-		$catimg_over_tmp = $upfile_idx."_img_over.".substr($catimg_over[name],-3);
-		copy($catimg_over[tmp_name], $category_path."/".$catimg_over_tmp);
+		$catimg_over_tmp = $upfile_idx."_img_over.".substr($catimg_over['name'],-3);
+		copy($catimg_over['tmp_name'], $category_path."/".$catimg_over_tmp);
 		chmod($category_path."/".$catimg_over_tmp, 0606);
 
 	}
-	if($caticon[size] > 0){
+	if($caticon['size'] > 0){
 
-		file_check($caticon[name]);
+		file_check($caticon['name']);
 
-		$caticon_tmp = $upfile_idx."_icon.".substr($caticon[name],-3);
-		copy($caticon[tmp_name], $category_path."/".$caticon_tmp);
+		$caticon_tmp = $upfile_idx."_icon.".substr($caticon['name'],-3);
+		copy($caticon['tmp_name'], $category_path."/".$caticon_tmp);
 		chmod($category_path."/".$caticon_tmp, 0606);
 
 	}
@@ -183,7 +199,7 @@ if($mode == "insert"){
 		$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 		$row = mysqli_fetch_array($result);
 
-		if(!empty($row[gubun])) {
+		if(!empty($row['gubun'])) {
 			error("이미 전체분류가 등록되어 있습니다.", "");
 			exit;
 		}
@@ -205,46 +221,46 @@ if($mode == "insert"){
 		}
 	}
 
-	if($catimg[size] > 0){
+	if($catimg['size'] > 0){
 
-		file_check($catimg[name]);
+		file_check($catimg['name']);
 
-		$catimg_tmp = $upfile_idx."_img.".substr($catimg[name],-3);
-		copy($catimg[tmp_name], $category_path."/".$catimg_tmp);
+		$catimg_tmp = $upfile_idx."_img.".substr($catimg['name'],-3);
+		copy($catimg['tmp_name'], $category_path."/".$catimg_tmp);
 		chmod($category_path."/".$catimg_tmp, 0606);
 
-		if($cat_row[catimg] != ""){
-			@unlink($category_path."/".$cat_row[catimg]);
+		if($cat_row['catimg'] != ""){
+			@unlink($category_path."/".$cat_row['catimg']);
 		}
 		$catimg_sql = " , catimg='$catimg_tmp' ";
 
 
 	}
-	if($catimg_over[size] > 0){
+	if($catimg_over['size'] > 0){
 
-		file_check($catimg_over[name]);
+		file_check($catimg_over['name']);
 
-		$catimg_over_tmp = $upfile_idx."_img_over.".substr($catimg_over[name],-3);
-		copy($catimg_over[tmp_name], $category_path."/".$catimg_over_tmp);
+		$catimg_over_tmp = $upfile_idx."_img_over.".substr($catimg_over['name'],-3);
+		copy($catimg_over['tmp_name'], $category_path."/".$catimg_over_tmp);
 		chmod($category_path."/".$catimg_over_tmp, 0606);
 
-		if($cat_row[catimg_over] != ""){
-			@unlink($category_path."/".$cat_row[catimg_over]);
+		if($cat_row['catimg_over'] != ""){
+			@unlink($category_path."/".$cat_row['catimg_over']);
 		}
 		$catimg_over_sql = " , catimg_over='$catimg_over_tmp' ";
 
 
 	}
-	if($caticon[size] > 0){
+	if($caticon['size'] > 0){
 
-		file_check($caticon[name]);
+		file_check($caticon['name']);
 
-		$caticon_tmp = $upfile_idx."_icon.".substr($caticon[name],-3);
-		copy($caticon[tmp_name], $category_path."/".$caticon_tmp);
+		$caticon_tmp = $upfile_idx."_icon.".substr($caticon['name'],-3);
+		copy($caticon['tmp_name'], $category_path."/".$caticon_tmp);
 		chmod($category_path."/".$caticon_tmp, 0606);
 
-		if($cat_row[caticon] != ""){
-			@unlink($category_path."/".$cat_row[caticon]);
+		if($cat_row['caticon'] != ""){
+			@unlink($category_path."/".$cat_row['caticon']);
 		}
 		$caticon_sql = " , caticon='$caticon_tmp' ";
 
@@ -263,14 +279,14 @@ if($mode == "insert"){
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 	$cat_row = mysqli_fetch_array($result);
 
-	if(!strcmp($cat_row[gubun], "A")) {
+	if(!strcmp($cat_row['gubun'], "A")) {
 		error("전체분류는 삭제할 수 없습니다.", "");
 		exit;
 	}
 
-	@unlink($category_path."/".$cat_row[catimg]);
-	@unlink($category_path."/".$cat_row[catimg_over]);
-	@unlink($category_path."/".$cat_row[caticon]);
+	@unlink($category_path."/".$cat_row['catimg']);
+	@unlink($category_path."/".$cat_row['catimg_over']);
+	@unlink($category_path."/".$cat_row['caticon']);
 
   $sql = "delete from wiz_bbscat where idx = '$idx'";
   mysqli_query($connect, $sql) or die(mysqli_error($connect));

@@ -25,7 +25,7 @@
                 </thead>
                 <tbody>
 					<?
-					  $sql = "select wo.* from wiz_order as wo inner join wiz_basket as wb on wo.orderid = wb.orderid where wo.status != '' and wb.mallid = '$wiz_mall['id']' order by wo.orderid desc limit 10";
+					  $sql = "select wo.* from wiz_order as wo inner join wiz_basket as wb on wo.orderid = wb.orderid where wo.status != '' and wb.mallid = '".$wiz_mall['id']."' order by wo.orderid desc limit 10";
 					  $result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 					  $total = mysqli_num_rows($result);
 						  while($row = mysqli_fetch_array($result)){
@@ -34,7 +34,7 @@
 
 									// 각 입점업체별 상품 수 구하기
 									$b_sql = "select count(idx) as cnt, sum(prdprice) as total, mallid from wiz_basket where orderid='".$row['orderid']."' and mallid = '".$wiz_mall['id']."' group by mallid";
-									$b_result = mysqli_query($connect, $b_sql) or error(mysql_error());
+									$b_result = mysqli_query($connect, $b_sql) or error(mysqli_error($connect));
 									while($b_row = mysqli_fetch_array($b_result)) {
 
 										$mall_list[$b_row[mallid]]['cnt'] = $b_row['cnt'];
@@ -45,7 +45,7 @@
 									$b_sql = "select wb.*, wm.com_name, wm.com_tel, wm.del_method, wm.del_fixprice, wm.del_staprice, wm.del_staprice2, wm.del_staprice3, wm.del_prd, wm.del_prd2
 													from wiz_basket as wb inner join wiz_mall as wm on wb.mallid = wm.id
 													where wb.orderid='".$row['orderid']."' and wb.mallid = '".$wiz_mall['id']."' order by wb.mallid";
-									$b_result = mysqli_query($connect, $b_sql) or error(mysql_error());
+									$b_result = mysqli_query($connect, $b_sql) or error(mysqli_error($connect));
 									while($b_row = mysqli_fetch_object($b_result)){
 
 										$mall_no[$b_row->mallid]++;
@@ -136,7 +136,7 @@
     	<ul class="latest">
 			<?
 			$limit = 8;
-			$sql = "select *, date_format(from_unixtime(wdate), '%Y/%m/%d') as wdate, wdate as wtime from wiz_bbs where code != 'memout' and (code like 'mall_%' or code = 'qna') and mallid = '$wiz_mall['id']' order by idx desc limit $limit";
+			$sql = "select *, date_format(from_unixtime(wdate), '%Y/%m/%d') as wdate, wdate as wtime from wiz_bbs where code != 'memout' and (code like 'mall_%' or code = 'qna') and mallid = '".$wiz_mall['id']."' order by idx desc limit $limit";
 			$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 			$total = mysqli_num_rows($result);
 			while($row = mysqli_fetch_object($result)){
@@ -166,7 +166,7 @@
 			<?
 			$sql = "select wb.idx, wb.name, wb.prdcode, wb.subject, date_format(from_unixtime(wb.wdate), '%Y/%m/%d') as wdate, wb.wdate as wtime
 							from wiz_bbs as wb inner join wiz_product as wp on wb.prdcode = wp.prdcode
-							where wb.code = 'review' and wb.prdcode != '' and wp.mallid = '$wiz_mall['id']'
+							where wb.code = 'review' and wb.prdcode != '' and wp.mallid = '".$wiz_mall['id']."'
 							order by wb.idx desc limit 8";
 			$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 			$total = mysqli_num_rows($result);

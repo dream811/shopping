@@ -58,7 +58,7 @@ include "../inc/header.inc"; 			// 상단디자인
 				$rows = 12;
 				$lists = 5;
 				$page_count = ceil($total/$rows);
-				if(!$page || $page > $page_count) $page = 1;
+				if(!isset($page) || !$page ||  $page > $page_count) $page = 1;
 				$start = ($page-1)*$rows;
 
 		    $sql = "select * from wiz_order where $search_sql and status != '' order by order_date desc limit $start, $rows";

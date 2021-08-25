@@ -7,6 +7,16 @@
 <?
 // 페이지 파라메터 (검색조건이 변하지 않도록)
 //--------------------------------------------------------------------------------------------------
+if(!isset($s_status)) $s_status = "";
+if(!isset($prev_year)) $prev_year = "";
+if(!isset($prev_month)) $prev_month = "";
+if(!isset($prev_day)) $prev_day = "";
+if(!isset($next_year)) $next_year = "";
+if(!isset($next_month)) $next_month = "";
+if(!isset($next_day)) $next_day = "";
+if(!isset($searchopt)) $searchopt = "";
+if(!isset($searchkey)) $searchkey = "";
+
 $param = "s_status=$s_status&prev_year=$prev_year&prev_month=$prev_month&prev_day=$prev_day&next_year=$next_year&next_month=$next_month&next_day=$next_day";
 $param .= "&searchopt=$searchopt&searchkey=$searchkey";
 //--------------------------------------------------------------------------------------------------
@@ -332,6 +342,9 @@ window.open(url,"searchZip","height=350, width=367, menubar=no, scrollbars=yes, 
 			else $status_sql = "and wo.status = '$s_status'";
 
 			if($searchopt && $searchkey) $searchopt_sql = " and wo.$searchopt like '%$searchkey%'";
+			
+			if(!isset($period_sql)) $period_sql = "";
+			if(!isset($searchopt_sql)) $searchopt_sql = "";
 
 			$sql = "select orderid from wiz_order wo where orderid !='' $status_sql $period_sql $searchopt_sql order by orderid desc";
 			$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
@@ -340,7 +353,7 @@ window.open(url,"searchZip","height=350, width=367, menubar=no, scrollbars=yes, 
 			$rows = 50;
 			$lists = 5;
 			$page_count = ceil($total/$rows);
-			if($page < 1 || $page > $page_count) $page = 1;
+			if(!isset($page) || $page < 1 || $page > $page_count) $page = 1;
 			$start = ($page-1)*$rows;
 			$no = $total-$start;
 			?>
@@ -372,6 +385,7 @@ window.open(url,"searchZip","height=350, width=367, menubar=no, scrollbars=yes, 
         <tr><td class="t_rd" colspan="20"></td></tr>
       </form>
 			<?
+			
 			$orderid = "";
 
 	    $sql = "select order_date, orderid, send_name, send_id, pay_method, total_price, status, deliver_num, deliver_date, escrow_check from wiz_order wo where orderid !='' $status_sql $period_sql $searchopt_sql order by orderid desc limit $start, $rows";
@@ -389,7 +403,7 @@ window.open(url,"searchZip","height=350, width=367, menubar=no, scrollbars=yes, 
 
 				if(!strcmp($row->escrow_check, "Y")) $escrow_check = "<br>[에스크로]";
 				else  $escrow_check = "";
-
+				if(!isset($row->prdcode)) $row->prdcode = "";
 			?>
      	<form action="order_save.php" name="<?=$row->prdcode?>" method="get">
       <input type="hidden" name="mode" value="chgstatus">
@@ -397,7 +411,7 @@ window.open(url,"searchZip","height=350, width=367, menubar=no, scrollbars=yes, 
       <input type="hidden" name="orderid" value="<?=$row->orderid?>">
 
       <input type="hidden" name="status" value="<?=$row->status?>">
-
+		
       <input type="hidden" name="s_status" value="<?=$s_status?>">
       <input type="hidden" name="prev_year" value="<?=$prev_year?>">
       <input type="hidden" name="prev_month" value="<?=$prev_month?>">

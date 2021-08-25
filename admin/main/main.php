@@ -178,7 +178,7 @@ $comment_today = $row['cnt'];
 						if(($ttime-$wtime)/86400 <= 2) $new = "<img src='../image/main/n.gif' border='0' align='absmiddle'>";	// new
 						$row['wdate'] = str_replace("-","-",$row['wdate']);
 		
-						if(!strcmp($row[type], "SCH")) $purl = "../schedule/list.php";
+						if(!strcmp($row['type'], "SCH")) $purl = "../schedule/list.php";
 						else $purl = "../bbs/list.php";
 					?>
         	<li><a href="../bbs/bbs_view.php?idx=<?=$row['idx']?>&code=<?=$row['code']?>">[<?=$row['title']?>] <?=$row['content']?></a><span>2017-06-07</span></li>
