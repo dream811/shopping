@@ -206,7 +206,21 @@ if($type=='PC_MAIN'){
     $result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 
     $row = mysqli_fetch_object($result);
-
+    if(!isset($row)){
+        $row = new stdClass();
+        $row->popular = "";
+        $row->recom = "";
+        $row->new = "";
+        $row->sale = "";
+        $row->best = "";
+        $row->shortage = "";
+        $row->prdicon = "";
+        $row->coupon_use = "";
+        $row->conprice = "";
+        $row->sellprice = 0;
+        $row->prdname = "";
+    } 
+    
     // 상품아이콘
     $sp_img = "";
     if($row->popular == "Y") 	$sp_img .= "<img src='/images/icon_hit.gif'>&nbsp;";

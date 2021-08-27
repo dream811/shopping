@@ -26,13 +26,14 @@ function onReload()
 
 	/*	Create Root node of Code	*/
 	<?
-	$sql = "select * from wiz_category order by depthno asc, priorno01 asc, priorno02 asc, priorno03 asc";
+	$sql = "select * from wiz_category order by depthno asc, priorno01 asc, priorno02 asc, priorno03 asc, priorno04 asc";
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 	while($row = mysqli_fetch_object($result)){
 
 		$catcode1 = substr($row->catcode,0,2);
 		$catcode2 = substr($row->catcode,0,4);
 		$catcode3 = substr($row->catcode,0,6);
+		$catcode4 = substr($row->catcode,0,8);
 		
 		$row->catname .= "&nbsp;&nbsp;";
 		
@@ -42,7 +43,7 @@ function onReload()
 
 			echo "var node_$catcode1 = new TreeNode(\"$row->catname\",TREE_FOLDER_CLOSED_IMG,TREE_FOLDER_OPEN_IMG);\n";
 			echo "node_$catcode1.expanded = true;\n";	
-			echo "node_$catcode1.action = \"javascript:goUrl('prd_category.php?mode=update&catcode=$row->catcode&depthno=$row->depthno&prior=$row->prior')\";\n";
+			echo "node_$catcode1.action = \"javascript:goUrl('prd_category.php?mode=update&catcode=$row->catcode&depthno=$row->depthno&prior=$row->priorno01')\";\n";
 			echo "rootnode.addNode(node_$catcode1);\n";
 
 		}else if($row->depthno == 2){
@@ -50,14 +51,22 @@ function onReload()
 			echo "var groupnode_$catcode2 = new TreeNode(\"$row->catname\",TREE_FOLDER_CLOSED_IMG,TREE_FOLDER_OPEN_IMG);\n";
 			//if($catcode2 == substr($catcode,0,4)) echo "groupnode_$catcode2.expanded = true;\n";	
 			echo "groupnode_$catcode2.expanded = true;\n";	
-			echo "groupnode_$catcode2.action = \"javascript:goUrl('prd_category.php?mode=update&catcode=$row->catcode&depthno=$row->depthno&prior=$row->prior')\";\n";
+			echo "groupnode_$catcode2.action = \"javascript:goUrl('prd_category.php?mode=update&catcode=$row->catcode&depthno=$row->depthno&prior=$row->priorno02')\";\n";
 			echo "node_$catcode1.addNode(groupnode_$catcode2);\n";
+
+		}else if($row->depthno == 3){
+
+			echo "var mediumnode_$catcode3 = new TreeNode(\"$row->catname\",TREE_FOLDER_CLOSED_IMG,TREE_FOLDER_OPEN_IMG);\n";
+			//if($catcode2 == substr($catcode,0,4)) echo "groupnode_$catcode2.expanded = true;\n";	
+			echo "mediumnode_$catcode3.expanded = true;\n";	
+			echo "mediumnode_$catcode3.action = \"javascript:goUrl('prd_category.php?mode=update&catcode=$row->catcode&depthno=$row->depthno&prior=$row->priorno03')\";\n";
+			echo "groupnode_$catcode2.addNode(mediumnode_$catcode3);\n";
 
 		}else{
 		
-			echo "var subnode_$catcode3 = new TreeNode(\"$row->catname\", \"../image/tree/Common_TreeNode_Note.gif\", \"../image/tree/Common_TreeNode_Note.gif\");\n";
-			echo "subnode_$catcode3.action = \"javascript:goUrl('prd_category.php?mode=update&catcode=$row->catcode&depthno=$row->depthno&prior=$row->prior')\";\n";
-			echo "groupnode_$catcode2.addNode(subnode_$catcode3);\n";
+			echo "var subnode_$catcode4 = new TreeNode(\"$row->catname\", \"../image/tree/Common_TreeNode_Note.gif\", \"../image/tree/Common_TreeNode_Note.gif\");\n";
+			echo "subnode_$catcode4.action = \"javascript:goUrl('prd_category.php?mode=update&catcode=$row->catcode&depthno=$row->depthno&prior=$row->priorno04')\";\n";
+			echo "mediumnode_$catcode3.addNode(subnode_$catcode4);\n";
 		}
 	}
 	?>

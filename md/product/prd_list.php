@@ -407,7 +407,7 @@ function copyPrd(){
 				while(($row = mysqli_fetch_object($result)) && $rows){
 
 					// 상품 이미지
-					if(!@file($_SERVER[DOCUMENT_ROOT]."/data/prdimg/".$row->prdimg_R)) $row->prdimg_R = "/images/noimage.gif";
+					if(!@file($_SERVER['DOCUMENT_ROOT']."/data/prdimg/".$row->prdimg_R)) $row->prdimg_R = "/images/noimage.gif";
 					else $row->prdimg_R = "/data/prdimg/".$row->prdimg_R;
 
 					if(!strcmp($row->status, "Y")) $status = "승인";

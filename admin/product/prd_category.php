@@ -9,6 +9,21 @@ if($mode == "update"){
    $result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
    $cat_info = mysqli_fetch_object($result);
 }
+if(!isset($cat_info)) {
+  $cat_info = new stdClass();
+  $cat_info->catname = "";
+  $cat_info->catuse = "";
+  $cat_info->catimg = "";
+  $cat_info->catimg_over = "";
+  $cat_info->subimg_type = "";
+  $cat_info->prd_width = "";
+  $cat_info->prd_height = "";
+  $cat_info->prd_num = "";
+  $cat_info->recom_use = "";
+  $cat_info->cms_rate = "";
+}
+if(!isset($catcode)) $catcode = "";
+if(!isset($depthno)) $depthno = "";
 ?>
 <script Language="Javascript">
 <!--
@@ -117,8 +132,10 @@ function getCms(frm) {
                          if($catcode != ""){
                        		$catcode1 = substr($catcode,0,2);
 												   $catcode2 = substr($catcode,0,4);
+												   $catcode3 = substr($catcode,0,6);
 												   $sql = "select * from wiz_category where (catcode like '$catcode1%' and depthno = 1)
 												                                                or (catcode like '$catcode2%' and depthno = 2)
+                                                                        or (catcode like '$catcode3%' and depthno = 3)
 												                                                or (catcode = '$catcode') order by depthno asc";
 												   $result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 
@@ -252,7 +269,7 @@ function getCms(frm) {
                  <tr>
                    <td width="33%">
                    <?
-                   if($depthno != 3){
+                   if($depthno != 4){
                    ?>
                    <a onClick="document.location='prd_category.php?mode=insert&catcode=<?=$catcode?>&depthno=<?=$depthno?>';" class="AW-btn">하위분류등록</a>
                    <?

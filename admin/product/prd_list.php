@@ -4,7 +4,19 @@
 <? include "../../inc/admin_check.inc"; ?>
 <? include "../header.php"; ?>
 <?
-
+if(!isset($dep_code)) $dep_code = "";
+if(!isset($dep2_code)) $dep2_code = "";
+if(!isset($dep3_code)) $dep3_code = "";
+if(!isset($s_special)) $s_special = "";
+if(!isset($s_couponuse)) $s_couponuse = "";
+if(!isset($s_display)) $s_display = "";
+if(!isset($s_searchopt)) $s_searchopt = "";
+if(!isset($s_searchkey)) $s_searchkey = "";
+if(!isset($s_brand)) $s_brand = "";
+if(!isset($s_shortage)) $s_shortage = "";
+if(!isset($s_stock)) $s_stock = "";
+if(!isset($s_status)) $s_status = "";
+if(!isset($s_mallid)) $s_mallid = "";
 // 페이지 파라메터 (검색조건이 변하지 않도록)
 //--------------------------------------------------------------------------------------------------
 $param = "dep_code=$dep_code&dep2_code=$dep2_code&dep3_code=$dep3_code";
@@ -347,7 +359,7 @@ function batchStatus() {
 		      		$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 		      		while($row = mysqli_fetch_array($result)) {
 		      		?>
-		      		<option value="<?=$row['id']?>" cms_type="<?=$row[cms_type]?>" cms_rate="<?=$row[cms_rate]?>"  <? if(!strcmp($row['id'], $s_mallid)) echo "selected" ?>><?=$row[com_name]?> (<?=$row['id']?>)</option>
+		      		<option value="<?=$row['id']?>" cms_type="<?=$row['cms_type']?>" cms_rate="<?=$row['cms_rate']?>"  <? if(!strcmp($row['id'], $s_mallid)) echo "selected" ?>><?=$row['com_name']?> (<?=$row['id']?>)</option>
 		      		<?php
 		      		}
 		      		?>
@@ -379,11 +391,23 @@ function batchStatus() {
 			if(!empty($s_brand)) $brand_sql = "wp.brand = '$s_brand' and ";
 			if(!empty($s_status)) $status_sql = "wp.status = '$s_status' and ";
 			if(!empty($s_mallid)) $mallid_sql = " wp.mallid = '$s_mallid' and ";
+			if(!isset($shortage )) $shortage  = "";
 			if(!empty($s_shortage)) {
 				if(!strcmp($s_shortage, "N")) $shortage_sql = " (wp.shortage = '$s_shortage' or wp.shortage = '') and ";
 				else $shortage_sql = " wp.shortage = '$s_shortage' and ";
 			}
 			if(!strcmp($shortage, "S")) $stock_sql = " wp.stock <= '$stock' and ";
+
+			if(!isset($special_sql )) $special_sql  = "";
+			if(!isset($display_sql )) $display_sql  = "";
+			if(!isset($search_sql )) $search_sql  = "";
+			if(!isset($coupon_sql )) $coupon_sql  = "";
+			if(!isset($brand_sql )) $brand_sql  = "";
+			if(!isset($shortage_sql )) $shortage_sql  = "";
+			if(!isset($stock_sql )) $stock_sql  = "";
+			if(!isset($status_sql )) $status_sql  = "";
+			if(!isset($mallid_sql )) $mallid_sql  = "";
+			if(!isset($catcode_sql)) $catcode_sql = "";
 
 			$sql = "select distinct wp.prdcode from wiz_product wp, wiz_cprelation wc
 			              where $catcode_sql $special_sql $display_sql $search_sql $coupon_sql $brand_sql $shortage_sql $stock_sql $status_sql $mallid_sql wc.prdcode = wp.prdcode order by wp.prior desc, wp.prdcode desc";

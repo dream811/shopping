@@ -272,10 +272,10 @@ function treeNodeIsLast() {
 */
 function treeNodeSelect() {
 
-	document.all[this.id + "_text"].style.color = this.selectedColor;
-	document.all[this.id + "_text"].style.backgroundColor = this.selectedBgColor;
+	document.getElementById(this.id + "_text").style.color = this.selectedColor;
+	document.getElementById(this.id + "_text").style.backgroundColor = this.selectedBgColor;
 
-	document.all[this.id + "_folderimage"].src = this.oimage;
+	document.getElementById(this.id + "_folderimage").src = this.oimage;
 
 	this.getRootTree().selectedNode = this;
 }
@@ -285,10 +285,10 @@ function treeNodeSelect() {
 */
 function treeNodeDeselect() {
 
-	document.all[this.id + "_text"].style.color = this.color;
-	document.all[this.id + "_text"].style.backgroundColor = this.workAreaBgColor;
+	document.getElementById(this.id + "_text").style.color = this.color;
+	document.getElementById(this.id + "_text").style.backgroundColor = this.workAreaBgColor;
 
-	document.all[this.id + "_folderimage"].src = this.fimage;
+	document.getElementById(this.id + "_folderimage").src = this.fimage;
 }
 
 
@@ -300,18 +300,18 @@ function treeNodeExpand() {
 	this.expanded = true;
 
 	if(this.hasChilds()) {
-		document.all[this.id + "_signimage"].src = this.getSignImage();
+		document.getElementById(this.id + "_signimage").src = this.getSignImage();
 	}
 
 	try {
 
 		/*
 		for(var i=0; i<this.nodes.length; i++) {
-			//document.all[this.nodes[i].id].style.display = "block";
+			//document.getElementById(this.nodes[i].id].style.display = "block";
 			__treeNodeShowChild(this.nodes[i]);
 		}
 		*/
-		document.all[this.id + "_child"].style.display = "block";
+		document.getElementById(this.id + "_child").style.display = "block";
 	} catch(e) {}
 
 
@@ -327,7 +327,7 @@ function treeNodeExpand() {
 
 function __treeNodeShowChild(objNode) {
 
-	document.all[objNode.id].style.display = "block";
+	document.getElementById(objNode.id).style.display = "block";
 	for(var i=0; i<objNode.nodes.length; i++) {
 		if(objNode.expanded) {
 			__treeNodeShowChild(objNode.nodes[i]);
@@ -344,23 +344,23 @@ function treeNodeShrink() {
 	this.expanded = false;
 
 	if(this.hasChilds()) {
-		document.all[this.id + "_signimage"].src = this.getSignImage();
+		document.getElementById(this.id + "_signimage").src = this.getSignImage();
 	}
 	try {
 		/*
 		for(var i=0; i<this.nodes.length; i++) {
-			//document.all[this.nodes[i].id].style.display = "none";
+			//document.getElementById(this.nodes[i].id].style.display = "none";
 			__treeNodeHideChild(this.nodes[i]);
 		}
 		*/
-		document.all[this.id + "_child"].style.display = "none";
+		document.getElementById(this.id + "_child").style.display = "none";
 	} catch(e) {}
 }
 
 
 function __treeNodeHideChild(objNode) {
 
-	document.all[objNode.id].style.display = "none";
+	document.getElementById(objNode.id).style.display = "none";
 	for(var i=0; i<objNode.nodes.length; i++) {
 
 			__treeNodeHideChild(objNode.nodes[i]);
@@ -559,13 +559,13 @@ function treeNodeToHTML() {
 function treeNodeOnMouseOver(id) {
 
 	var nodeComp = compManager.get(id);
-	var node = document.all['id'];
+	var node = document.getElementById(id);
 
 
 	if(nodeComp != nodeComp.getRootTree().selectedNode) {
-		document.all[id + "_text"].style.color = nodeComp.workAreaOnColor;
+		document.getElementById(id + "_text").style.color = nodeComp.workAreaOnColor;
 	}
-	document.all['id'].style.cursor = "hand";
+	document.getElementById(id).style.cursor = "pointer";
 
 
 	if(nodeComp.onMouseOver) {
@@ -581,12 +581,12 @@ function treeNodeOnMouseOver(id) {
 function treeNodeOnMouseOut(id) {
 
 	var nodeComp = compManager.get(id);
-	var node = document.all['id'];
+	var node = document.getElementById(id);
 
 	if(nodeComp != nodeComp.getRootTree().selectedNode) {
-		document.all[id + "_text"].style.color = nodeComp.color;
+		document.getElementById(id + "_text").style.color = nodeComp.color;
 	}
-	document.all['id'].style.cursor = "default";
+	document.getElementById(id).style.cursor = "default";
 
 
 	if(nodeComp.onMouseOut) {
@@ -602,7 +602,7 @@ function treeNodeOnMouseOut(id) {
 function treeNodeOnClick(id) {
 
 	var nodeComp = compManager.get(id);
-	var node = document.all['id'];
+	var node = document.getElementById(id);
 
 	if(event.srcElement.id == id+"_text") {
 
@@ -645,7 +645,7 @@ function treeNodeOnClick(id) {
 function treeNodeOnDblClick(id) {
 
 	var nodeComp = compManager.get(id);
-	var node = document.all['id'];
+	var node = document.getElementById(id);
 
 	if(nodeComp.root) return;
 

@@ -20,45 +20,50 @@ if($mode == "insert"){
 	$catnum1 = substr($catcode,0,2);
 	$catnum2 = substr($catcode,2,2);
 	$catnum3 = substr($catcode,4,2);
+	$catnum4 = substr($catcode,6,2);
 
 	if(empty($depthno)) $depthno = 0;
 
 	if($depthno == 0){ $sposi = 1; $tmpcode = ""; }
 	else if($depthno == 1){  $sposi = 3;  $tmpcode = $catnum1; }
 	else if($depthno == 2){  $sposi = 5;  $tmpcode = $catnum1.$catnum2; }
+	else if($depthno == 3){  $sposi = 7;  $tmpcode = $catnum1.$catnum2.$catnum3; }
 
 	$sql = "select max(substring(catcode,$sposi,2)) as catnum from wiz_category where catcode like '$tmpcode%'";
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 	$row = mysqli_fetch_object($result);
 	$row->catnum = substr(++$row->catnum."0",0,2);
 
-	if($depthno == 0){ $catcode = $row->catnum."0000";}
-	else if($depthno == 1){  $catcode = $catnum1.$row->catnum."00";}
-	else if($depthno == 2){  $catcode = $catnum1.$catnum2.$row->catnum;}
+	if($depthno == 0){ $catcode = $row->catnum."000000";}
+	else if($depthno == 1){  $catcode = $catnum1.$row->catnum."0000";}
+	else if($depthno == 2){  $catcode = $catnum1.$catnum2.$row->catnum."00";}
+	else if($depthno == 3){  $catcode = $catnum1.$catnum2.$row->catnum3.$row->catnum;}
 
 
 	// 우선순위 설정
-	$sql = "select * from wiz_category where catcode like '$tmpcode%' order by priorno01 desc, priorno02 desc, priorno03 desc";
+	$sql = "select * from wiz_category where catcode like '$tmpcode%' order by priorno01 desc, priorno02 desc, priorno03 desc, priorno04 desc";
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 	$row = mysqli_fetch_object($result);
 	$priorno01 = $row->priorno01;
 	$priorno02 = $row->priorno02;
 	$priorno03 = $row->priorno03;
+	$priorno04 = $row->priorno04;
 
 	if($depthno == 0){ ++$priorno01; }
 	else if($depthno == 1){  ++$priorno02;}
 	else if($depthno == 2){  ++$priorno03;}
+	else if($depthno == 3){  ++$priorno04;}
 
 	$depthno++;
 
 
 	// 카테고리 타이틀 저장
 	if($subimg_type == "FIL"){
-		if($subimg[size] > 0){
-			file_check($subimg[name]);
-			$subimg_ext = strtolower(substr($subimg[name],-3));
+		if($subimg['size'] > 0){
+			file_check($subimg['name']);
+			$subimg_ext = strtolower(substr($subimg['name'],-3));
 			$subimg_name = $catcode."_sub.".$subimg_ext;
-			copy($subimg[tmp_name], $subimg_path."/".$subimg_name);
+			copy($subimg['tmp_name'], $subimg_path."/".$subimg_name);
 			chmod($subimg_path."/".$subimg_name, 0606);
 		}
 	}else{
@@ -66,25 +71,25 @@ if($mode == "insert"){
 	}
 
 	// 메뉴이미지 저장
-	if($catimg[size] > 0){
-		file_check($catimg[name]);
-		$catimg_ext = strtolower(substr($catimg[name],-3));
+	if($catimg['size'] > 0){
+		file_check($catimg['name']);
+		$catimg_ext = strtolower(substr($catimg['name'],-3));
 		$catimg_name = $catcode."_cat.".$catimg_ext;
-		copy($catimg[tmp_name], $catimg_path."/".$catimg_name);
+		copy($catimg['tmp_name'], $catimg_path."/".$catimg_name);
 		chmod($catimg_path."/".$catimg_name, 0606);
 	}
-	if($catimg_over[size] > 0){
-		file_check($catimg_over[name]);
-		$catimg_over_ext = strtolower(substr($catimg_over[name],-3));
+	if($catimg_over['size'] > 0){
+		file_check($catimg_over['name']);
+		$catimg_over_ext = strtolower(substr($catimg_over['name'],-3));
 		$catimg_over_name = $catcode."_cat_over.".$catimg_over_ext;
-		copy($catimg_over[tmp_name], $catimg_path."/".$catimg_over_name);
+		copy($catimg_over['tmp_name'], $catimg_path."/".$catimg_over_name);
 		chmod($catimg_path."/".$catimg_over_name, 0606);
 	}
 
 	//  카테고리 저장
-	$sql = "insert into wiz_category(catcode,depthno,priorno01,priorno02,priorno03,catname,catuse,catimg,catimg_over,subimg,subimg_type,
+	$sql = "insert into wiz_category(catcode,depthno,priorno01,priorno02,priorno03,priorno04,catname,catuse,catimg,catimg_over,subimg,subimg_type,
 								prd_tema,prd_num,prd_width,prd_height,recom_use,recom_tema,recom_num,cms_rate)
-								values('$catcode','$depthno','$priorno01','$priorno02','$priorno03',
+								values('$catcode','$depthno','$priorno01','$priorno02','$priorno03','$priorno04',
 								'$catname','$catuse','$catimg_name','$catimg_over_name','$subimg_name','$subimg_type','$prd_tema','$prd_num','$prd_width','$prd_height','$recom_use','$recom_tema','$recom_num','$cms_rate')";
 
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
@@ -103,11 +108,11 @@ if($mode == "insert"){
 
 	// 카테고리 타이틀 저장
 	if($subimg_type == "FIL"){
-		if($subimg[size] > 0){
-			file_check($subimg[name]);
-			$subimg_ext = strtolower(substr($subimg[name],-3));
+		if($subimg['size'] > 0){
+			file_check($subimg['name']);
+			$subimg_ext = strtolower(substr($subimg['name'],-3));
 			$subimg_name = $catcode."_sub.".$subimg_ext;
-			copy($subimg[tmp_name], $subimg_path."/".$subimg_name);
+			copy($subimg['tmp_name'], $subimg_path."/".$subimg_name);
 			chmod($subimg_path."/".$subimg_name, 0606);
 
 			$subimg_sql = " subimg='$subimg_name', ";
@@ -119,19 +124,19 @@ if($mode == "insert"){
 	}
 
 	// 메뉴이미지 저장
-	if($catimg[size] > 0){
-		file_check($catimg[name]);
-		$catimg_ext = strtolower(substr($catimg[name],-3));
+	if($catimg['size'] > 0){
+		file_check($catimg['name']);
+		$catimg_ext = strtolower(substr($catimg['name'],-3));
 		$catimg_name = $catcode."_cat.".$catimg_ext;
-		@copy($catimg[tmp_name], $catimg_path."/".$catimg_name);
+		@copy($catimg['tmp_name'], $catimg_path."/".$catimg_name);
 		@chmod($catimg_path."/".$catimg_name, 0606);
 		$catimg_sql = " catimg='$catimg_name', ";
 	}
-	if($catimg_over[size] > 0){
-		file_check($catimg_over[name]);
-		$catimg_over_ext = strtolower(substr($catimg_over[name],-3));
+	if($catimg_over['size'] > 0){
+		file_check($catimg_over['name']);
+		$catimg_over_ext = strtolower(substr($catimg_over['name'],-3));
 		$catimg_over_name = $catcode."_cat_over.".$catimg_over_ext;
-		copy($catimg_over[tmp_name], $catimg_path."/".$catimg_over_name);
+		copy($catimg_over['tmp_name'], $catimg_path."/".$catimg_over_name);
 		chmod($catimg_path."/".$catimg_over_name, 0606);
 		$catimg_over_sql = " catimg_over='$catimg_over_name', ";
 	}
@@ -161,7 +166,8 @@ if($mode == "insert"){
 
 	if($depthno == 1){ $tmpcode = substr($catcode,0,2); }
    else if($depthno == 2){ $tmpcode = substr($catcode,0,4); }
-   else if($depthno == 3){ $tmpcode = $catcode; }
+   else if($depthno == 3){ $tmpcode = substr($catcode,0,6); }
+   else if($depthno == 4){ $tmpcode = $catcode; }
 
    //$depthno = $depthno-1;
    // 하위분류가 존재하면 삭제하지 못함

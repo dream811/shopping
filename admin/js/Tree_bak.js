@@ -559,13 +559,13 @@ function treeNodeToHTML() {
 function treeNodeOnMouseOver(id) {
 	
 	var nodeComp = compManager.get(id);
-	var node = document.all['id'];
+	var node = document.getElementById(id);
 	
 	
 	if(nodeComp != nodeComp.getRootTree().selectedNode) {
 		document.all[id + "_text"].style.color = nodeComp.workAreaOnColor;
 	}
-	document.all['id'].style.cursor = "hand";
+	document.getElementById(id).style.cursor = "pointer";
 	
 	
 	if(nodeComp.onMouseOver) {
@@ -581,12 +581,12 @@ function treeNodeOnMouseOver(id) {
 function treeNodeOnMouseOut(id) {
 	
 	var nodeComp = compManager.get(id);
-	var node = document.all['id'];
+	var node = document.getElementById(id);
 	
 	if(nodeComp != nodeComp.getRootTree().selectedNode) {
 		document.all[id + "_text"].style.color = nodeComp.color;
 	}
-	document.all['id'].style.cursor = "default";
+	document.getElementById(id).style.cursor = "default";
 	
 	
 	if(nodeComp.onMouseOut) {
@@ -602,7 +602,7 @@ function treeNodeOnMouseOut(id) {
 function treeNodeOnClick(id) {
 	
 	var nodeComp = compManager.get(id);
-	var node = document.all['id'];
+	var node = document.getElementById(id);
 	
 	if(event.srcElement.id == id+"_text") { 
 		
@@ -645,7 +645,7 @@ function treeNodeOnClick(id) {
 function treeNodeOnDblClick(id) {
 	
 	var nodeComp = compManager.get(id);
-	var node = document.all['id'];
+	var node = document.getElementById(id);
 	
 	if(nodeComp.root) return; 
 	

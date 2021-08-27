@@ -4,6 +4,7 @@ include "../../inc/common.inc";
 function print_position($catcode){
 	
 	global $prdcode;
+	global $connect;
 	
    $catcode1 = substr($catcode,0,2);
    $catcode2 = substr($catcode,0,4);
