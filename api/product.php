@@ -1,8 +1,10 @@
 <?
+
 include_once "../inc/common.inc"; 		// DB컨넥션, 접속자 파악
 include_once "../inc/util.inc"; 		// 라이브러리 함수
 //require_once('../db.inc.php');//db config
-require_once('./auth_check.php');//db config
+include('./auth_check.php');//db config
+
 include_once('./db.process.php');//db config
 $type = $_REQUEST['type'];
 
