@@ -298,23 +298,23 @@ function accCheck(frm) {
 		if($date_type) $search_sql .= " AND DATE_FORMAT($date_type, '%Y-%m-%d') >= '$prev_date' AND DATE_FORMAT($date_type, '%Y-%m-%d') <= '$next_date' ";
 
 		$sql = "SELECT COUNT(idx) AS cnt FROM
-						(
-						SELECT wb.idx
-						FROM wiz_basket AS wb LEFT JOIN wiz_order AS wo ON wb.orderid = wo.orderid
-						LEFT JOIN wiz_account AS wa ON wb.mallid = wa.mall_id and DATE_FORMAT(wo.send_date, '%Y%m') = wa.acc_date
-						LEFT JOIN
-						(
-						  SELECT SUM(del_price_mall) AS delprice, orderid, mallid FROM (
-						  SELECT del_price_mall, orderid, mallid
-						  FROM wiz_basket
-						  WHERE ord_status = 'DC' OR ord_status = 'CC' and mallid = '".$wiz_md['id']."'
-						  GROUP BY mallid, orderid
-						  ) AS wd GROUP BY mallid
-						) AS wd  ON wb.mallid = wd.mallid
-						WHERE (wb.ord_status = 'DC' or wb.ord_status = 'CC') and wb.mallid = '".$wiz_md['id']."' $search_sql
-						GROUP BY wb.mallid, DATE_FORMAT(wo.send_date, '%Y%m')
-						ORDER BY wo.send_date DESC
-						) AS total";
+			(
+			SELECT wb.idx
+			FROM wiz_basket AS wb LEFT JOIN wiz_order AS wo ON wb.orderid = wo.orderid
+			LEFT JOIN wiz_account AS wa ON wb.mallid = wa.mall_id and DATE_FORMAT(wo.send_date, '%Y%m') = wa.acc_date
+			LEFT JOIN
+			(
+				SELECT SUM(del_price_mall) AS delprice, orderid, mallid FROM (
+				SELECT del_price_mall, orderid, mallid
+				FROM wiz_basket
+				WHERE ord_status = 'DC' OR ord_status = 'CC' and mallid = '".$wiz_md['id']."'
+				GROUP BY mallid, orderid
+				) AS wd GROUP BY mallid
+			) AS wd  ON wb.mallid = wd.mallid
+			WHERE (wb.ord_status = 'DC' or wb.ord_status = 'CC') and wb.mallid = '".$wiz_md['id']."' $search_sql
+			GROUP BY wb.mallid, DATE_FORMAT(wo.send_date, '%Y%m')
+			ORDER BY wo.send_date DESC
+			) AS total";
 		//echo $sql."<br><br>";
 
 		$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));

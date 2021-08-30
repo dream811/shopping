@@ -30,6 +30,19 @@
 					<? }} ?>
                 </select><!-- 2차 메뉴 select -->
             </li>
+			<li>
+                <select onchange="this.form.catcode.value=this.value; this.form.submit();">
+					<option value="">전체보기</option>
+					<?
+					if($catcode){
+						$sql	= "select catcode, catname, catimg, catimg_over from wiz_category where catcode like '".substr($catcode, 0, 4)."%' and depthno=3 and catuse != 'N' order by priorno03 asc";
+						$result	= mysqli_query($connect, $sql) or die(mysqli_error($connect));
+						while($row = mysqli_fetch_object($result)){
+					?>
+					<option value="<?=$row->catcode?>"<?=(substr($catcode, 0, 6)==substr($row->catcode, 0, 6) ? ' selected' : '')?>><?=$row->catname?></option>
+					<? }} ?>
+                </select><!-- 3차 메뉴 select -->
+            </li>
         </ul>
     </div>
 </div><!-- //cate_history -->

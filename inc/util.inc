@@ -39,6 +39,11 @@ function mobile_check() {
 
 // 문자열 자르기 (이상의 길이일때는 ... 로 표시)
 function cut_str($msg, $cut_size) {
+	$suffix = "";
+	if(mb_strlen($msg) > $cut_size) {
+		$asuffix = "...";
+	}
+	return mb_substr($msg, 0, $cut_size, 'utf-8').$suffix;
 
 	if($cut_size<=0) return $msg;
 	if(preg_match('/[re]/i',$msg)) $cut_size=$cut_size+4;
@@ -786,6 +791,7 @@ function makeCookie( $name, $valuename, $exptime = "" ) {
 function makeBasketCookie(){
 	//쿠키가 생성되어있지 않으면 고유값 생성해서 만들기
 	if(empty($_COOKIE["uniq_id"])){
+		if(!isset($REMOTE_ADDR)) $REMOTE_ADDR = "";//"http://scrap.xn--9n3bo0el5b.com";
 		$basketid = md5($REMOTE_ADDR.time());
 		makeCookie("uniq_id",$basketid);
 		return $basketid;

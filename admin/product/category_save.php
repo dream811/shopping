@@ -37,7 +37,7 @@ if($mode == "insert"){
 	if($depthno == 0){ $catcode = $row->catnum."000000";}
 	else if($depthno == 1){  $catcode = $catnum1.$row->catnum."0000";}
 	else if($depthno == 2){  $catcode = $catnum1.$catnum2.$row->catnum."00";}
-	else if($depthno == 3){  $catcode = $catnum1.$catnum2.$row->catnum3.$row->catnum;}
+	else if($depthno == 3){  $catcode = $catnum1.$catnum2.$catnum3.$row->catnum;}
 
 
 	// 우선순위 설정
@@ -85,7 +85,12 @@ if($mode == "insert"){
 		copy($catimg_over['tmp_name'], $catimg_path."/".$catimg_over_name);
 		chmod($catimg_path."/".$catimg_over_name, 0606);
 	}
-
+	if(!isset($catuse)) $catuse = "";
+	if(!isset($catimg_name)) $catimg_name = "";
+	if(!isset($catimg_over_name)) $catimg_over_name = "";
+	if(!isset($prd_tema)) $prd_tema = "";
+	if(!isset($recom_tema)) $recom_tema = "";
+	if(!isset($recom_num)) $recom_num = "";
 	//  카테고리 저장
 	$sql = "insert into wiz_category(catcode,depthno,priorno01,priorno02,priorno03,priorno04,catname,catuse,catimg,catimg_over,subimg,subimg_type,
 								prd_tema,prd_num,prd_width,prd_height,recom_use,recom_tema,recom_num,cms_rate)
@@ -151,6 +156,7 @@ if($mode == "insert"){
 	if($catuse == "N"){
 		if($depthno == "1") $tmp_catcode = substr($catcode,0,2);
 		else if($depthno == "2") $tmp_catcode = substr($catcode,0,4);
+		else if($depthno == "3") $tmp_catcode = substr($catcode,0,6);
 		if($tmp_catcode != ""){
 			$sql = "update wiz_category set catuse='$catuse' where catcode like '$tmp_catcode%'";
 			//echo $sql;

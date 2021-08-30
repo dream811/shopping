@@ -84,7 +84,7 @@ function loginFocus(){
         <?=$hide_ssl_start?>
         <div class="secure"><label><input type="checkbox" name="secure_login" value="Y" checked> 보안접속</label></div>
 		<?=$hide_ssl_end?>
-        <div class="AW-btn-wrap"><button type="submit" class="on">로그인</button></div>
+        <div class="AW-btn-wrap"><button type="submit" class="on">로그인</button><button type="button" onclick="document.location='/md/md_register.php';" class="off">회원가입</button></div>
     </div><!-- .form -->
     <div class="help"><a href="http://anywiz.co.kr" target="_blank">로그인 문제가 발생할 경우 <i><img src="http://anywiz.co.kr/img/common/logo.png" /></i></a></div>
 </div><!-- .AW-admin-login_wrap -->

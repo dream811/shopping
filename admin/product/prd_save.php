@@ -45,7 +45,7 @@ if($mode == "insert"){
 	include "./prd_imgin.inc";
 
 	$prdname = str_replace("'","′",$prdname);
-	$prior = date(ymdHis);
+	$prior = date('ymdHis');
 
 	// 상품 옵션 1
 	for($ii = 0; $ii < count($tmp_optcode); $ii++) {
@@ -59,13 +59,13 @@ if($mode == "insert"){
 	}
 
 	// 상품 옵션 - 가격/적립금/재고
-	for($ii = 0; $ii < count($tmp_opt[sellprice]); $ii++) {
+	for($ii = 0; $ii < count($tmp_opt['sellprice']); $ii++) {
 
-		if(empty($tmp_opt[sellprice][$ii])) $tmp_opt[sellprice][$ii] = 0;
-		if(empty($tmp_opt[reserve][$ii])) $tmp_opt[reserve][$ii] = 0;
-		if(empty($tmp_opt[stock][$ii])) $tmp_opt[stock][$ii] = 0;
+		if(empty($tmp_opt['sellprice'][$ii])) $tmp_opt['sellprice'][$ii] = 0;
+		if(empty($tmp_opt['reserve'][$ii])) $tmp_opt['reserve'][$ii] = 0;
+		if(empty($tmp_opt['stock'][$ii])) $tmp_opt['stock'][$ii] = 0;
 
-		$optvalue .= $tmp_opt[sellprice][$ii]."^".$tmp_opt[reserve][$ii]."^".$tmp_opt[stock][$ii]."^^";
+		$optvalue .= $tmp_opt['sellprice'][$ii]."^".$tmp_opt['reserve'][$ii]."^".$tmp_opt['stock'][$ii]."^^";
 	}
 
 	// 추가 옵션 1
@@ -90,7 +90,7 @@ if($mode == "insert"){
 		}
 	}
 
-	if(!get_magic_quotes_gpc()) $content= addslashes($content);
+	$content= addslashes($content);
 
 	// 상품정보 저장
 	$sql = "insert into wiz_product
@@ -119,14 +119,17 @@ if($mode == "insert"){
 
 
 	// 카테고리정보 저장
-	if(!empty($class03)){
-	  $catcode = $class03;
+	if(!empty($class04)){
+	  	$catcode = $class04;
 	}else{
-	  if(!empty($class02)) $catcode = $class02."00";
-	  else {
-   			if(empty($class01)) $class01 = "00";
-      		$catcode = $class01."0000";
-      	}
+	  	if(!empty($class03)) $catcode = $class03."00";
+		else {
+			if(!empty($class02)) $catcode = $class02."0000";
+			else {
+				if(empty($class01)) $class01 = "00";
+				$catcode = $class01."000000";
+			}
+		}
 	}
 	$sql = "insert into wiz_cprelation(idx,prdcode,catcode) values('', '$prdcode', '$catcode')";
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
@@ -224,15 +227,18 @@ if($mode == "insert"){
    
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 
-	// 카테고리 정보 저장
-	if(!empty($class03)){
-	  $catcode = $class03;
+	// 카테고리정보 저장
+	if(!empty($class04)){
+		$catcode = $class04;
 	}else{
-	  if(!empty($class02)) $catcode = $class02."00";
-	  else {
-   			if(empty($class01)) $class01 = "00";
-      		$catcode = $class01."0000";
-      	}
+			if(!empty($class03)) $catcode = $class03."00";
+		else {
+			if(!empty($class02)) $catcode = $class02."0000";
+			else {
+				if(empty($class01)) $class01 = "00";
+				$catcode = $class01."000000";
+			}
+		}
 	}
 
 	$sql = "update wiz_cprelation set catcode = '$catcode' where prdcode = '$prdcode' and idx = '$relidx'";

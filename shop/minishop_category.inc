@@ -28,7 +28,7 @@ $total_product = $row['cnt'];
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="prd_category">
 		<?php
 		$cat_no = 0;
-		$sql = "select catcode, catname, depthno from wiz_category where catuse != 'N' and depthno = '1' order by priorno01, priorno02, priorno03 asc";
+		$sql = "select catcode, catname, depthno from wiz_category where catuse != 'N' and depthno = '1' order by priorno01, priorno02, priorno03, priorno04 asc";
 		$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 		while($row = mysqli_fetch_array($result)) {
 			if($cat_no%6 == 0 && $cat_no > 0) echo "<tr>";

@@ -126,14 +126,17 @@ if($mode == "insert"){
 
 
 	// 카테고리정보 저장
-	if(!empty($class03)){
-	  $catcode = $class03;
+	if(!empty($class04)){
+		$catcode = $class04;
 	}else{
-	  if(!empty($class02)) $catcode = $class02."00";
-	  else {
-   			if(empty($class01)) $class01 = "00";
-      		$catcode = $class01."0000";
-      	}
+			if(!empty($class03)) $catcode = $class03."00";
+		else {
+			if(!empty($class02)) $catcode = $class02."0000";
+			else {
+				if(empty($class01)) $class01 = "00";
+				$catcode = $class01."000000";
+			}
+		}
 	}
 	$sql = "insert into wiz_cprelation(idx,prdcode,catcode) values('', '$prdcode', '$catcode')";
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
@@ -228,15 +231,18 @@ if($mode == "insert"){
 
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 
-	// 카테고리 정보 저장
-	if(!empty($class03)){
-	  $catcode = $class03;
+	// 카테고리정보 저장
+	if(!empty($class04)){
+		$catcode = $class04;
 	}else{
-	  if(!empty($class02)) $catcode = $class02."00";
-	  else {
-   			if(empty($class01)) $class01 = "00";
-      		$catcode = $class01."0000";
-      	}
+			if(!empty($class03)) $catcode = $class03."00";
+		else {
+			if(!empty($class02)) $catcode = $class02."0000";
+			else {
+				if(empty($class01)) $class01 = "00";
+				$catcode = $class01."000000";
+			}
+		}
 	}
 
 	$sql = "update wiz_cprelation set catcode = '$catcode' where prdcode = '$prdcode' and idx = '$relidx'";

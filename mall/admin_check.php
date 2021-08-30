@@ -27,17 +27,18 @@ if($admin_info->passwd == md5($admin_pw)){
 	   // 아이디 저장
 	   if(isset($_POST['saveid']) && $_POST['saveid'] == "Y") setcookie("admin_id", $admin_id, time()+3600*24*365, "/");
 
-		setcookie("wiz_mall['id']", $admin_info->id, false, "/");
-		setcookie("wiz_mall['passwd']", $admin_info->passwd, false, "/");
-		setcookie("wiz_mall['name']", $admin_info->com_name, false, "/");
-		setcookie("wiz_mall['email']", $admin_info->email, false, "/");
-		setcookie("wiz_mall['com_tel']", $admin_info->com_tel, false, "/");
-
-		// $wiz_mall['id'] 		= $_SESSION['wiz_mall']['id'] 		= $admin_info->id;
-		// $wiz_mall['passwd'] 	= $_SESSION['wiz_mall']['passwd'] 	= $admin_info->passwd;
-		// $wiz_mall['name'] 		= $_SESSION['wiz_mall']['name'] 	= $admin_info->com_name;
-		// $wiz_mall['email'] 		= $_SESSION['wiz_mall']['email'] 	= $admin_info->email;
-		// $wiz_mall['com_tel'] 	= $_SESSION['wiz_mall']['com_tel'] 	= $admin_info->com_tel;
+		// setcookie("wiz_mall['id']", $admin_info->id, false, "/");
+		// setcookie("wiz_mall['passwd']", $admin_info->passwd, false, "/");
+		// setcookie("wiz_mall['name']", $admin_info->com_name, false, "/");
+		// setcookie("wiz_mall['email']", $admin_info->email, false, "/");
+		// setcookie("wiz_mall['com_tel']", $admin_info->com_tel, false, "/");
+		$wiz_mall= array();
+		$wiz_mall['id'] 		= $_SESSION['wiz_mall']['id'] 		= $admin_info->id;
+		$wiz_mall['passwd'] 	= $_SESSION['wiz_mall']['passwd'] 	= $admin_info->passwd;
+		$wiz_mall['name'] 		= $_SESSION['wiz_mall']['name'] 	= $admin_info->com_name;
+		$wiz_mall['email'] 		= $_SESSION['wiz_mall']['email'] 	= $admin_info->email;
+		$wiz_mall['com_tel'] 	= $_SESSION['wiz_mall']['com_tel'] 	= $admin_info->com_tel;
+		$_SESSION['wiz_mall'] = $wiz_mall;
 
 		Header("Location: $start_page");
 

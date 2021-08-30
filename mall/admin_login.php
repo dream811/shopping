@@ -7,6 +7,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 if(isset($wiz_mall['id']) && $wiz_mall['id'] != ""){
+
 echo "<script>document.location='./main/main.php';</script>";
 exit;
 }

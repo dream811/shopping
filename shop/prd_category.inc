@@ -4,7 +4,7 @@ else if(isset($cat_info->depthno) && $cat_info->depthno == 2) $tmp_catcode = sub
 else if(isset($cat_info->depthno) && $cat_info->depthno == 3) $tmp_catcode = substr($catcode,0,4);
 
 $depthno = isset($cat_info->depthno) ? $cat_info->depthno : "";
-if($depthno < 3) $depthno++;
+if($depthno < 4) $depthno++;
 
 /*
 2단계까지만 보여줄경우
@@ -25,7 +25,6 @@ if($total > 0){
 		if(!isset($catcode)) $catcode = "";
 		$no = 0;
 		while($row = mysqli_fetch_object($result)){
-
 			// 현재카테고리에 몇개의 상품이 있는지
 			$t_catcode = $row->catcode;
 			if($row->depthno == 2) $t_catcode = substr($row->catcode,0,4);
