@@ -9,7 +9,9 @@
 		$realimg_ext = strtolower(substr($data['images'][0],-3));
 		$realimg_name = $prdcode."_tmp";
    		//copy("http:".$data['images'][0], $upfile_path."/".$realimg_name);
-	   	$content = file_get_contents("http:".$data['images'][0]);
+		$imgUrl = $data['images'][0];
+		if(substr($imgUrl, 0, 4) != "http") $imgUrl = "http:".$imgUrl;
+	   	$content = file_get_contents($imgUrl);
 	   	file_put_contents($upfile_path."/".$realimg_name, $content);
 		$prdimg_R_name = $prdcode."_R.".$realimg_ext;
 		$prdimg_L1_name = $prdcode."_L1.".$realimg_ext;
@@ -32,7 +34,9 @@
 			$realimg_ext = strtolower(substr($data['images'][$ii],-3));
 			${'realimg'.$ii.'_name'} = $prdcode."_tmp";
 	   		//copy($_FILES['realimg'.$ii]['tmp_name'],$upfile_path."/".${'realimg'.$ii.'_name'});
-		   	$content = file_get_contents("http:".$data['images'][$ii]);
+			$imgUrl = $data['images'][$ii];
+			if(substr($imgUrl, 0, 4) != "http") $imgUrl = "http:".$imgUrl;
+			$content = file_get_contents($imgUrl);
 	   		file_put_contents($upfile_path."/".$realimg_name, $content);
 
 			chmod($upfile_path."/".${'realimg'.$ii.'_name'}, 0606);
