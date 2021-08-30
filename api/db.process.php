@@ -53,10 +53,11 @@ function registProduct($data)
     $tmp_opt['reserve'] = array();
     $tmp_opt['stock'] = array();
     $optvalue = "";
+    if(!isset($data)) exit(); 
 	for($ii = 0; $ii < count($data['items']); $ii++) {
 
-		if(empty($data['items'][$ii]['nSubItemSellPrice'])) $tmp_opt['sellprice'][$ii] = 0;
-        else $tmp_opt['sellprice'][$ii] = $data['items'][$ii]['nSubItemSellPrice'];
+		if(empty($data['items'][$ii]['nSubItemOptionPrice'])) $tmp_opt['sellprice'][$ii] = 0;
+        else $tmp_opt['sellprice'][$ii] = $data['items'][$ii]['nSubItemOptionPrice'];
 		
         if(!isset($data['items'][$ii]['reserve'])) $tmp_opt['reserve'][$ii] = 0;
 		
