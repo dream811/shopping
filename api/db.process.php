@@ -61,7 +61,7 @@ function registProduct($data)
         if(!isset($data['items'][$ii]['reserve'])) $tmp_opt['reserve'][$ii] = 0;
 		
         if(empty($data['items'][$ii]['nOriginQuantity'])) $tmp_opt['stock'][$ii] = 0;
-        else $tmp_opt['stock'][$ii] = 0;
+        else $tmp_opt['stock'][$ii] = $data['items'][$ii]['nOriginQuantity'];
 		$optvalue .= $tmp_opt['sellprice'][$ii]."^".$tmp_opt['reserve'][$ii]."^".$tmp_opt['stock'][$ii]."^^";
 	}
 
