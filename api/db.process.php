@@ -97,7 +97,7 @@ function registProduct($data)
 	// 상품승인
 	$status = "N";
     $stock = $data['stock'];
-    $sellprice = $supprice = $data["price"] ;
+    $sellprice = $supprice = $data["price"];
     $conprice = $data["price"] + $data["discount"];
     $reserve = round($sellprice/100*5);
     if($data["discount"] > 0) $sale = "Y"; else $sale = "N";
@@ -112,7 +112,7 @@ function registProduct($data)
 					info_name6,info_value6,opt_use,opttitle,optcode,opttitle2,optcode2,opttitle3,optcode3,
 					opttitle4,optcode4,opttitle5,optcode5,opttitle6,optcode6,opttitle7,optcode7,optvalue,
 					prdimg_R,prdimg_L1,prdimg_M1,prdimg_S1,prdimg_L2,prdimg_M2,prdimg_S2,prdimg_L3,prdimg_M3,prdimg_S3,
-					prdimg_L4,prdimg_M4,prdimg_S4,prdimg_L5,prdimg_M5,prdimg_S5,searchkey,stortexp,content,wdate,mdate,mallid,status)
+					prdimg_L4,prdimg_M4,prdimg_S4,prdimg_L5,prdimg_M5,prdimg_S5,searchkey,stortexp,content,wdate,mdate,mallid,mdid,status)
 					values('$prdcode','$prdname','','중국','Y','$stock','0','$prior','0',
 					'$deimgcnt','0','0','0','0','$sellprice','$conprice','$supprice','$reserve','','C','P','0',
 					'Y','N','N','N','$sale','S','','0','%','0',
@@ -124,7 +124,7 @@ function registProduct($data)
 					'$prdimg_R_name','$prdimg_L1_name','$prdimg_M1_name','$prdimg_S1_name',
 					'$prdimg_L2_name','$prdimg_M2_name','$prdimg_S2_name','$prdimg_L3_name','$prdimg_M3_name','$prdimg_S3_name',
 					'$prdimg_L4_name','$prdimg_M4_name','$prdimg_S4_name','$prdimg_L5_name','$prdimg_M5_name','$prdimg_S5_name',
-					'','','$content',now(),now(),'$mallid','$status')";
+					'','','$content',now(),now(),'$mallid','$mdid','$status')";
 
 	mysqli_query($connect, $sql) or die(mysqli_error($connect));
 
