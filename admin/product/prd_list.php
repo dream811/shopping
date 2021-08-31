@@ -17,11 +17,13 @@ if(!isset($s_shortage)) $s_shortage = "";
 if(!isset($s_stock)) $s_stock = "";
 if(!isset($s_status)) $s_status = "";
 if(!isset($s_mallid)) $s_mallid = "";
+if(!isset($s_mdid)) $s_mdid = "";
+if(!isset($page)) $page = "";
 // 페이지 파라메터 (검색조건이 변하지 않도록)
 //--------------------------------------------------------------------------------------------------
 $param = "dep_code=$dep_code&dep2_code=$dep2_code&dep3_code=$dep3_code";
 $param .= "&s_special=$s_special&s_display=$s_display&s_couponuse=$s_couponuse&s_searchopt=$s_searchopt&s_searchkey=$s_searchkey";
-$param .= "&s_brand=$s_brand&s_shortage=$s_shortage&s_stock=$s_stock&s_status=$s_status&s_mallid=$s_mallid";
+$param .= "&s_brand=$s_brand&s_shortage=$s_shortage&s_stock=$s_stock&s_status=$s_status&s_mallid=$s_mallid&s_mdid=$s_mdid";
 //--------------------------------------------------------------------------------------------------
 
 ?>
@@ -343,7 +345,7 @@ function batchStatus() {
           	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
           	while($row = mysqli_fetch_array($result)) {
           	?>
-          	<option value="<?=$row['idx']?>" <? if($s_brand == $row['idx']) echo "selected"; ?>><?=$row[brdname]?></option>
+          	<option value="<?=$row['idx']?>" <? if($s_brand == $row['idx']) echo "selected"; ?>><?=$row['brdname']?></option>
           	<?
           	}
           	?>
@@ -352,10 +354,10 @@ function batchStatus() {
         <tr>
         	<td class="t_name">입점업체</td>
         	<td class="t_value">
-	          <select name="s_mallid" onChange="this.form.page.value=1;this.form.submit();">
+	          <!-- <select name="s_mallid" onChange="this.form.page.value=1;this.form.submit();">
 		      		<option value="">::입점업체 선택::</option>
 		      		<?php
-		      		$sql = "select id, com_name, cms_type, cms_rate from wiz_mall where status = 'Y' order by com_name asc";
+		      		$sql = "select id, strID, com_name, cms_type, cms_rate from tb_users where status = 'Y' order by com_name asc";
 		      		$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 		      		while($row = mysqli_fetch_array($result)) {
 		      		?>
@@ -363,7 +365,20 @@ function batchStatus() {
 		      		<?php
 		      		}
 		      		?>
-	          </select>
+	          </select> -->
+			  <!-- <select name="s_mdid" onChange="this.form.page.value=1;this.form.submit();">
+		      		<option value="">::입점업체 선택::</option>
+		      		<?php
+		      		$sql = "select id, strID, com_name, cms_type, cms_rate from tb_users where status = 'Y' order by com_name asc";
+		      		$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
+		      		while($row = mysqli_fetch_array($result)) {
+		      		?>
+		      		<option value="<?=$row['id']?>" cms_type="<?=$row['cms_type']?>" cms_rate="<?=$row['cms_rate']?>"  <? if(!strcmp($row['id'], $s_mdid)) echo "selected" ?>><?=$row['com_name']?> (<?=$row['strID']?>)</option>
+		      		<?php
+		      		}
+		      		?>
+	          </select> -->
+			  <input type="text" size="25" name="s_mdid" value="<?=$s_mdid?>" class="input">
         	</td>
         	<td class="t_name">승인여부</td>
         	<td class="t_value">
@@ -391,26 +406,28 @@ function batchStatus() {
 			if(!empty($s_brand)) $brand_sql = "wp.brand = '$s_brand' and ";
 			if(!empty($s_status)) $status_sql = "wp.status = '$s_status' and ";
 			if(!empty($s_mallid)) $mallid_sql = " wp.mallid = '$s_mallid' and ";
-			if(!isset($shortage )) $shortage  = "";
+			if(!empty($s_mdid)) $mdid_sql = " wp.mallid like '%$s_mdid%' and ";
+			if(!isset($shortage )) $shortage = "";
 			if(!empty($s_shortage)) {
 				if(!strcmp($s_shortage, "N")) $shortage_sql = " (wp.shortage = '$s_shortage' or wp.shortage = '') and ";
 				else $shortage_sql = " wp.shortage = '$s_shortage' and ";
 			}
 			if(!strcmp($shortage, "S")) $stock_sql = " wp.stock <= '$stock' and ";
 
-			if(!isset($special_sql )) $special_sql  = "";
-			if(!isset($display_sql )) $display_sql  = "";
-			if(!isset($search_sql )) $search_sql  = "";
-			if(!isset($coupon_sql )) $coupon_sql  = "";
-			if(!isset($brand_sql )) $brand_sql  = "";
-			if(!isset($shortage_sql )) $shortage_sql  = "";
-			if(!isset($stock_sql )) $stock_sql  = "";
-			if(!isset($status_sql )) $status_sql  = "";
-			if(!isset($mallid_sql )) $mallid_sql  = "";
+			if(!isset($special_sql)) $special_sql = "";
+			if(!isset($display_sql)) $display_sql = "";
+			if(!isset($search_sql)) $search_sql = "";
+			if(!isset($coupon_sql)) $coupon_sql = "";
+			if(!isset($brand_sql)) $brand_sql = "";
+			if(!isset($shortage_sql)) $shortage_sql = "";
+			if(!isset($stock_sql)) $stock_sql = "";
+			if(!isset($status_sql)) $status_sql = "";
+			if(!isset($mallid_sql)) $mallid_sql = "";
+			if(!isset($mdid_sql)) $mdid_sql = "";
 			if(!isset($catcode_sql)) $catcode_sql = "";
 
 			$sql = "select distinct wp.prdcode from wiz_product wp, wiz_cprelation wc
-			              where $catcode_sql $special_sql $display_sql $search_sql $coupon_sql $brand_sql $shortage_sql $stock_sql $status_sql $mallid_sql wc.prdcode = wp.prdcode order by wp.prior desc, wp.prdcode desc";
+			              where $catcode_sql $special_sql $display_sql $search_sql $coupon_sql $brand_sql $shortage_sql $stock_sql $status_sql $mallid_sql $mdid_sql wc.prdcode = wp.prdcode order by wp.prior desc, wp.prdcode desc";
 
 			$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 			$total = mysqli_num_rows($result);
@@ -419,7 +436,7 @@ function batchStatus() {
 			$lists = 5;
 			$page_count = ceil($total/$rows);
 			if(!isset($page) || !$page ||  $page > $page_count) $page = 1;
-			$start = ($page-1)*$rows;
+			$start = ((int)$page-1)*$rows;
 			$no = $total-$start;
       ?>
       <table width="100%" border="0" cellpadding="0" cellspacing="0">
@@ -454,13 +471,13 @@ function batchStatus() {
       	</form>
 				<?
 				$sql = "select distinct wp.prdcode, wp.prdimg_R, wp.prdname, wp.sellprice, wp.prior, wp.stock, wp.mallid, wp.status from wiz_product wp, wiz_cprelation wc
-				              where $catcode_sql $special_sql $display_sql $search_sql $coupon_sql $brand_sql $shortage_sql $stock_sql $status_sql $mallid_sql wc.prdcode = wp.prdcode order by wp.prior desc, wp.prdcode desc limit $start, $rows";
+				              where $catcode_sql $special_sql $display_sql $search_sql $coupon_sql $brand_sql $shortage_sql $stock_sql $status_sql $mallid_sql $mdid_sql wc.prdcode = wp.prdcode order by wp.prior desc, wp.prdcode desc limit $start, $rows";
 				$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 
 				while(($row = mysqli_fetch_object($result)) && $rows){
 
 					// 상품 이미지
-					if(!@file($_SERVER[DOCUMENT_ROOT]."/data/prdimg/".$row->prdimg_R)) $row->prdimg_R = "/images/noimage.gif";
+					if(!@file($_SERVER['DOCUMENT_ROOT']."/data/prdimg/".$row->prdimg_R)) $row->prdimg_R = "/images/noimage.gif";
 					else $row->prdimg_R = "/data/prdimg/".$row->prdimg_R;
 
 					if(!strcmp($row->status, "Y")) $status = "승인";
