@@ -226,11 +226,11 @@ function delComment(idx){
 		$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 		$total = mysqli_num_rows($result);
 
-		if($rows == "") $rows = "10";
-		if($lists == "") $lists = "10";
+		if(!isset($rows) || $rows == "") $rows = "10";
+		if(!isset($lists) || $lists == "") $lists = "10";
 
 		$page_count = ceil($total/$rows);
-		if(!$cpage || $cpage > $page_count) $cpage = 1;
+		if(!isset($cpage) || !$cpage || $cpage > $page_count) $cpage = 1;
 		$start = ($cpage-1)*$rows;
 		$no = $total-$start;
 
