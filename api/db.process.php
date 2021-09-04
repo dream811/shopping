@@ -134,7 +134,7 @@ function registProduct($data)
     $catcode = "19000000";
     $arr_catcode = explode(' : ', $data['category']);
     $tmpcatcode = "19000000";
-    if(count($arr_catcode) > 1) $tmpcatcode = $arr_catcode[1];
+    if(count($arr_catcode) > 1) $tmpcatcode = $arr_catcode[0];
 	// if(!empty($class04)){
 	// 	$catcode = $class04;
 	// }else{
