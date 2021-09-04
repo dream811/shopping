@@ -31,7 +31,7 @@ function registProduct($data)
 	// 상품 옵션 1
     $optcode = "";
     $opttitle="";
-    if($data['options'] >0){
+    if(count($data['options']) >0){
         $opttitle = $data['options'][0];
         for($ii = 0; $ii < count($data['optionValues'][0]); $ii++) {
             if(!isset($optionValues[0][$ii])) $optcode .= $data['optionValues'][0][$ii]."^";
@@ -40,7 +40,7 @@ function registProduct($data)
 	// 상품 옵션 2
     $optcode2 = "";
     $opttitle2="";
-    if($data['options'] > 1){
+    if(count($data['options']) > 1){
         $opttitle2 = $data['options'][1];
         for($ii = 0; $ii < count($data['optionValues'][1]); $ii++) {
             
@@ -88,12 +88,13 @@ function registProduct($data)
 	// 	}
 	// }
 
-	 $content= addslashes($data['desc']);
+	$content= addslashes($data['desc']);
 
 	// 입점업체 아이디
 	$mallid = $data['strUserID'];
 	$mdid = $data['userid'];
     $prior = date('ymdHis');
+    $scrapId = $data['scrapId'];
 	// 상품승인
 	$status = "N";
     $stock = $data['stock'];
@@ -105,7 +106,7 @@ function registProduct($data)
 	// 상품정보 저장
     
 	$sql = "insert into wiz_product
-					(prdcode,prdname,prdcom,origin,showset,stock,savestock,prior,viewcnt,deimgcnt,basketcnt,ordercnt,cancelcnt,
+					(prdcode,scrapId,prdname,prdcom,origin,showset,stock,savestock,prior,viewcnt,deimgcnt,basketcnt,ordercnt,cancelcnt,
 					comcnt,sellprice,conprice,supprice,reserve,strprice,cms_type,cms_type2,cms_rate,new,best,popular,recom,sale,shortage,coupon_use,coupon_dis,coupon_type,
 					coupon_amount,coupon_limit,coupon_sdate,coupon_edate,del_type,del_price,prdicon,prefer,brand,info_use,info_name1,info_value1,
 					info_name2,info_value2,info_name3,info_value3,info_name4,info_value4,info_name5,info_value5,
@@ -113,7 +114,7 @@ function registProduct($data)
 					opttitle4,optcode4,opttitle5,optcode5,opttitle6,optcode6,opttitle7,optcode7,optvalue,
 					prdimg_R,prdimg_L1,prdimg_M1,prdimg_S1,prdimg_L2,prdimg_M2,prdimg_S2,prdimg_L3,prdimg_M3,prdimg_S3,
 					prdimg_L4,prdimg_M4,prdimg_S4,prdimg_L5,prdimg_M5,prdimg_S5,searchkey,stortexp,content,wdate,mdate,mallid,mdid,status)
-					values('$prdcode','$prdname','','중국','Y','$stock','0','$prior','0',
+					values('$prdcode','$scrapId','$prdname','','중국','Y','$stock','0','$prior','0',
 					'$deimgcnt','0','0','0','0','$sellprice','$conprice','$supprice','$reserve','','C','P','0',
 					'Y','N','N','N','$sale','S','','0','%','0',
 					'','0000-00-00','0000-00-00','DA','0','$prdicon_list','0','0','N',
@@ -131,6 +132,9 @@ function registProduct($data)
 
 	// 카테고리정보 저장
     $catcode = "19000000";
+    $arr_catcode = explode(' : ', $data['category']);
+    $tmpcatcode = "19000000";
+    if(count($arr_catcode) > 1) $tmpcatcode = $arr_catcode[0];
 	// if(!empty($class04)){
 	// 	$catcode = $class04;
 	// }else{
@@ -143,7 +147,7 @@ function registProduct($data)
 	// 		}
 	// 	}
 	// }
-	$sql = "insert into wiz_cprelation(idx,prdcode,catcode) values('', '$prdcode', '$catcode')";
+	$sql = "insert into wiz_cprelation(idx,prdcode,catcode,tmpcatcode) values('', '$prdcode', '$catcode', '$tmpcatcode')";
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 
     //return $rows;
