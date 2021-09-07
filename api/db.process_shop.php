@@ -23,7 +23,16 @@ function getOrders($lastIndex = 0, $pageSize = 100)
 {
     global $connect;
     // 주문자료 만들기
-	$sql = "select orderid, send_id, send_name, send_tphone, send_hphone, send_email, send_post, send_address, rece_name, rece_tphone, rece_hphone, rece_address, pay_method, account, reserve_price, deliver_method, deliver_price, deliver_date, prd_price, total_price, order_date, pay_date, send_date from wiz_order limit $pageSize offset $lastIndex";
+	$sql = "select wiz_order.orderid, send_id, send_name, send_tphone, send_hphone, send_email, send_post, send_address, rece_name, rece_tphone, rece_hphone, rece_address, pay_method, amount, reserve_price, deliver_method, deliver_price, wiz_order.deliver_date, prd_price, total_price, order_date, pay_date, send_date, 
+	wiz_basket.prdcode as prdcode, wiz_basket.prdname as prdname, wiz_basket.mallid as mallid, wiz_basket.amount as stock, wiz_category.catcode as catcode 
+	
+	from wiz_order 
+	
+	left join wiz_basket
+	on wiz_order.orderid = wiz_basket.orderid
+	left join wiz_cprelation on wiz_basket.prdcode = wiz_cprelation.prdcode 
+	left join wiz_category on wiz_cprelation.catcode = wiz_category.catcode
+	limit $pageSize offset $lastIndex";
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 	
 	$rows=[];
@@ -35,7 +44,7 @@ function getOrders($lastIndex = 0, $pageSize = 100)
     }
 	return $rows;
 }
-
+// 카테고리
 function getCategories($lastIndex = 0, $pageSize = 100)
 {
     global $connect;
