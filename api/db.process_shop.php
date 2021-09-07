@@ -80,7 +80,7 @@ function getSellData($sell_date = "", $shop_agent = "")
 	on wiz_order.orderid = wiz_basket.orderid
 	left join wiz_cprelation on wiz_basket.prdcode = wiz_cprelation.prdcode 
 	left join wiz_category on wiz_cprelation.catcode = wiz_category.catcode
-	where order_date > '$sell_date' $shop_agent";
+	where order_date > '$sell_date' $sql_agent";
 
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 	
