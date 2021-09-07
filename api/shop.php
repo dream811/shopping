@@ -8,6 +8,8 @@ $type = $_REQUEST['type'];
 //$page_num = isset($_REQUEST['page_num']) ? $_REQUEST['page_num'] : 100;
 $last_index = isset($_REQUEST['last_index']) ? $_REQUEST['last_index'] : 0;
 $page_size = isset($_REQUEST['page_size']) ? $_REQUEST['page_size'] : 100;
+
+
 switch ($type) {
 	case 'products':
 		$response_array = array();
@@ -25,6 +27,14 @@ switch ($type) {
 		$response_array = array();
 		$response_array['status'] = 'success';
 		$response_array['data'] = getCategories($last_index, $page_size);
+		echo (json_encode($response_array));
+		break;
+	case 'sellData':
+		$sell_date = isset($_REQUEST['strStartDate']) ? $_REQUEST['strStartDate'] : "1900-01-01 10:00:00";
+		$shop_agent = isset($_REQUEST['strShopAgent']) ? $_REQUEST['strShopAgent'] : "";
+		//$response_array = array();
+		//$response_array['status'] = 'success';
+		$response_array = getSellData($sell_date, $shop_agent);
 		echo (json_encode($response_array));
 		break;
 	default:

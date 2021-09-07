@@ -26,13 +26,13 @@ function getOrders($lastIndex = 0, $pageSize = 100)
 	$sql = "select wiz_order.orderid, send_id, send_name, send_tphone, send_hphone, send_email, send_post, send_address, rece_name, rece_tphone, rece_hphone, rece_address, pay_method, reserve_price, deliver_method, deliver_price, wiz_order.deliver_date, prd_price, total_price, order_date, pay_date, send_date, 
 	wiz_basket.prdcode as prdcode, wiz_basket.prdname as prdname, wiz_basket.mallid as mallid, wiz_basket.amount as stock, wiz_category.catcode as catcode 
 	
-	from wiz_order 
-	
+	from wiz_order
 	left join wiz_basket
 	on wiz_order.orderid = wiz_basket.orderid
 	left join wiz_cprelation on wiz_basket.prdcode = wiz_cprelation.prdcode 
 	left join wiz_category on wiz_cprelation.catcode = wiz_category.catcode
 	limit $pageSize offset $lastIndex";
+
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 	
 	$rows=[];
@@ -54,6 +54,41 @@ function getCategories($lastIndex = 0, $pageSize = 100)
 	$rows=[];
     if (mysqli_num_rows($result)) {
         while($row = mysqli_fetch_assoc($result)){
+            array_push($rows, $row);
+        }
+    }
+	return $rows;
+}
+
+//주문자료
+function getSellData($sell_date = "", $shop_agent = "")
+{
+	$sql_agent = "";
+
+	if($shop_agent != ""){
+		$sql_agent = "and wiz_basket.mallid = '$shop_agent'";
+	}
+    global $connect;
+    // 주문자료 만들기
+	$sql = "select  
+	order_date as strTime, total_price,
+	wiz_basket.prdcode as strProductID, wiz_basket.prdname as strProductName, wiz_basket.mallid as mallid, wiz_basket.amount as nProductCnt, 
+	wiz_category.catcode as strCategoryID, wiz_category.catname as strCategoryName 
+	
+	from wiz_order
+	left join wiz_basket
+	on wiz_order.orderid = wiz_basket.orderid
+	left join wiz_cprelation on wiz_basket.prdcode = wiz_cprelation.prdcode 
+	left join wiz_category on wiz_cprelation.catcode = wiz_category.catcode
+	where order_date > '$sell_date' $shop_agent";
+
+	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
+	
+	$rows=[];
+    if (mysqli_num_rows($result)) {
+        while($row = mysqli_fetch_assoc($result)){
+			$row['nProfit'] = number_format($row['total_price'] * 0.3, 0, '.', '');
+			unset($row['total_price']);
             array_push($rows, $row);
         }
     }
