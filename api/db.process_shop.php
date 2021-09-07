@@ -73,14 +73,13 @@ function getSellData($sell_date = "", $shop_agent = "")
 	$sql = "select  
 	order_date as strTime, total_price,
 	wiz_basket.prdcode as strProductID, wiz_basket.prdname as strProductName, wiz_basket.mallid as mallid, wiz_basket.amount as nProductCnt, 
-	wiz_category.catcode as strCategoryID, wiz_category.catname as strCategoryName 
+	IFNULL(wiz_cprelation.catcode, '00000000') as strCategoryID, IFNULL(wiz_category.catname, '') as strCategoryName 
 	
 	from wiz_order
-	left join wiz_basket
-	on wiz_order.orderid = wiz_basket.orderid
+	left join wiz_basket on wiz_order.orderid = wiz_basket.orderid
 	left join wiz_cprelation on wiz_basket.prdcode = wiz_cprelation.prdcode 
 	left join wiz_category on wiz_cprelation.catcode = wiz_category.catcode
-	where order_date > '$sell_date' $sql_agent";
+	where order_date > '$sell_date' $sql_agent order by order_date";
 
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 	
