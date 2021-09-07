@@ -21,6 +21,12 @@ switch ($type) {
 		$response_array['data'] = getOrders($last_index, $page_size);
 		echo (json_encode($response_array));
 		break;
+	case 'categories':
+		$response_array = array();
+		$response_array['status'] = 'success';
+		$response_array['data'] = getCategories($last_index, $page_size);
+		echo (json_encode($response_array));
+		break;
 	default:
 		# code...
 		break;
