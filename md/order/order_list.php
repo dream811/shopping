@@ -6,6 +6,15 @@
 
 <?
 // 페이지 파라메터 (검색조건이 변하지 않도록)
+if(!isset($s_status)) $s_status = "";
+if(!isset($prev_year)) $prev_year = "";
+if(!isset($prev_month)) $prev_month = "";
+if(!isset($prev_day)) $prev_day = "";
+if(!isset($next_year)) $next_year = "";
+if(!isset($next_month)) $next_month = "";
+if(!isset($next_day)) $next_day = "";
+if(!isset($searchopt)) $searchopt = "";
+if(!isset($searchkey)) $searchkey = "";
 //--------------------------------------------------------------------------------------------------
 $param = "s_status=$s_status&prev_year=$prev_year&prev_month=$prev_month&prev_day=$prev_day&next_year=$next_year&next_month=$next_month&next_day=$next_day";
 $param .= "&searchopt=$searchopt&searchkey=$searchkey";
@@ -334,7 +343,10 @@ window.open(url,"searchZip","height=350, width=367, menubar=no, scrollbars=yes, 
 			else $status_sql = "and wo.status = '$s_status'";
 
 			if($searchopt && $searchkey) $searchopt_sql = " and wo.$searchopt like '%$searchkey%'";
-
+		
+			if(!isset($status_sql)) $status_sql= "";
+			if(!isset($period_sql)) $period_sql= "";
+			if(!isset($searchopt_sql)) $searchopt_sql= "";
         $sql = "select wo.orderid
         			from wiz_order as wo left join wiz_basket as wb on wo.orderid = wb.orderid
         			where wo.orderid !='' and wb.mallid = '".$wiz_md['id']."' $status_sql $period_sql $searchopt_sql
