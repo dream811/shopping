@@ -183,8 +183,13 @@ if($mode == "insert"){
 } else if(!strcmp($mode, "chgstatus")) {
 
 	if(!strcmp($chg_status, "Y") && strcmp($status, $chg_status)) $adate_sql = ", adate = now() ";
+	if(!strcmp($chg_status, "Y")){
+		$bIseUsed = 1;
+	}else{
+		$bIseUsed = 0;
+	}
 
-	$sql = "update tb_users set status = '$chg_status' $adate_sql where id = '$id'";
+	$sql = "update tb_users set bIsUsed = $bIseUsed, status = '$chg_status' $adate_sql where id = '$id'";
 	mysqli_query($connect, $sql) or die(mysqli_error($connect));
 
 	complete("승인상태를 변경하였습니다.","");
@@ -198,8 +203,13 @@ if($mode == "insert"){
 		list($id, $old_status) = explode(":",$array_selvalue[$i]);
 
 		if(!strcmp($chg_status, "Y") && strcmp($old_status, $chg_status)) $adate_sql = ", adate = now() ";
+		if(!strcmp($chg_status, "Y")){
+			$bIseUsed = 1;
+		}else{
+			$bIseUsed = 0;
+		}
 
-		$sql = "update wiz_mall set status = '$chg_status' $adate_sql where id = '$id'";
+		$sql = "update wiz_mall set bIsUsed = $bIseUsed, status = '$chg_status' $adate_sql where id = '$id'";
 		mysqli_query($connect, $sql) or die(mysqli_error($connect));
 
 		$i++;

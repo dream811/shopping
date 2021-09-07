@@ -5,6 +5,7 @@
 <? include "../header.php"; ?>
 
 <?
+if(!isset($dep_code)) $dep_code = "";
 $param = "group=$group&searchopt=$searchopt&keyword=$keyword&dep_code=$dep_code&dep2_code=$dep2_code&dep3_code=$dep3_code";
 ?>
 

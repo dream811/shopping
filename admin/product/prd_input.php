@@ -7,6 +7,20 @@
 <?
 if(!isset($dep_code)) $dep_code = "";
 if(!isset($shortpage)) $shortpage = "";
+if(!isset($dep2_code)) $dep2_code = "";
+if(!isset($dep3_code)) $dep3_code = "";
+if(!isset($s_special)) $s_special = "";
+if(!isset($s_display)) $s_display = "";
+if(!isset($s_searchkey)) $s_searchkey = "";
+if(!isset($s_couponuse)) $s_couponuse = "";
+if(!isset($s_searchopt)) $s_searchopt = "";
+if(!isset($s_brand)) $s_brand = "";
+if(!isset($s_shortage)) $s_shortage = "";
+if(!isset($s_stock)) $s_stock = "";
+if(!isset($s_status)) $s_status = "";
+if(!isset($s_mallid)) $s_mallid = "";
+if(!isset($page)) $page = "";
+if(!isset($prdcode)) $prdcode = "";
 // 페이지 파라메터 (검색조건이 변하지 않도록)
 //--------------------------------------------------------------------------------------------------
 $param = "dep_code=$dep_code&dep2_code=$dep2_code&dep3_code=$dep3_code";
@@ -26,6 +40,7 @@ if($mode == "insert"){
 	$catcode01 = $dep_code;
 	$catcode02 = $dep_code.$dep2_code;
 	$catcode03 = $dep_code.$dep2_code.$dep3_code;
+  if(!isset($prd_row)) $prd_row = new stdClass();
 	$prd_row->stock = "100";
 
 	// 상품승인
@@ -407,6 +422,7 @@ function prdlayCheck(){
 	if(@file($imgpath."/".$prd_row->prdimg_S4)) echo "document.frm.prdlay_check4.checked = true; prdlay4.style.display='';";
 	if(@file($imgpath."/".$prd_row->prdimg_S5)) echo "document.frm.prdlay_check5.checked = true; prdlay5.style.display='';";
 	//if($prd_row->opttitle != "" || $prd_row->optcode != "") echo "document.frm.opt_use.checked = true; prdopt.style.display='';";
+  if(!isset($prd_row->opt_use)) $prd_row->opt_use = "";
 	if($prd_row->opt_use == "Y") echo "document.frm.opt_use.checked = true; prdopt.style.display='';";
 	?>
 }
@@ -713,6 +729,7 @@ function setCms(obj) {
                 		<?php
                 		$sql = "select id, com_name, cms_type, cms_rate from wiz_mall where status = 'Y' order by com_name asc";
                 		$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
+                    if(!isset($prd_row->mallid)) $prd_row->mallid = "";
                 		while($row = mysqli_fetch_array($result)) {
                 		?>
                 		<option value="<?=$row['id']?>" cms_type="<?=$row['cms_type']?>" cms_rate="<?=$row['cms_rate']?>"  <? if(!strcmp($row['id'], $prd_row->mallid)) echo "selected" ?>><?=$row['com_name']?> (<?=$row['id']?>)</option>
@@ -744,6 +761,13 @@ function setCms(obj) {
               <tr>
                 <td class="t_name">상품그룹</td>
                 <td class="t_value" colspan="3">
+                  <?php
+                  if(!isset($prd_row->new)) $prd_row->new = ""; 
+                  if(!isset($prd_row->best)) $prd_row->best = ""; 
+                  if(!isset($prd_row->popular)) $prd_row->popular = ""; 
+                  if(!isset($prd_row->recom)) $prd_row->recom = ""; 
+                  if(!isset($prd_row->sale)) $prd_row->sale = ""; 
+                  ?>
                   <input type="checkbox" name="new" value="Y" <? if($prd_row->new == "Y") echo "checked"; ?>><img src="/images/icon_new.gif" border="0"> &nbsp;
                   <input type="checkbox" name="best" value="Y" <? if($prd_row->best == "Y") echo "checked"; ?>><img src="/images/icon_best.gif" border="0"> &nbsp;
                   <input type="checkbox" name="popular" value="Y" <? if($prd_row->popular == "Y") echo "checked"; ?>><img src="/images/icon_hit.gif" border="0"> &nbsp;
@@ -757,6 +781,40 @@ function setCms(obj) {
                 	<table cellspacing=0 cellpadding=0><tr><td>
                 	<table cellspacing=0 cellpadding=0>
                 	<?
+                  if(!isset($prd_row->prdicon)) $prd_row->prdicon = "";
+                  if(!isset($prd_row->prdname)) $prd_row->prdname = "";
+                  if(!isset($prd_row->prdcom)) $prd_row->prdcom = "";
+                  if(!isset($prd_row->origin)) $prd_row->origin = "";
+                  if(!isset($prd_row->showset)) $prd_row->showset = "";
+                  if(!isset($prd_row->info_use)) $prd_row->info_use = "";
+                  if(!isset($prd_row->coupon_use)) $prd_row->coupon_use = "";
+                  if(!isset($prd_row->conprice)) $prd_row->conprice = "";
+                  if(!isset($prd_row->sellprice)) $prd_row->sellprice = "";
+                  if(!isset($prd_row->shortage)) $prd_row->shortage = "";
+                  if(!isset($prd_row->cms_type)) $prd_row->cms_type = "";
+                  if(!isset($prd_row->cms_type2)) $prd_row->cms_type2 = "";
+                  if(!isset($prd_row->reserve)) $prd_row->reserve = "";
+                  if(!isset($prd_row->strprice)) $prd_row->strprice = "";
+                  if(!isset($prd_row->del_type)) $prd_row->del_type = "";
+                  if(!isset($prd_row->del_price)) $prd_row->del_price = "";
+                  if(!isset($prd_row->opttitle5)) $prd_row->opttitle5 = "";
+                  if(!isset($prd_row->optcode5)) $prd_row->optcode5 = "";
+                  if(!isset($prd_row->opttitle6)) $prd_row->opttitle6 = "";
+                  if(!isset($prd_row->optcode6)) $prd_row->optcode6 = "";
+                  if(!isset($prd_row->opttitle7)) $prd_row->opttitle7 = "";
+                  if(!isset($prd_row->optcode7)) $prd_row->optcode7 = "";
+                  if(!isset($prd_row->opttitle3)) $prd_row->opttitle3 = "";
+                  if(!isset($prd_row->optcode3)) $prd_row->optcode3 = "";
+                  if(!isset($prd_row->opttitle4)) $prd_row->opttitle4 = "";
+                  if(!isset($prd_row->optcode4)) $prd_row->optcode4 = "";
+                  if(!isset($prd_row->opttitle)) $prd_row->opttitle = "";
+                  if(!isset($prd_row->optcode)) $prd_row->optcode = "";
+                  if(!isset($prd_row->opttitle2)) $prd_row->opttitle2 = "";
+                  if(!isset($prd_row->optcode2)) $prd_row->optcode2 = "";
+                  if(!isset($prd_row->optvalue)) $prd_row->optvalue = "";
+                  if(!isset($prd_row->stortexp)) $prd_row->stortexp = "";
+                  if(!isset($prd_row->content)) $prd_row->content = "";
+
                 	$prdicon= explode("/",$prd_row->prdicon);
                   for($ii=0; $ii<count($prdicon); $ii++){
                      $prdicon_list[$prdicon[$ii]] = true;
@@ -1201,7 +1259,13 @@ function setCms(obj) {
 									for($ii=0; $ii < count($opt_list)-1; $ii++){
 										$optvalue[$ii] = explode("^",$opt_list[$ii]);
 									}
-
+                  if(!isset($optvalue)) {
+                    $optvalue = array();
+                    $optvalue[0][0] = "";
+                    $optvalue[0][1] = "";
+                    $optvalue[0][2] = "";
+                  }
+                  
 									$no = 0;
 									?>
 	           	    <table id="opt" border="1" bordercolor="#cccccc" style="border-collapse:.">
