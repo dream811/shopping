@@ -9,6 +9,7 @@ if(!isset($searchopt)) $searchopt = "";
 if(!isset($searchkey)) $searchkey = "";
 if(!isset($sdate)) $sdate = "";
 if(!isset($edate)) $edate = "";
+if(!isset($page)) $page = "";
 // 페이지 파라메터 (검색조건이 변하지 않도록)
 //------------------------------------------------------------------------------------------------------------------------------------
 $param = "s_status=$s_status&searchopt=$searchopt&searchkey=$searchkey";
@@ -235,7 +236,7 @@ function setPeriod(sdate,edate){
 					</script>
          	<select name="searchopt" class="select">
             <option value="com_name" <? if($searchopt == "com_name") echo "selected"; ?>>회원명
-            <option value="id" <? if($searchopt == "id") echo "selected"; ?>>아이디
+            <option value="strID" <? if($searchopt == "strID") echo "selected"; ?>>아이디
             <option value="com_num" <? if($searchopt == "com_num") echo "selected"; ?>>사업자등록번호
             <option value="email" <? if($searchopt == "email") echo "selected"; ?>>이메일
             <option value="com_tel" <? if($searchopt == "com_tel") echo "selected"; ?>>전화번호

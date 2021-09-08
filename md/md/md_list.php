@@ -9,6 +9,7 @@ if(!isset($searchopt)) $searchopt = "";
 if(!isset($searchkey)) $searchkey = "";
 if(!isset($sdate)) $sdate = "";
 if(!isset($edate)) $edate = "";
+if(!isset($page)) $page = "";
 // 페이지 파라메터 (검색조건이 변하지 않도록)
 //------------------------------------------------------------------------------------------------------------------------------------
 $param = "s_status=$s_status&searchopt=$searchopt&searchkey=$searchkey";
@@ -235,7 +236,7 @@ function setPeriod(sdate,edate){
 					</script>
          	<select name="searchopt" class="select">
             <option value="com_name" <? if($searchopt == "com_name") echo "selected"; ?>>회원명
-            <option value="id" <? if($searchopt == "id") echo "selected"; ?>>아이디
+            <option value="strID" <? if($searchopt == "strID") echo "selected"; ?>>아이디
             <option value="com_num" <? if($searchopt == "com_num") echo "selected"; ?>>사업자등록번호
             <option value="email" <? if($searchopt == "email") echo "selected"; ?>>이메일
             <option value="com_tel" <? if($searchopt == "com_tel") echo "selected"; ?>>전화번호
@@ -253,18 +254,18 @@ function setPeriod(sdate,edate){
 
     <br>
     <?
-		$sql = "select count(id) as all_total from tb_users wm where wm.md_tree like '%".$wiz_md['idx']."%'";
+		$sql = "select count(id) as all_total from tb_users wm where  wm.bIsAdmin = 0 and wm.md_tree like '%)(".$wiz_md['idx'].")%'";
 		$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 		$row = mysqli_fetch_object($result);
 		$all_total = $row->all_total;
 
 		$sql = "select id from tb_users wm";
-		$sql .= " where wm.id != ''";
+		$sql .= " where  wm.bIsAdmin = 0 and wm.id != ''";
 		if($sdate != "") 		$sql .= " and wm.wdate > '$sdate'";
     if($edate != "") 		$sql .= " and wm.wdate <= '$edate 23:59:59'";
 		if($searchopt != "" && $searchkey !="")   $sql .= " and wm.$searchopt like '%$searchkey%'";
 		if($s_status != "")  $sql .= " and wm.status = '$s_status'";
-		$sql .=" and wm.md_tree like '%".$wiz_md['idx']."%' order by wm.wdate desc";
+		$sql .=" and wm.md_tree like '%)(".$wiz_md['idx'].")%' order by wm.wdate desc";
 		//echo $sql;
   	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
   	$total = mysqli_num_rows($result);
@@ -310,7 +311,7 @@ function setPeriod(sdate,edate){
       </form>
 			<?
 			$sql = "select id,strID,password,name,md_level,sc_level,com_name,manager,com_hp,email,wdate,status from tb_users wm";
-			$sql .= " where wm.id != '' and wm.md_tree like '%".$wiz_md['idx']."%'";
+			$sql .= " where wm.bIsAdmin = 0 and wm.id != '' and wm.md_tree like '%)(".$wiz_md['idx'].")%'";
 			
 			if($sdate != "") 		$sql .= " and wm.wdate > '$sdate'";
     		if($edate != "") 		$sql .= " and wm.wdate <= '$edate 23:59:59'";

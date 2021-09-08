@@ -45,11 +45,42 @@
         $api_token .= $characters[rand(0, $charactersLength - 1)];
     }
     
+	$sql = "select idx from wiz_scraplevel order by level DESC LIMIT 1";
+		$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
+		$row = mysqli_fetch_array($result);
+	$scraplevel = $row['idx'];
+	
+	$sql = "select idx from wiz_mdlevel order by level DESC LIMIT 1";
+		$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
+		$row = mysqli_fetch_array($result);
+	$mdlevel = $row['idx'];
+	
+	$sql = "select id, strID, md_tree from tb_users where strID = '$prefer'";
+		$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
+		$row = mysqli_fetch_array($result);
+	$md_tree = "";
+	if(count($row)){
+		$sentence = $row['md_tree'];
+		$removed_first_one = substr($sentence, 1);
+		$removed_last_one = substr($removed_first_one, 0, -1);
+		$arr3Tree = explode(')(', $removed_last_one);
+		//만약 어미로부터 2단계아래 회원이라면
+		$cnt = count($arr3Tree);
+		if($cnt > 2){
+			$md_tree = "(".$arr3Tree[1].")(".$arr3Tree[2].")(".$row['id'].")";
+		}else if($cnt == 2){
+			$md_tree = "(".$arr3Tree[0].")(".$arr3Tree[1].")(".$row['id'].")";
+		}else if($cnt == 1){
+			$md_tree = "(".$arr3Tree[0].")(".$row['id'].")";
+		}
+	}else{
+		$md_tree = "(0)";
+	}
 
-	$sql = "insert into tb_users (strID,name,password,prefer,phone_number,com_name,com_owner,com_num,com_kind,com_class,com_tel,com_hp,com_fax,
+	$sql = "insert into tb_users (strID,name,password,prefer,md_tree,phone_number,com_name,com_owner,com_num,com_kind,com_class,com_tel,com_hp,com_fax,
 					acc_name,acc_bank,acc_num,manager,email,homepage,post,address,address2,image,intro,comment,cms_type,
 					cms_rate,del_com,del_trace,status,wdate,adate,last,created_at,updated_at,api_token,bIsUsed)
-					values('$strID','$com_name','$passwd','$prefer','$com_hp','$com_name','$com_owner','$com_num','$com_kind','$com_class','$com_tel','$com_hp',
+					values('$strID','$com_name','$passwd','$prefer','$md_tree','$com_hp','$com_name','$com_owner','$com_num','$com_kind','$com_class','$com_tel','$com_hp',
 					'$com_fax','$acc_name','$acc_bank','$acc_num','$manager','$email','$homepage','$post','$address',
 					'$address2','$photo_name','$intro','$comment','$cms_type','$cms_rate','$del_info[0]','$del_info[1]','$status',now(),'$adate','$last',now(),now(),'$api_token',0)";
 
