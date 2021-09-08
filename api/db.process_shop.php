@@ -77,7 +77,7 @@ function getSellData($sell_date = "", $shop_agent = "")
 	
 	from wiz_order
 	left join wiz_basket on wiz_order.orderid = wiz_basket.orderid
-	left join wiz_cprelation on wiz_basket.prdcode = wiz_cprelation.prdcode 
+	left join wiz_cprelation on wiz_basket.prdcode = wiz_cprelation.prdcode
 	left join wiz_category on wiz_cprelation.catcode = wiz_category.catcode
 	where order_date > '$sell_date' $sql_agent order by order_date";
 
