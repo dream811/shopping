@@ -207,9 +207,10 @@ $('.AW-manage-wrap').toggleClass('left_close');
 				<li><a href="../shop/shop_coupon.php">쿠폰관리</a></li>
 			</ul>
 		</li>
+		<li class="<?=$navi11?>"><a href="../shop/shop_admin.php"><span>관리자설정</span></a></li>
         <? } ?>
 
-        <li class="<?=$navi11?>"><a href="../shop/shop_admin.php"><span>관리자설정</span></a></li>
+        
 
 		<? if(strpos($wiz_admin['permi'], "03-00") !== false || !strcmp($wiz_admin['designer'], "Y")){ ?>
         <li class="<?=$navi3?>">
