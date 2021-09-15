@@ -106,7 +106,7 @@ function getProductInfo($prdcode)
 	
 	if($row = mysqli_fetch_assoc($result)){
 		$row['main_image'] = $row['main_image'] != "" ? "http://xn--9n3bo0el5b.com/data/prdimg/".$row['main_image'] : "";
-		$row['nProfit'] = number_format($row['sellprice'] * 0.3, 0, '.', '');
+		$row['nProfit'] = number_format($row['sellprice'] * 0.15, 0, '.', '');
 	}
 	return $row;
 }
