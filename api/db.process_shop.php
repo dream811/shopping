@@ -101,7 +101,7 @@ function getProductInfo($prdcode)
     global $connect;
     // 상품넘버 만들기
 	//$sql = "select wiz_product.prdcode, prdname, prdcom, origin, stock, sellprice, conprice, supprice, reserve, new, best, popular, recom, sale, mallid, prdimg_R as main_image, prdimg_L1 as large_image, prdimg_M1 as medium_image, prdimg_S1 as small_image, wiz_category.catcode as category_code, wiz_category.catname as category_name from wiz_product left join wiz_cprelation on wiz_product.prdcode = wiz_cprelation.prdcode left join wiz_category on wiz_cprelation.catcode = wiz_category.catcode where status='Y' and wiz_product.prdcode=$prdcode";
-	$sql = "select wiz_product.prdcode, prdname, prdcom, origin, stock, sellprice, prdimg_R as main_image wiz_category.catcode as category_code, wiz_category.catname as category_name from wiz_product left join wiz_cprelation on wiz_product.prdcode = wiz_cprelation.prdcode left join wiz_category on wiz_cprelation.catcode = wiz_category.catcode where status='Y' and wiz_product.prdcode=$prdcode";
+	$sql = "select wiz_product.prdcode, prdname, prdcom, origin, stock, sellprice, prdimg_R as main_image, wiz_category.catcode as category_code, wiz_category.catname as category_name from wiz_product left join wiz_cprelation on wiz_product.prdcode = wiz_cprelation.prdcode left join wiz_category on wiz_cprelation.catcode = wiz_category.catcode where status='Y' and wiz_product.prdcode=$prdcode";
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 	
 	if($row = mysqli_fetch_assoc($result)){
