@@ -84,8 +84,9 @@ function getProducts($lastIndex = 0, $pageSize = 100)
 function getProductCodes($lastIndex = 0, $pageSize = 100)
 {
     global $connect;
+	$prdcode = date('ymd', time() - 60 * 60 * 24)."0000";
     // 상품넘버 만들기
-	$sql = "select prdcode from wiz_product where status='Y' limit $pageSize offset $lastIndex";
+	$sql = "select prdcode from wiz_product where status='Y' and prdcode > $prdcode limit $pageSize offset $lastIndex";
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 	$rows=[];
     if (mysqli_num_rows($result)) {
@@ -178,7 +179,41 @@ function getSellData($sell_date = "", $shop_agent = "")
 	$rows=[];
     if (mysqli_num_rows($result)) {
         while($row = mysqli_fetch_assoc($result)){
-			$row['nProfit'] = number_format($row['total_price'] * 0.3, 0, '.', '');
+			$row['nProfit'] = number_format($row['total_price'] * 0.15, 0, '.', '');
+			unset($row['total_price']);
+            array_push($rows, $row);
+        }
+    }
+	return $rows;
+}
+
+//주문자료
+function getSellHistory($sell_date = "", $prd_code = "")
+{
+	$sql_agent = "";
+
+	if($prd_code != ""){
+		$sql_agent = "and wiz_basket.prdcode = '$prd_code'";
+	}
+    global $connect;
+    // 주문자료 만들기
+	$sql = "select  
+	order_date as strTime, total_price,
+	wiz_basket.prdcode as strProductID, wiz_basket.prdname as strProductName, wiz_basket.mallid as mallid, wiz_basket.amount as nProductCnt, 
+	IFNULL(wiz_cprelation.catcode, '00000000') as strCategoryID, IFNULL(wiz_category.catname, '') as strCategoryName 
+	
+	from wiz_order
+	left join wiz_basket on wiz_order.orderid = wiz_basket.orderid
+	left join wiz_cprelation on wiz_basket.prdcode = wiz_cprelation.prdcode
+	left join wiz_category on wiz_cprelation.catcode = wiz_category.catcode
+	where order_date > '$sell_date' $sql_agent order by order_date";
+
+	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
+	
+	$rows=[];
+    if (mysqli_num_rows($result)) {
+        while($row = mysqli_fetch_assoc($result)){
+			$row['nProfit'] = number_format($row['total_price'] * 0.15, 0, '.', '');
 			unset($row['total_price']);
             array_push($rows, $row);
         }

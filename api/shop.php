@@ -63,6 +63,14 @@ switch ($type) {
 		$response_array = getSellData($sell_date, $shop_agent);
 		echo (json_encode($response_array));
 		break;
+	case 'sellHistory':
+		$sell_date = isset($_REQUEST['start_date']) ? $_REQUEST['start_date'] : "1900-01-01 10:00:00";
+		$prd_id = isset($_REQUEST['prd_code']) ? $_REQUEST['prd_code'] : "";
+		//$response_array = array();
+		//$response_array['status'] = 'success';
+		$response_array = getSellHistory($sell_date, $prd_id);
+		echo (json_encode($response_array));
+		break;
 	default:
 		# code...
 		break;

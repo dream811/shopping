@@ -60,6 +60,73 @@ if($presult['rescode'] == "0000" && strlen($presult['rescode']) == 4){
 	mysqli_query($connect, $sql) or die(mysqli_error($connect));
 
 	if($order_info->send_mailsms != "Y") send_mailsms("order_com", $re_info, $ordmail);
+	//api 로 전송
+	$sql = "select  
+	order_date as strTime, total_price,
+	wiz_basket.prdcode as strProductID, wiz_basket.prdname as strProductName, wiz_basket.mallid as mallid, wiz_basket.amount as nProductCnt, 
+	IFNULL(wiz_cprelation.catcode, '00000000') as strCategoryID, IFNULL(wiz_category.catname, '') as strCategoryName 
+	
+	from wiz_order
+	left join wiz_basket on wiz_order.orderid = wiz_basket.orderid
+	left join wiz_cprelation on wiz_basket.prdcode = wiz_cprelation.prdcode
+	left join wiz_category on wiz_cprelation.catcode = wiz_category.catcode
+	where wiz_order.orderid = '$order_info->orderid'";
+
+	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
+	if($row = mysqli_fetch_assoc($result)){
+		//$row['main_image'] = $row['main_image'] != "" ? "http://xn--9n3bo0el5b.com/data/prdimg/".$row['main_image'] : "";
+		$row['nProfit'] = number_format($row['sellprice'] * 0.15, 0, '.', '');
+	}
+	$strjson = json_encode($row);
+	// $strjson='
+    //         {
+    //             "prdcode": '.$prd.',
+    //             "prdname": "상품등록_example",
+    //             "mallid": "",
+    //             "amount": "2018-08-13T00:00:00",
+    //             "catcode": "2099-01-01T23:59:59",
+    //             "displayProductName": "해피바스 솝베리 클렌징 오일",
+    //             "brand": "해피바스",
+    //             "generalProductName": "솝베리 클렌징 오일",
+    //             "productGroup": "클렌징 오일",
+    //             "deliveryMethod": "SEQUENCIAL",
+    //             "deliveryCompanyCode": "KGB",
+    //             "deliveryChargeType": "FREE",
+    //             "deliveryCharge": 0,
+    //             "freeShipOverAmount": 0,
+    //             "deliveryChargeOnReturn": 2500,
+    //             "remoteAreaDeliverable": "N",
+    //             "unionDeliveryType": "UNION_DELIVERY",
+    //             "returnCenterCode": "1000274592",
+    //             "returnChargeName": "반품지_1",
+    //             "companyContactNumber": "02-1234-678",
+    //             "returnZipCode": "135-090",
+    //             "returnAddress": "서울특별시 강남구 삼성동",
+    //             "returnAddressDetail": "333",
+    //             "returnCharge": 2500,
+    //             "returnChargeVendor": "N",
+    //             "afterServiceInformation": "A/S안내 1544-1255",
+    //             "afterServiceContactNumber": "1544-1255",
+    //             "outboundShippingPlaceCode": "74010",
+    //             "vendorUserId": "user01",
+    //             "requested": false               
+    //         }
+    //     ';
+        
+        $method = "POST";
+		$FX_URL="http://fx.com";
+        $url = $FX_URL.'/api/product.php?api_token='.$this->API_TOKEN.'&type=registProduct';
+        
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array("Content-Type:  application/json;charset=UTF-8"));
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $strjson);
+        $result = curl_exec($curl);
+        $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        
+        curl_close($curl);
 
 ?>
 <?
