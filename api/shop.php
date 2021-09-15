@@ -10,12 +10,38 @@ $last_index = isset($_REQUEST['last_index']) ? $_REQUEST['last_index'] : 0;
 $page_size = isset($_REQUEST['page_size']) ? $_REQUEST['page_size'] : 100;
 
 
+
 switch ($type) {
+	case 'userLogin':
+		$userId = isset($_REQUEST['user_id']) ? $_REQUEST['user_id'] : "";
+		$prdCode = isset($_REQUEST['prd_code']) ? $_REQUEST['prd_code'] : "";
+		if($userId == ""){
+			$response_array = array();
+			$response_array['status'] = 'failed';
+			$response_array['data'] = "아이디를 확인해주세요.";
+			echo (json_encode($response_array));
+		}else{
+			userLogin($userId, $prdCode);
+		}
+		break;
 	case 'products':
 		$response_array = array();
 		$response_array['status'] = 'success';
 		$response_array['data'] = getProducts($last_index, $page_size);
 		echo (json_encode($response_array));
+		break;
+	case 'productCodes':
+		$response_array = array();
+		$response_array['status'] = 'success';
+		$response_array['data'] = getProductCodes($last_index, $page_size);
+		echo (json_encode($response_array['data']));
+		break;
+	case 'productInfo':
+		$prdCode = isset($_REQUEST['prd_code']) ? $_REQUEST['prd_code'] : "";
+		$response_array = array();
+		$response_array['status'] = 'success';
+		$response_array['data'] = getProductInfo($prdCode);
+		echo (json_encode($response_array['data']));
 		break;
 	case 'orders':
 		$response_array = array();

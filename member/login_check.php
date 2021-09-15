@@ -3,7 +3,7 @@
 include "../inc/common.inc";
 include "../inc/util.inc";
 
-//$passwd = md5($passwd);
+$passwd = md5($passwd);
 $sql = "select id,passwd,name,email,tphone,hphone,level from wiz_member where id='$id' and passwd='$passwd'";
 $result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 
