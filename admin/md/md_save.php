@@ -118,7 +118,7 @@ if($mode == "insert"){
 
 	mysqli_query($connect, $sql) or die(mysqli_error($connect));
 
-	complete("업체정보를 수정하였습니다.","mall_info.php?mode=$mode&id=$id&$param");
+	complete("업체정보를 수정하였습니다.","md_info.php?mode=$mode&id=$id&$param");
 
 // 업체 삭제
 }else if($mode == "deluser"){
@@ -147,7 +147,7 @@ if($mode == "insert"){
 
 			// 상품데이타 삭제
 			foreach (glob($prdimg_path."/".$prdcode."*") as $filename) {
-	   		@unlink($filename);
+	   			@unlink($filename);
 			}
 
 			// 상품평 삭제
