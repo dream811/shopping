@@ -105,7 +105,7 @@ if($mode == "insert"){
 	if(!strcmp($status, "Y") && strcmp($status, $tmp_status)) $adate_sql = " , adate = now() ";
 
 	if($passwd != "") {
-		$passwd = md5($passwd);
+		$passwd = password_hash($passwd,PASSWORD_DEFAULT);
 		$passwd_sql = " passwd = '$passwd', ";
 	}
 

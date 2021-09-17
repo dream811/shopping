@@ -169,6 +169,7 @@ function idCheck(){
               <td width="15%" class="t_name">아이디</td>
               <td width="35%" class="t_value">
               	<input name="strID" type="text" value="<?=$md_info->strID?>" class="input" readonly>
+              	<input name="id" type="text" value="<?=$md_info->id?>" class="input" readonly>
               	<? if(strcmp($mode, "update")) { ?>
               	<input type="button" value="중복체크" class="btn-zipcode" onCLick="idCheck()" />
 								<? } ?>
