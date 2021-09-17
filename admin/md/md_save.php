@@ -40,10 +40,10 @@ if($mode == "insert"){
 	$passwd = password_hash($passwd, PASSWORD_DEFAULT);
 
 	$sql = "insert into tb_users (id,strID,password,com_name,com_owner,com_num,com_kind,com_class,com_tel,com_hp,com_fax,
-					acc_name,acc_bank,acc_num,manager,email,homepage,post,address,address2,photo,intro,comment,cms_type,
+					acc_name,acc_bank,acc_num,manager,email,md_level,sc_level,homepage,post,address,address2,photo,intro,comment,cms_type,
 					cms_rate,del_com,del_trace,status,wdate,adate,last)
 					values('$strID','$passwd','$com_name','$com_owner','$com_num','$com_kind','$com_class','$com_tel','$com_hp',
-					'$com_fax','$acc_name','$acc_bank','$acc_num','$manager','$email','$homepage','$post','$address',
+					'$com_fax','$acc_name','$acc_bank','$acc_num','$manager','$email','$md_level','$sc_level','$homepage','$post','$address',
 					'$address2','$photo_name','$intro','$comment','$cms_type','$cms_rate','$del_info[0]','$del_info[1]','$status',now(),$adate,'$last')";
 
 	mysqli_query($connect, $sql) or die(mysqli_error($connect));
@@ -102,14 +102,17 @@ if($mode == "insert"){
 
 	}
 
-	if(!strcmp($status, "Y") && strcmp($status, $tmp_status)) $adate_sql = " , adate = now() ";
+	if(!strcmp($status, "Y") && strcmp($status, $tmp_status)){
+		$adate_sql = " , adate = now() ";
+
+	} 
 
 	if($passwd != "") {
 		$passwd = password_hash($passwd,PASSWORD_DEFAULT);
 		$passwd_sql = " passwd = '$passwd', ";
 	}
 
-	$sql = "update tb_users set $passwd_sql com_name='$com_name',com_owner='$com_owner',com_num='$com_num',com_kind='$com_kind',
+	$sql = "update tb_users set $passwd_sql com_name='$com_name',sc_level='$sc_level',md_level='$md_level',com_owner='$com_owner',com_num='$com_num',com_kind='$com_kind',
 					com_class='$com_class',com_tel='$com_tel',com_hp='$com_hp',com_fax='$com_fax',acc_name='$acc_name',
 					acc_bank='$acc_bank',acc_num='$acc_num',manager='$manager',email='$email',homepage='$homepage',
 					post='$post',address='$address',address2='$address2', $photo_sql intro='$intro', comment='$comment',
