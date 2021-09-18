@@ -58,9 +58,9 @@ if($mode == "update") {
 <script language="javascript">
 <!--
 function inputCheck(frm){
-	if(frm.id.value == ""){
+	if(frm.strID.value == ""){
 	  alert("아이디를 입력하세요");
-	  frm.id.focus();
+	  frm.strID.focus();
 	  return false;
 	}
 	<? if($mode=="insert"){ ?>
