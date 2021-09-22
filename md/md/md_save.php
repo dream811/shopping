@@ -39,10 +39,10 @@ if($mode == "insert"){
 
 	$passwd = password_hash($passwd, PASSWORD_DEFAULT);
 
-	$sql = "insert into tb_users (id,strID,password,com_name,com_owner,com_num,com_kind,com_class,com_tel,com_hp,com_fax,
+	$sql = "insert into tb_users (id,strID,password,name,com_name,com_owner,com_num,com_kind,com_class,com_tel,com_hp,com_fax,
 					acc_name,acc_bank,acc_num,manager,email,homepage,post,address,address2,photo,intro,comment,cms_type,
 					cms_rate,del_com,del_trace,status,wdate,adate,last)
-					values('$strID','$passwd','$com_name','$com_owner','$com_num','$com_kind','$com_class','$com_tel','$com_hp',
+					values('$strID','$passwd','$com_name','$com_name','$com_owner','$com_num','$com_kind','$com_class','$com_tel','$com_hp',
 					'$com_fax','$acc_name','$acc_bank','$acc_num','$manager','$email','$homepage','$post','$address',
 					'$address2','$photo_name','$intro','$comment','$cms_type','$cms_rate','$del_info[0]','$del_info[1]','$status',now(),$adate,'$last')";
 

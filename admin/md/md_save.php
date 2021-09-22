@@ -39,10 +39,10 @@ if($mode == "insert"){
 
 	$passwd = password_hash($passwd, PASSWORD_DEFAULT);
 
-	$sql = "insert into tb_users (strID,password,com_name,com_owner,com_num,com_kind,com_class,com_tel,com_hp,com_fax,
+	$sql = "insert into tb_users (name,strID,password,com_name,com_owner,com_num,com_kind,com_class,com_tel,com_hp,com_fax,
 					acc_name,acc_bank,acc_num,manager,email,md_level,sc_level,homepage,post,address,address2,image,intro,comment,cms_type,
 					cms_rate,del_com,del_trace,status,wdate,adate,last)
-					values('$strID','$passwd','$com_name','$com_owner','$com_num','$com_kind','$com_class','$com_tel','$com_hp',
+					values('$com_name','$strID','$passwd','$com_name','$com_owner','$com_num','$com_kind','$com_class','$com_tel','$com_hp',
 					'$com_fax','$acc_name','$acc_bank','$acc_num','$manager','$email','$md_level','$sc_level','$homepage','$post','$address',
 					'$address2','$photo_name','$intro','$comment','$cms_type','$cms_rate','$del_info[0]','$del_info[1]','$status',now(),$adate,'$last')";
 
@@ -229,11 +229,11 @@ if($mode == "insert"){
 	while($row = mysqli_fetch_array($result)) {
 
 		// 카테고리 연관 삭제
-		$sql = "delete from wiz_cprelation where prdcode = '$row[prdcode]'";
+		$sql = "delete from wiz_cprelation where prdcode = '".$row['prdcode']."'";
 		mysqli_query($connect, $sql) or die(mysqli_error($connect));
 
 		// 관련련상품 연관 삭제
-		$sql = "delete from wiz_prdrelation where prdcode = '$row[prdcode]' || relcode = '$row[prdcode]'";
+		$sql = "delete from wiz_prdrelation where prdcode = '".$row['prdcode']."' || relcode = '".$row['prdcode']."'";
 		mysqli_query($connect, $sql) or die(mysqli_error($connect));
 
 		// 상품데이타 삭제
@@ -242,10 +242,10 @@ if($mode == "insert"){
 		}
 
 		// 상품평 삭제
-		$sql = "delete from wiz_comment where prdcode = '$row[prdcode]'";
+		$sql = "delete from wiz_comment where prdcode = '".$row['prdcode']."'";
 		mysqli_query($connect, $sql) or die(mysqli_error($connect));
 
-		$sql = "delete from wiz_product where prdcode = '$row[prdcode]'";
+		$sql = "delete from wiz_product where prdcode = '".$row['prdcode']."'";
 		mysqli_query($connect, $sql) or die(mysqli_error($connect));
 
 	}
