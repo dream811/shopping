@@ -122,7 +122,7 @@ if($mode == "insert"){
 					com_class='$com_class',com_tel='$com_tel',com_hp='$com_hp',com_fax='$com_fax',acc_name='$acc_name',
 					acc_bank='$acc_bank',acc_num='$acc_num',manager='$manager',email='$email',homepage='$homepage',
 					post='$post',address='$address',address2='$address2', $photo_sql intro='$intro', comment='$comment',
-					cms_type='$cms_type',cms_rate='$cms_rate',del_com='$del_info[0]',del_trace='$del_info[1]', bIsUsed=$bIsUsed; status='$status' $adate_sql
+					cms_type='$cms_type',cms_rate='$cms_rate',del_com='$del_info[0]',del_trace='$del_info[1]', bIsUsed=$bIsUsed, status='$status' $adate_sql
 					where id = '$id'";
 
 	mysqli_query($connect, $sql) or die(mysqli_error($connect));
