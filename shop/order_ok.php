@@ -113,16 +113,14 @@ if($presult['rescode'] == "0000" && strlen($presult['rescode']) == 4){
     //         }
     //     ';
         
-        $method = "POST";
-		$FX_URL="http://fx.com";
-        $url = $FX_URL.'/api/product.php?api_token='.$this->API_TOKEN.'&type=registProduct';
+        
+		$FX_URL="http://211.115.107.174/";
+        $url = $FX_URL.'api/shop?nCmd='."1".'&strValue='.'{"strTime":"2020-11-11 12:28:59","strShopID":"simbongsa","strProductID":"2004210014","strProductName":"\ud3ad\uc218 \uba3c\uc2ac\ub9ac\uc2a4\ucf00\uc904\ub7ec","nProductBasePrice":"15000", "nProductSellPrice":"21000", "nTotalPrice":"21000", "mallid":"","nProductCnt":"1","strCategoryID":"10000000","strCategoryName":"\uc5ec\uc131\uc758\ub958","nProfit":"717"}';
         
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array("Content-Type:  application/json;charset=UTF-8"));
+        curl_setopt($curl, CURLOPT_HTTPHEADER, 0);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $strjson);
         $result = curl_exec($curl);
         $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         
@@ -149,7 +147,7 @@ include "prd_basket_step.php";
 <div class="order_failed">
 	<h2 class="cat_ttl">결제 실패</h2>
 	<span class="notice">결제 시 에러가 발생하였습니다.</span>
-	<span class="msg">결과메세지 : <?=$presult[resmsg]?></span>
+	<span class="msg">결과메세지 : <?=$presult['resmsg']?></span>
 	
 	<div class="AW_btn_area">
 		<a href="order_pay.php?orderid=<?=$presult['orderid']?>&pay_method=<?=$order_info->pay_method?>" class="submit_btn">다시 결제하기</a>
