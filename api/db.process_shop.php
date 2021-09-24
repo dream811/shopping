@@ -110,6 +110,12 @@ function getProductInfo($prdcode)
 	if($row = mysqli_fetch_assoc($result)){
 		$row['main_image'] = $row['main_image'] != "" ? "http://xn--9n3bo0el5b.com/data/prdimg/".$row['main_image'] : "";
 		$row['nProfit'] = number_format($row['sellprice'] * 0.15, 0, '.', '');
+		$row['sellprice'] = $row['sellprice'] == 0 ? $row['sellprice'] : $row['discprice'];
+		//conprice가 0인경우 할인가 없다고 본다.
+		if($row['sellprice'] == 0 ){
+			$row['sellprice'] = $row['discprice'];
+			$row['discprice'] = 0;
+		}
 		$row['new'] = ($row['new'] == "Y") ? "1" : "0";
 		$row['best'] = ($row['best'] == "Y") ? "1" : "0";
 		$row['oversea'] = 1;
