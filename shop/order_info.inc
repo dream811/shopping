@@ -20,8 +20,8 @@ include_once "../inc/shop_info.inc"; 		// 상점 정보
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 	while($row = mysqli_fetch_array($result)) {
 
-		$mall_list[$row[mallid]]['cnt'] = $row['cnt'];
-		$mall_list[$row[mallid]][total] = $row[total];
+		$mall_list[$row['mallid']]['cnt'] = $row['cnt'];
+		$mall_list[$row['mallid']]['total'] = $row['total'];
 
 	}
 

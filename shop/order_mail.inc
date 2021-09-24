@@ -89,8 +89,7 @@ $ordmail .= "
 
 				if(!empty($row->del_method)) {
 
-					$tmp_oper_info->mallid 				= $row->mallid;
-
+					$tmp_oper_info->mallid 			= $row->mallid;
 					$tmp_oper_info->del_method 		= $row->del_method;
 					$tmp_oper_info->del_fixprice 	= $row->del_fixprice;
 					$tmp_oper_info->del_staprice 	= $row->del_staprice;

@@ -45,7 +45,7 @@ include "../inc/header.inc"; 			// 상단디자인
           </tr>
 				<?
 		    if($wiz_session['id'] != ""){
-		    	$search_sql = " send_id = '$wiz_session['id']' ";
+		    	$search_sql = " send_id = '".$wiz_session['id']."' ";
 		    } else {
 		    	$search_sql = " orderid = '$orderid' and send_name = '$send_name' ";
 		    }
@@ -102,7 +102,6 @@ include "../inc/header.inc"; 			// 상단디자인
 			    <td width="30%"></td>
 			  </tr>
 			</table>
-
 		</td>
 	</tr>
 </table>

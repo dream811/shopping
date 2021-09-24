@@ -99,7 +99,7 @@ function getProductCodes($lastIndex = 0, $pageSize = 100)
 //상품상세 자료
 function getProductInfo($prdcode)
 {
-    global $connect;
+	global $connect;
     // 상품넘버 만들기
 	//$sql = "select wiz_product.prdcode, prdname, prdcom, origin, stock, sellprice, conprice, supprice, reserve, new, best, popular, recom, sale, mallid, prdimg_R as main_image, prdimg_L1 as large_image, prdimg_M1 as medium_image, prdimg_S1 as small_image, wiz_category.catcode as category_code, wiz_category.catname as category_name from wiz_product left join wiz_cprelation on wiz_product.prdcode = wiz_cprelation.prdcode left join wiz_category on wiz_cprelation.catcode = wiz_category.catcode where status='Y' and wiz_product.prdcode=$prdcode";
 	$sql = "select wiz_product.prdcode, prdname, prdcom, origin, stock, new, best, sellprice as discprice, conprice as sellprice,  prdimg_R as main_image, wiz_category.catcode as category_code, wiz_category.catname as category_name 
@@ -109,8 +109,7 @@ function getProductInfo($prdcode)
 	
 	if($row = mysqli_fetch_assoc($result)){
 		$row['main_image'] = $row['main_image'] != "" ? "http://xn--9n3bo0el5b.com/data/prdimg/".$row['main_image'] : "";
-		$row['nProfit'] = number_format($row['sellprice'] * 0.15, 0, '.', '');
-		$row['sellprice'] = $row['sellprice'] == 0 ? $row['sellprice'] : $row['discprice'];
+		
 		//conprice가 0인경우 할인가 없다고 본다.
 		if($row['sellprice'] == 0 ){
 			$row['sellprice'] = $row['discprice'];
@@ -119,6 +118,7 @@ function getProductInfo($prdcode)
 		$row['new'] = ($row['new'] == "Y") ? "1" : "0";
 		$row['best'] = ($row['best'] == "Y") ? "1" : "0";
 		$row['oversea'] = 1;
+		$row['nProfit'] = number_format($row['sellprice'] * 0.15, 0, '.', '');
 	}
 	return $row;
 }
