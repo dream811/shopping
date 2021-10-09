@@ -31,8 +31,8 @@ function userLogin($userId, $prdcode="")
 		$wiz_session['level'] = $_SESSION['wiz_session']['level']		= $row->level;
 		$wiz_session['level_value'] = $_SESSION['wiz_session']['level_value']	= $level_value;
 		$prev="";
-		if(empty($prdcode)) $prev = "http://".$_http_host.$http_port;
-		else $prev = "http://".$_http_host.$http_port."/shop/prd_view.php?prdcode=".$prdcode;
+		if(empty($prdcode)) $prev = "http://".$_http_host;
+		else $prev = "http://".$_http_host."/shop/prd_view.php?prdcode=".$prdcode;
 		Header("Location: $prev");
 
 	// 관리자 로그인
@@ -54,8 +54,8 @@ function userLogin($userId, $prdcode="")
 
 		mysqli_query($connect, $sql) or die(mysqli_error($connect));
 		$prev="";
-		if(empty($prdcode)) $prev = "http://".$_http_host.$http_port;
-		else $prev = "http://".$_http_host.$http_port."/shop/prd_view.php?prdcode=".$prdcode;
+		if(empty($prdcode)) $prev = "http://".$_http_host;
+		else $prev = "http://".$_http_host."/shop/prd_view.php?prdcode=".$prdcode;
 		Header("Location: $prev");
 	}
     
@@ -71,20 +71,21 @@ function getProducts($lastIndex = 0, $pageSize = 100)
 	$rows=[];
     if (mysqli_num_rows($result)) {
         while($row = mysqli_fetch_assoc($result)){
-			$row['main_image'] = $row['main_image'] != "" ? "http://xn--9n3bo0el5b.com/data/prdimg/".$row['main_image'] : "";
-			$row['large_image'] = $row['large_image'] != "" ? "http://xn--9n3bo0el5b.com/data/prdimg/".$row['large_image'] : "";
-			$row['medium_image'] = $row['medium_image'] != "" ? "http://xn--9n3bo0el5b.com/data/prdimg/".$row['medium_image'] : "";
-			$row['small_image'] = $row['small_image'] != "" ? "http://xn--9n3bo0el5b.com/data/prdimg/".$row['small_image'] : "";
+			$row['main_image'] = $row['main_image'] != "" ? "http://$_http_host/data/prdimg/".$row['main_image'] : "";
+			$row['large_image'] = $row['large_image'] != "" ? "http://$_http_host/data/prdimg/".$row['large_image'] : "";
+			$row['medium_image'] = $row['medium_image'] != "" ? "http://$_http_host/data/prdimg/".$row['medium_image'] : "";
+			$row['small_image'] = $row['small_image'] != "" ? "http://$_http_host/data/prdimg/".$row['small_image'] : "";
             array_push($rows, $row);
         }
     }
 	return $rows;
 }
 //상품코드리스트 자료
-function getProductCodes($lastIndex = 0, $pageSize = 100)
+function getProductCodes_($lastIndex = 0, $pageSize = 100)
 {
     global $connect;
 	$prdcode = date('ymd', time() - 60 * 60 * 24)."0000";
+	$prdcode = "0000000000";
     // 상품넘버 만들기
 	$sql = "select prdcode from wiz_product where status='Y' and prdcode > $prdcode limit $pageSize offset $lastIndex";
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
@@ -96,13 +97,36 @@ function getProductCodes($lastIndex = 0, $pageSize = 100)
     }
 	return $rows;
 }
+//상품코드리스트 자료
+function getProductCodes($lastIndex = 0, $pageSize = 100)
+{
+    global $connect;
+	$prdcode = date('ymd', time() - 60 * 60 * 24)."0000";
+	$prdcode = "0000000000";
+    // 상품넘버 만들기
+	$sql = "select prdcode from wiz_product where status='Y' and prdcode > $prdcode limit $pageSize offset $lastIndex";
+	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
+	$rows=[];
+    if (mysqli_num_rows($result)) {
+        while($row = mysqli_fetch_assoc($result)){
+            array_push($rows, $row);
+        }
+    }
+	$sql = "select strId as prdcode from tb_success_products where nProductWorkProcess=1 and strRegPageId != '' limit 100";
+	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
+    if (mysqli_num_rows($result)) {
+        while($row = mysqli_fetch_assoc($result)){
+            array_push($rows, $row);
+        }
+    }
+	return $rows;
+}
 //상품상세 자료
-function getProductInfo($prdcode)
+function getProductInfo_($prdcode)
 {
 	global $connect;
-    // 상품넘버 만들기
 	//$sql = "select wiz_product.prdcode, prdname, prdcom, origin, stock, sellprice, conprice, supprice, reserve, new, best, popular, recom, sale, mallid, prdimg_R as main_image, prdimg_L1 as large_image, prdimg_M1 as medium_image, prdimg_S1 as small_image, wiz_category.catcode as category_code, wiz_category.catname as category_name from wiz_product left join wiz_cprelation on wiz_product.prdcode = wiz_cprelation.prdcode left join wiz_category on wiz_cprelation.catcode = wiz_category.catcode where status='Y' and wiz_product.prdcode=$prdcode";
-	$sql = "select wiz_product.prdcode, prdname, prdcom, origin, stock, new, best, sellprice as discprice, conprice as sellprice,  prdimg_R as main_image, wiz_category.catcode as category_code, wiz_category.catname as category_name 
+	$sql = "select wiz_product.prdcode, prdname, prdcom, origin, stock, new, best, sellprice, conprice as discprice,  prdimg_R as main_image, wiz_category.catcode as category_code, wiz_category.catname as category_name 
 	from wiz_product left join wiz_cprelation on wiz_product.prdcode = wiz_cprelation.prdcode 
 	left join wiz_category on wiz_cprelation.catcode = wiz_category.catcode where status='Y' and wiz_product.prdcode=$prdcode";
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
@@ -111,14 +135,115 @@ function getProductInfo($prdcode)
 		$row['main_image'] = $row['main_image'] != "" ? "http://xn--9n3bo0el5b.com/data/prdimg/".$row['main_image'] : "";
 		
 		//conprice가 0인경우 할인가 없다고 본다.
-		if($row['sellprice'] == 0 ){
-			$row['sellprice'] = $row['discprice'];
-			$row['discprice'] = 0;
-		}
+		// if($row['discprice'] == 0 ){
+		// 	$row['discprice'] = $row['sellprice'];
+		// 	$row['sellprice'] = 0;
+		// }
+		$row['strShopId'] = "simbongsa";
+		$row['strShopName'] = "심봉사";
+		$row['strShopPrdLink'] = 'http://xn--9n3bo0el5b.com/shop/prd_view.php?prdcode='.$row['prdcode'];
 		$row['new'] = ($row['new'] == "Y") ? "1" : "0";
 		$row['best'] = ($row['best'] == "Y") ? "1" : "0";
 		$row['oversea'] = 1;
 		$row['nProfit'] = number_format($row['sellprice'] * 0.15, 0, '.', '');
+	}
+	
+	return $row;
+}
+
+//상품상세 자료
+function getProductInfo($prdcode)
+{
+	global $connect;
+	//$sql = "select wiz_product.prdcode, prdname, prdcom, origin, stock, sellprice, conprice, supprice, reserve, new, best, popular, recom, sale, mallid, prdimg_R as main_image, prdimg_L1 as large_image, prdimg_M1 as medium_image, prdimg_S1 as small_image, wiz_category.catcode as category_code, wiz_category.catname as category_name from wiz_product left join wiz_cprelation on wiz_product.prdcode = wiz_cprelation.prdcode left join wiz_category on wiz_cprelation.catcode = wiz_category.catcode where status='Y' and wiz_product.prdcode=$prdcode";
+	$sql = "select wiz_product.prdcode, prdname, prdcom, origin, stock, new, best, sellprice, conprice as discprice,  prdimg_R as main_image, wiz_category.catcode as category_code, wiz_category.catname as category_name 
+	from wiz_product left join wiz_cprelation on wiz_product.prdcode = wiz_cprelation.prdcode 
+	left join wiz_category on wiz_cprelation.catcode = wiz_category.catcode where status='Y' and wiz_product.prdcode='$prdcode'";
+	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
+	
+	if($row = mysqli_fetch_assoc($result)){
+		$row['main_image'] = $row['main_image'] != "" ? "http://xn--9n3bo0el5b.com/data/prdimg/".$row['main_image'] : "";
+		
+		//conprice가 0인경우 할인가 없다고 본다.
+		// if($row['discprice'] == 0 ){
+		// 	$row['discprice'] = $row['sellprice'];
+		// 	$row['sellprice'] = 0;
+		// }
+		$row['strShopId'] = "simbongsa";
+		$row['strShopName'] = "심봉사";
+		$row['strShopPrdLink'] = 'http://xn--9n3bo0el5b.com/shop/prd_view.php?prdcode='.$row['prdcode'];
+		$row['new'] = ($row['new'] == "Y") ? "1" : "0";
+		$row['best'] = ($row['best'] == "Y") ? "1" : "0";
+		$row['oversea'] = 1;
+		$row['nProfit'] = number_format($row['sellprice'] * 0.15, 0, '.', '');
+	}else{
+		//외부
+		
+		$sql = "select nIdx, strId as prdcode, strRegPageId, strKrMainName as prdname, nExpectedRevenue as nProfit, nProductPrice as sellprice,
+		bReg11thhouse, bRegAuction, bRegCoupang, bRegGmarket, bRegInterpark, bRegLotteon, bRegSmartstore, bRegTmon, bRegWemakePrice, strCategoryCode0
+
+		from tb_success_products where tb_success_products.strId='$prdcode'";
+		$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
+
+		if($row = mysqli_fetch_assoc($result)){
+			$sql1 = "select strURL from tb_success_product_images where nProductIdx=".$row['nIdx']." limit 1";
+			$result1 = mysqli_query($connect, $sql1) or die(mysqli_error($connect));
+			$row_img = mysqli_fetch_assoc($result1);
+
+			$row['main_image'] = $row_img['strURL'];
+			
+			//conprice가 0인경우 할인가 없다고 본다.
+			// if($row['discprice'] == 0 ){
+			// 	$row['discprice'] = $row['sellprice'];
+			// 	$row['sellprice'] = 0;
+			// }
+			$arrCategoryCode = mb_split(":", $row['strCategoryCode0']);
+			$shopCode = mb_split(" : ", $row['prdcode']);
+			if($shopCode == '1G' || $shopCode == '11' ){
+				$row['strShopId'] = "11thhouse";
+				$row['strShopName'] = "11번가";
+				$row['strShopPrdLink'] = "https://www.11st.co.kr/products/".$row['strRegPageId'];
+			}else if($shopCode == 'A'){
+				$row['strShopId'] = "auction";
+				$row['strShopName'] = "옥션";
+				$row['strShopPrdLink'] = "http://itempage3.auction.co.kr/DetailView.aspx?ItemNo=".$row['strRegPageId'];
+			}else if($shopCode == 'C'){
+				$row['strShopId'] = "coupang";
+				$row['strShopName'] = "쿠팡";
+				$row['strShopPrdLink'] = "https://www.coupang.com/vp/products/".$row['strRegPageId'];
+			}else if($shopCode == 'G'){
+				$row['strShopId'] = "gmarket";
+				$row['strShopName'] = "지마켓";
+				$row['strShopPrdLink'] = "http://item.gmarket.co.kr/Item?goodscode=".$row['strRegPageId'];
+			}else if($shopCode == 'S'){
+				$row['strShopId'] = "smartstore";
+				$row['strShopName'] = "스마트스토어";
+				$row['strShopPrdLink'] = "https://smartstore.naver.com/talinmall/".$row['strRegPageId'];
+			}
+			unset($row['bReg11thhouse']);
+			unset($row['bRegAuction']);
+			unset($row['bRegCoupang']);
+			unset($row['bRegGmarket']);
+			unset($row['bRegSmartstore']);
+			unset($row['bRegInterpark']);
+			unset($row['bRegLotteon']);
+			unset($row['bRegTmon']);
+			unset($row['bRegWemakePrice']);
+			unset($row['strRegPageId']);
+			unset($row['nIdx']);
+
+			$row['category_code'] = trim($arrCategoryCode[0]);
+			$row['category_name'] = trim($arrCategoryCode[1]);
+			$row['new'] = "0";
+			$row['best'] = "0";
+			$row['oversea'] = 1;
+			$row['origin'] = "중국";
+			$row['prdcom'] ="미확정";
+			$row['nProfit'] = number_format($row['nProfit'],0, '.', '');
+			$row['discprice'] = 0;
+		}
+
+
 	}
 	return $row;
 }

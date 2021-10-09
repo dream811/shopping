@@ -75,9 +75,12 @@ if($presult['rescode'] == "0000" && strlen($presult['rescode']) == 4){
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 	if($row = mysqli_fetch_assoc($result)){
 		//$row['main_image'] = $row['main_image'] != "" ? "http://xn--9n3bo0el5b.com/data/prdimg/".$row['main_image'] : "";
-		$row['nProfit'] = number_format(($row['nProductSellPrice'] - $row['nProductBasePrice']) * $row['nProductCnt'], 0, '.', '');
+		//$row['nProfit'] = number_format(($row['nProductSellPrice'] - $row['nProductBasePrice']) * $row['nProductCnt'], 0, '.', '');
+		$row['nProfit'] = number_format($row['nTotalPrice']  * 0.15, 0, '.', '');
+		$row['nProductBasePrice'] = number_format($row['nProductSellPrice']* 0.85, 0, '.', '');
 		$row['strShopID'] = "simbongsa";
 		$row['strShopName'] = "심봉사";
+		$row['strShopPrdLink'] = 'http://xn--9n3bo0el5b.com/shop/prd_view.php?prdcode='.$row['prdcode'];
 	}
   $strjson = json_encode($row);
 
@@ -93,6 +96,8 @@ if($presult['rescode'] == "0000" && strlen($presult['rescode']) == 4){
     $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
     
     curl_close($curl);
+  
+
 ?>
 <?
 $tab4="on";
