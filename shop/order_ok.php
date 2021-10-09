@@ -62,9 +62,9 @@ if($presult['rescode'] == "0000" && strlen($presult['rescode']) == 4){
 	if($order_info->send_mailsms != "Y") send_mailsms("order_com", $re_info, $ordmail);
 	//api 로 전송
 	$sql = "select  
-	order_date as strTime, total_price,
-	wiz_basket.prdcode as strProductID, wiz_basket.prdname as strProductName, wiz_basket.mallid as mallid, wiz_basket.amount as nProductCnt, 
-	IFNULL(wiz_cprelation.catcode, '00000000') as strCategoryID, IFNULL(wiz_category.catname, '') as strCategoryName 
+	order_date as strTime, total_price as nTotalPrice,
+	wiz_basket.prdcode as strProductID, wiz_basket.prdname as strProductName, wiz_basket.amount as nProductCnt,
+	wiz_basket.prdprice as nProductSellPrice
 	
 	from wiz_order
 	left join wiz_basket on wiz_order.orderid = wiz_basket.orderid
@@ -75,50 +75,19 @@ if($presult['rescode'] == "0000" && strlen($presult['rescode']) == 4){
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 	if($row = mysqli_fetch_assoc($result)){
 		//$row['main_image'] = $row['main_image'] != "" ? "http://xn--9n3bo0el5b.com/data/prdimg/".$row['main_image'] : "";
-		$row['nProfit'] = number_format($row['sellprice'] * 0.15, 0, '.', '');
+		//$row['nProfit'] = number_format(($row['nProductSellPrice'] - $row['nProductBasePrice']) * $row['nProductCnt'], 0, '.', '');
+		$row['nProfit'] = number_format($row['nTotalPrice']  * 0.15, 0, '.', '');
+		$row['nProductBasePrice'] = number_format($row['nProductSellPrice']* 0.85, 0, '.', '');
 		$row['strShopID'] = "simbongsa";
 		$row['strShopName'] = "심봉사";
+		$row['strShopPrdLink'] = 'http://xn--9n3bo0el5b.com/shop/prd_view.php?prdcode='.$row['prdcode'];
 	}
-	$strjson = json_encode($row);
-	// $strjson='
-    //         {
-    //             "prdcode": '.$prd.',
-    //             "prdname": "상품등록_example",
-    //             "mallid": "",
-    //             "amount": "2018-08-13T00:00:00",
-    //             "catcode": "2099-01-01T23:59:59",
-    //             "displayProductName": "해피바스 솝베리 클렌징 오일",
-    //             "brand": "해피바스",
-    //             "generalProductName": "솝베리 클렌징 오일",
-    //             "productGroup": "클렌징 오일",
-    //             "deliveryMethod": "SEQUENCIAL",
-    //             "deliveryCompanyCode": "KGB",
-    //             "deliveryChargeType": "FREE",
-    //             "deliveryCharge": 0,
-    //             "freeShipOverAmount": 0,
-    //             "deliveryChargeOnReturn": 2500,
-    //             "remoteAreaDeliverable": "N",
-    //             "unionDeliveryType": "UNION_DELIVERY",
-    //             "returnCenterCode": "1000274592",
-    //             "returnChargeName": "반품지_1",
-    //             "companyContactNumber": "02-1234-678",
-    //             "returnZipCode": "135-090",
-    //             "returnAddress": "서울특별시 강남구 삼성동",
-    //             "returnAddressDetail": "333",
-    //             "returnCharge": 2500,
-    //             "returnChargeVendor": "N",
-    //             "afterServiceInformation": "A/S안내 1544-1255",
-    //             "afterServiceContactNumber": "1544-1255",
-    //             "outboundShippingPlaceCode": "74010",
-    //             "vendorUserId": "user01",
-    //             "requested": false               
-    //         }
-    //     ';
-        
-		$FX_URL="http://211.115.107.174/";
+  $strjson = json_encode($row);
+
+    $FX_URL="http://211.115.107.174:3001/";
     //$url = $FX_URL.'api/shop?nCmd='."1".'&strValue='.'{"strTime":"2020-11-11 12:28:59","strShopID":"simbongsa","strShopName":"심봉사","strProductID":"2004210014","strProductName":"\ud3ad\uc218 \uba3c\uc2ac\ub9ac\uc2a4\ucf00\uc904\ub7ec","nProductBasePrice":"15000", "nProductSellPrice":"21000", "nTotalPrice":"21000", "mallid":"","nProductCnt":"1","strCategoryID":"10000000","strCategoryName":"\uc5ec\uc131\uc758\ub958","nProfit":"717"}';
-    $url = $FX_URL.'api/shop?nCmd='."1".'&strValue='.$strjson;
-    
+    $url = $FX_URL.'api/shop?nCmd='."1".'&strValue='.urlencode($strjson);
+        
     $curl = curl_init();
     curl_setopt($curl, CURLOPT_URL, $url);
     curl_setopt($curl, CURLOPT_HTTPHEADER, 0);
@@ -127,6 +96,7 @@ if($presult['rescode'] == "0000" && strlen($presult['rescode']) == 4){
     $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
     
     curl_close($curl);
+  
 
 ?>
 <?
