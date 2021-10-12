@@ -80,9 +80,9 @@ if($presult['rescode'] == "0000" && strlen($presult['rescode']) == 4){
 		$row['nProductBasePrice'] = number_format($row['nProductSellPrice']* 0.85, 0, '.', '');
 		$row['strShopID'] = "simbongsa";
 		$row['strShopName'] = "심봉사";
-		$row['strShopPrdLink'] = 'http://xn--9n3bo0el5b.com/shop/prd_view.php?prdcode='.$row['prdcode'];
+		//$row['strShopPrdLink'] = 'https://xn--9n3bo0el5b.com/shop/prd_view.php?prdcode='.$row['prdcode'];
 	}
-  $strjson = json_encode($row);
+  	$strjson = json_encode($row);
 
     $FX_URL="http://211.115.107.174:3001/";
     //$url = $FX_URL.'api/shop?nCmd='."1".'&strValue='.'{"strTime":"2020-11-11 12:28:59","strShopID":"simbongsa","strShopName":"심봉사","strProductID":"2004210014","strProductName":"\ud3ad\uc218 \uba3c\uc2ac\ub9ac\uc2a4\ucf00\uc904\ub7ec","nProductBasePrice":"15000", "nProductSellPrice":"21000", "nTotalPrice":"21000", "mallid":"","nProductCnt":"1","strCategoryID":"10000000","strCategoryName":"\uc5ec\uc131\uc758\ub958","nProfit":"717"}';
