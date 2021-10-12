@@ -80,7 +80,7 @@ if($presult['rescode'] == "0000" && strlen($presult['rescode']) == 4){
 		$row['nProductBasePrice'] = number_format($row['nProductSellPrice']* 0.85, 0, '.', '');
 		$row['strShopID'] = "simbongsa";
 		$row['strShopName'] = "심봉사";
-		//$row['strShopPrdLink'] = 'http://xn--9n3bo0el5b.com/shop/prd_view.php?prdcode='.$row['prdcode'];
+		//$row['strShopPrdLink'] = 'https://xn--9n3bo0el5b.com/shop/prd_view.php?prdcode='.$row['prdcode'];
 	}
   	$strjson = json_encode($row);
 
