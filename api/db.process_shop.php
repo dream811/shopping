@@ -98,13 +98,13 @@ function getProductCodes_($lastIndex = 0, $pageSize = 100)
 	return $rows;
 }
 //상품코드리스트 자료
-function getProductCodes($lastIndex = 0, $pageSize = 100)
+function getProductCodes($lastIndex = 0, $pageSize = 500)
 {
     global $connect;
 	$prdcode = date('ymd', time() - 60 * 60 * 24)."0000";
 	$prdcode = "0000000000";
     // 상품넘버 만들기
-	$sql = "select prdcode from wiz_product where status='Y' and prdcode > $prdcode limit $pageSize offset $lastIndex";
+	$sql = "select prdcode from wiz_product where status='Y' and prdcode > '$prdcode' ";//limit $pageSize offset $lastIndex
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
 	$rows=[];
     if (mysqli_num_rows($result)) {
@@ -112,7 +112,7 @@ function getProductCodes($lastIndex = 0, $pageSize = 100)
             array_push($rows, $row);
         }
     }
-	$sql = "select strId as prdcode from tb_success_products where nProductWorkProcess=1 and strRegPageId != '' and nUserId = 1";
+	$sql = "select strId as prdcode from tb_success_products where nProductWorkProcess=1 and strRegPageId != '' and nUserId = 15";
 	$result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
     if (mysqli_num_rows($result)) {
         while($row = mysqli_fetch_assoc($result)){
