@@ -1,5 +1,6 @@
 <?php
-
+include_once "../inc/common.inc"; 		// DB컨넥션, 접속자 파악
+include_once "../inc/util.inc"; 			// 라이브러리 함수
 
 //로그인 (없는 경우 가입 진행)
 function userLogin($userId, $prdcode="")
@@ -357,5 +358,3 @@ function getSellHistory($sell_date = "", $prd_code = "")
     }
 	return $rows;
 }
-?>
-		
